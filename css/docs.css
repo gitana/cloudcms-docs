@@ -1,0 +1,21 @@
+body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+}
+
+.logo {
+    background: url("../img/cloudcms-icon.png") no-repeat scroll 0 0 transparent;
+    padding: 5px 10px 5px 30px;
+}
+
+.sidebar-nav {
+    padding: 9px 0;
+}
+
+.sidebar-nav .btn-group {
+    margin: 3px 10px;
+}
+
+footer p {
+    text-align: center;
+}

@@ -1,0 +1,59 @@
+<?xml version='1.0'?>
+<project name="Cloud CMS JavaScript Samples" basedir="." default="update">
+
+    <property file="custom-build.properties"/>
+
+    <property file="build.properties"/>
+
+    <property name="project.dir" value="."/>
+
+    <property name="build.dir" value="${project.dir}/build"/>
+
+    <target name="clean" description="Removes all generated files">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <target name="update-ratchet-lib" description="Update Ratchet Library">
+        <mkdir dir="${project.dir}/lib/ratchet"/>
+        <copy todir="${project.dir}/lib/ratchet">
+            <fileset dir="${ratchet.basepath}">
+                <include name="js/ratchet*.js"/>
+                <include name="js/plugins/**/*"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="update-all-lib" description="Update all libraries"
+            depends="update-ratchet-lib">
+    </target>
+
+    <target name="clean-local-deployment">
+        <mkdir dir="${local.deployment.basepath}/${app.key}"/>
+        <delete>
+            <fileset dir="${local.deployment.basepath}/${app.key}" includes="**/*"/>
+        </delete>
+    </target>
+
+    <fileset dir="${project.dir}" id="docs">
+        <include name="css/**/*"/>
+        <include name="img/**/*"/>
+        <include name="js/**/*"/>
+        <include name="lib/**/*"/>
+        <include name="templates/**/*"/>
+        <include name="*.html"/>
+        <include name="*.txt"/>
+    </fileset>
+
+    <target name="full" depends="update-all-lib,clean-local-deployment">
+        <copy todir="${local.deployment.basepath}/${app.key}">
+            <fileset refid="docs"/>
+        </copy>
+    </target>
+
+    <target name="update" depends="update-all-lib">
+        <copy todir="${local.deployment.basepath}/${app.key}">
+            <fileset refid="docs"/>
+        </copy>
+    </target>
+
+</project>
