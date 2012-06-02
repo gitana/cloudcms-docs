@@ -1,4 +1,8 @@
 (function($) {
+    Docs.ItemLink = function(language, key) {
+        return "#/" + language + "/" + key;
+    }
+
     Docs.Sidebar = function(language, self, current) {
         var sidebar = {
             "languageList": Docs.language,
@@ -160,7 +164,7 @@
                 item.current = false;
             }
             if (item.key) {
-                item.link = "#/" + language + "/" + item.key;
+                item.link = Docs.ItemLink(language , item.key);
             }
             if (item.items) {
                 $.each(item.items, function(j, subItem) {
@@ -171,7 +175,7 @@
                         subItem.current = false;
                     }
                     if (subItem.key) {
-                        subItem.link = "#/" + language + "/" + subItem.key;
+                        subItem.link = Docs.ItemLink(language,subItem.key);
                     }
                 })
             }
