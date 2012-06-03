@@ -1,6 +1,8 @@
 (function($) {
-    Docs.Components.ComponentDocs = Docs.AbstractGadget.extend(
+    Docs.Components.SampleCode = Docs.AbstractGadget.extend(
         {
+            TEMPLATE : "components/sample-code",
+
             constructor: function(id, ratchet) {
                 this.base(id, ratchet);
             },
@@ -14,21 +16,16 @@
 
                 this.subscribe(this.subscription, this.refresh);
 
-                var componentDocs = this.model(el);
+                this.model(el);
 
                 // render
-                var language = el.tokens["language"];
-                var componentKey = el.tokens["componentKey"];
-
-                var template = "components/docs/" + componentKey;
-
-                self.renderTemplate(el, template, function(el) {
+                self.renderTemplate(el, self.TEMPLATE, function(el) {
                     el.swap();
                 });
             }
 
         });
 
-    Ratchet.GadgetRegistry.register("componentdocs", Docs.Components.ComponentDocs);
+    Ratchet.GadgetRegistry.register("samplecode", Docs.Components.SampleCode);
 
 })(jQuery);

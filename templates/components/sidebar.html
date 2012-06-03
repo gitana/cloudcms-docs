@@ -7,7 +7,7 @@
         <ul class="dropdown-menu">
             {{if sidebar && sidebar.languageList}}
             {{each(k, v) sidebar.languageList}}
-            <li><a href="#/${k}{{if sidebar.currentLink}}/${sidebar.currentLink}{{/if}}">${v}</a></li>
+            <li><a href="#{{if sidebar.currentLink}}/${sidebar.currentLink}{{/if}}/${k}">${v}</a></li>
             {{/each}}
             {{/if}}
         </ul>

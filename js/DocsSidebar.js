@@ -1,6 +1,6 @@
 (function($) {
     Docs.ItemLink = function(language, key) {
-        return "#/" + language + "/" + key;
+        return "#/" + key + "/" + language;
     }
 
     Docs.Sidebar = function(language, self, current) {

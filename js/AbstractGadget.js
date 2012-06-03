@@ -115,6 +115,17 @@
                     callback(el);
                 });
             }
+        },
+
+        prettifyCode: function(el) {
+            $('body').unbind('swap').bind('swap', function(event, param) {
+                $.each($('pre'), function() {
+                    if ($(this).html() && $('ol.linenums', $(this)).length == 0) {
+                        $(this).html($(this).html().replace(/\\n/g, '\n'));
+                        window.prettyPrint && prettyPrint();
+                    }
+                });
+            });
         }
 
     });

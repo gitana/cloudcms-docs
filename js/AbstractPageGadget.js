@@ -17,16 +17,6 @@
 
         },
 
-        prettifyCode: function(el) {
-            $('body').unbind('swap').bind('swap', function(event, param) {
-                if ($('pre').html() && $('pre ol.linenums').length == 0) {
-                    // make code pretty
-                    $('pre').html($('pre').html().replace(/\\n/g, '\n'));
-                    window.prettyPrint && prettyPrint();
-                }
-            });
-        },
-
         index: function(el) {
             var self = this;
 
@@ -44,6 +34,7 @@
 
             // render
             self.renderTemplate(el, self.TEMPLATE, function(el) {
+                self.prettifyCode(el);
                 el.swap();
             });
         }

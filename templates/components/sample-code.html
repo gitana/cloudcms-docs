@@ -1,0 +1,33 @@
+<script id="sampleCodeTemplate" type="text/x-jquery-tmpl">
+
+    {{if samplecode}}
+    <div class="">
+        {{if samplecode.title}}
+        <h2>${samplecode.title}</h2>
+        {{/if}}
+        {{if samplecode.description}}
+        <p>{{html samplecode.description}}</p>
+        {{/if}}
+    </div>
+    {{if samplecode.samples}}
+    {{each(key, sample) samplecode.samples}}
+    <div class="row-fluid">
+        <div class="span12" id="${key}">
+            {{if sample.title}}
+            <h3>${sample.title}</h3>
+            {{/if}}
+            {{if sample.description}}
+            <p>{{html sample.description}}</p>
+            {{/if}}
+            {{if sample.code}}
+            <div id="${key}-code-view">
+                <pre class="prettyprint linenums">{{html sample.code.replace(/</g,'&lt;').replace(/>/g,'&gt;')}}</pre>
+            </div>
+            {{/if}}
+        </div>
+    </div>
+    {{/each}}
+    {{/if}}
+    {{/if}}
+
+</script>

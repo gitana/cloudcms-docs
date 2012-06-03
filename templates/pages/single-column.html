@@ -3,7 +3,7 @@
     {{each(i, row) page.dashlets}}
     <div class="row-fluid">
         {{each(j, dashlet) row}}
-        <div class="{{if dashlet.grid}}${dashlet.grid}{{else}}span12{{/if}}"
+        <div class="{{if dashlet.grid}}${dashlet.grid}{{else}}span12{{/if}}" {{if j != 0}}style="margin-left:0;"{{/if}}
         {{if dashlet.id}}id="${dashlet.id}"{{/if}}
         {{if dashlet.gadget}}gadget="${dashlet.gadget}"{{/if}}
         {{if dashlet.subscription}}subscription="${dashlet.subscription}"{{/if}}>
