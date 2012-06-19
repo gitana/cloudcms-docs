@@ -101,7 +101,7 @@
         renderTemplate: function(el, templatePath, data, callback) {
 
             if (templatePath.indexOf('/') != 0) {
-                var prefix = "/cloudcms-docs/templates";
+                var prefix = "templates";
                 templatePath = prefix + "/" + templatePath;
             }
 
