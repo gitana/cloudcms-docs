@@ -41,7 +41,13 @@
 
             determineTemplate: function(el)
             {
-                return "pages/api/" + el.tokens["topic"];
+                return "pages/api/topics/" + el.tokens["topic"];
+            },
+
+            afterRender: function(el)
+            {
+                var section = el.tokens["section"];
+                this.scrollToDomElementIfExists(section);
             }
 
         });

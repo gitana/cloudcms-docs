@@ -10,13 +10,20 @@
                     "header" : true
                 },
                 {
+                    "id" : "sidebar-overview",
+                    "topic" : "overview",
+                    "title" : "Overview"
+                },
+                {
                     "id" : "sidebar-download",
-                    "topic" : "download",
+                    "topic" : "overview",
+                    "section": "download",
                     "title" : "Download"
                 },
                 {
                     "id" : "sidebar-sourcecode",
-                    "topic" : "sourcecode",
+                    "topic" : "overview",
+                    "section": "sourcecode",
                     "title" : "Source Code"
                 },
                 {
