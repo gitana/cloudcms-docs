@@ -49,25 +49,32 @@
     <script src="lib/thirdparty/bootstrap/js/bootstrap-typeahead.js"></script>
 
     <!-- Ratchet -->
+    <!--
     <script type="text/javascript" src="lib/ratchet/js/ratchet-1.0.0.min.js"></script>
+    -->
+    <script type="text/javascript" src="lib/ratchet/js/ratchet-1.0.1-SNAPSHOT.js"></script>
     <script type="text/javascript" src="lib/ratchet/js/plugins/jQueryTemplateEngine.min.js"></script>
 
     <!-- Application Code -->
-    <script type="text/javascript" src="js/Docs.js"></script>
+    <script type="text/javascript" src="ratchet/Docs.js"></script>
+    <script type="text/javascript" src="ratchet/AbstractGadget.js"></script>
+    <script type="text/javascript" src="ratchet/AbstractPageGadget.js"></script>
 
-    <script type="text/javascript" src="js/DocsSidebar.js"></script>
-    <script type="text/javascript" src="js/ComponentCode.js"></script>
+    <!-- Components -->
+    <script type="text/javascript" src="ratchet/components/sidebar/Sidebar.js"></script>
+    <script type="text/javascript" src="ratchet/components/codesnippet/CodeSnippet.js"></script>
 
-    <script type="text/javascript" src="js/AbstractGadget.js"></script>
-    <script type="text/javascript" src="js/AbstractPageGadget.js"></script>
+    <!-- Home page -->
+    <script type="text/javascript" src="ratchet/pages/home/Home.js"></script>
+    <script type="text/javascript" src="ratchet/pages/home/HomeSidebar.js"></script>
 
-    <script type="text/javascript" src="js/components/Sidebar.js"></script>
-    <script type="text/javascript" src="js/components/Introduction.js"></script>
-    <script type="text/javascript" src="js/components/ComponentDocs.js"></script>
-    <script type="text/javascript" src="js/components/SampleCode.js"></script>
+    <!-- API pages -->
+    <script type="text/javascript" src="ratchet/pages/api/APILanguages.js"></script>
+    <script type="text/javascript" src="ratchet/pages/api/APISidebar.js"></script>
+    <script type="text/javascript" src="ratchet/pages/api/APICode.js"></script>
+    <script type="text/javascript" src="ratchet/pages/api/APIHome.js"></script>
+    <script type="text/javascript" src="ratchet/pages/api/APIPage.js"></script>
 
-    <script type="text/javascript" src="js/pages/Home.js"></script>
-    <script type="text/javascript" src="js/pages/Component.js"></script>
 
     <!-- work it -->
     <script type="text/javascript">
@@ -91,10 +98,11 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="#/"><span class="logo"></span> Cloud CMS Docs</a>
+          <a class="brand" href="#/"><span class="logo"></span>&nbsp;Cloud CMS Docs</a>
           <div class="nav-collapse">
             <ul class="nav">
               <li class="active"><a href="#/">Home</a></li>
+              <li class="active"><a href="#/api">REST API</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -103,12 +111,13 @@
 
     <div class="container-fluid">
       <div class="row-fluid">
-        <div class="span3">
-          <div class="well sidebar-nav" gadget="sidebar">
-          </div><!--/.well -->
-        </div><!--/span-->
-        <div class="span9" gadget="page">
-        </div><!--/span-->
+          <div class="span3">
+              <div class="well sidebar-nav" gadget="sidebar">
+              </div><!--/.well -->
+          </div><!--/span-->
+          <div class="span9" gadget="page">
+          </div><!--/span-->
+      </div><!--/span-->
       </div><!--/row-->
 
       <hr>

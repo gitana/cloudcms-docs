@@ -25,7 +25,7 @@
         <include name="img/**/*"/>
         <include name="js/**/*"/>
         <include name="lib/**/*"/>
-        <include name="templates/**/*"/>
+        <include name="ratchet/**/*"/>
         <include name="*.html"/>
         <include name="*.txt"/>
     </fileset>

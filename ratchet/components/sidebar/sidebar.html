@@ -1,0 +1,45 @@
+<script id="sidebarTemplate" type="text/x-jquery-tmpl">
+
+
+    {{if sidebar && sidebar.language && sidebar.languageList}}
+        <div class="btn-group">
+            <button class="btn btn-info">{{if sidebar && sidebar.language}}${sidebar.language.value}{{/if}}</button>
+            <button class="btn btn-info dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+            <ul class="dropdown-menu">
+                {{if sidebar && sidebar.languageList}}
+                {{each(k, v) sidebar.languageList}}
+                <li><a href="#{{if sidebar.currentLink}}/${sidebar.currentLink}{{/if}}/${k}">${v}</a></li>
+                {{/each}}
+                {{/if}}
+            </ul>
+        </div>
+    {{/if}}
+
+    {{if sidebar && sidebar.items}}
+    <ul class="nav nav-list">
+        {{each(i, item) sidebar.items}}
+        {{if item.header}}
+        <li class="nav-header">${item.title}</li>
+        {{else}}
+        <li {{if item.current}}class="active"{{/if}}>
+        <a href="{{if item.link}}${item.link}{{else}}javascript:void(0);{{/if}}" {{if item.items}}class="nav-sub-items"{{/if}}>
+            {{if item.items}}<i class="{{if item.current}}icon-chevron-down icon-white{{else}}icon-chevron-right{{/if}}"></i></i>{{/if}}${item.title}
+        </a>
+        {{if item.items}}
+        <ul class="nav nav-list sub-nav" {{if !item.current}}style="display:none;"{{/if}}>
+            {{each(j, subItem) item.items}}
+            <li {{if subItem.current}}class="active"{{/if}}>
+            <a href="{{if subItem.link}}${subItem.link}{{else}}javascript:void(0);{{/if}}">
+                </i>${subItem.title}
+            </a>
+            </li>
+            {{/each}}
+        </ul>
+        {{/if}}
+        </li>
+        {{/if}}
+        {{/each}}
+    </ul>
+    {{/if}}
+
+</script>
