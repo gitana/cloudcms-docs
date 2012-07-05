@@ -12,7 +12,7 @@
                 {
                     "id" : "sidebar-api",
                     "uri": "#/api",
-                    "title" : "REST API"
+                    "title" : "API Reference"
                 }
             ]
         };
