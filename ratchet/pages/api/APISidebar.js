@@ -41,6 +41,11 @@
                     "topic" : "authentication",
                     "title" : "Authentication (OAuth2)"
                 },
+                {
+                    "id" : "sidebar-pagination",
+                    "topic" : "Pagination",
+                    "title" : "Pagination"
+                },
 
 
 
@@ -1006,7 +1011,7 @@
         sidebar["languageList"] = Docs.APILanguages;
         sidebar["language"] = {
             "key" : language,
-            "value" : Docs.APILanguages[language]
+            "value" : Docs.APILanguages[language].title
         };
 
         var buildLink = function(language, topic, section)

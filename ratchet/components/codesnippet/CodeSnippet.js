@@ -3,33 +3,56 @@
         {
             TEMPLATE : "components/codesnippet/codesnippet",
 
-            constructor: function(id, ratchet) {
+            constructor: function(id, ratchet)
+            {
                 this.base(id, ratchet);
             },
 
-            setup: function() {
+            setup: function()
+            {
                 this.get("/api/{topic}/{language}", this.index);
                 this.get("/api/{topic}/{language}/{section}", this.index);
             },
 
-            index: function(el) {
+            index: function(el)
+            {
                 var self = this;
-
-                //this.subscribe(this.subscription, this.refresh);
 
                 this.model(el);
 
                 var topic = el.tokens["topic"];
                 var language = el.tokens["language"];
+                var snippetId = el.params["snippetid"] ? el.params["snippetid"] : el.params["snippetId"];
+                var extension = Docs.APILanguages[language].extension;
 
-                el.model["snippets"] = this.codeSnippets("codesnippets");
-                el.model["snippetId"] = el.params["snippetid"] ? el.params["snippetid"] : el.params["snippetId"];
+                var url = "ratchet/code/api/" + topic + "/" + snippetId + "." + extension;
 
+                var render = function(html)
+                {
+                    if (html) {
+                        el.model["code"] = html;
+                    }
+                    else {
+                        el.model["code"] = false;
+                    }
 
-                // render
-                self.renderTemplate(el, self.TEMPLATE, function(el) {
-                    el.swap();
+                    self.renderTemplate(el, self.TEMPLATE, function(el) {
+                        el.swap();
+                    });
+                };
+
+                var request = $.ajax({
+                    url: url,
+                    dataType: "text",
+                    cache: false
                 });
+                request.done(function(html) {
+                    render(html);
+                });
+                request.fail(function(jqXHR, textStatus) {
+                    render("");
+                });
+
             }
 
         });

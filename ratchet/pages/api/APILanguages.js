@@ -2,8 +2,14 @@
 
     if (typeof Docs.APILanguages === "undefined") {
         Docs.APILanguages = {
-            "javascript": "JavaScript",
-            "java": "Java"
+            "javascript": {
+                "title": "JavaScript",
+                "extension": "js"
+            },
+            "java": {
+                "title": "Java",
+                "extension": "java"
+            }
         };
     }
 

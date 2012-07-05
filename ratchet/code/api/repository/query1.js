@@ -1,0 +1,3 @@
+platform.queryRepositories({
+    "country": "USA"
+});

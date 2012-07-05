@@ -1,19 +1,13 @@
 <script id="codeTemplate" type="text/x-jquery-tmpl">
 
-    {{if snippets && snippetId}}
-        {{each(key, snippet) snippets}}
-            {{if key == snippetId}}
-                {{if snippet.code}}
-                    <div class="row-fluid">
-                        <div class="span12" id="${key}">
-                            <div id="${key}-code-view">
-                                <pre class="prettyprint linenums">{{html snippet.code.replace(/</g,'&lt;').replace(/>/g,'&gt;')}}</pre>
-                            </div>
-                        </div>
-                    </div>
-                {{/if}}
-            {{/if}}
-        {{/each}}
+    {{if code}}
+    <div class="row-fluid">
+        <div class="span12" id="${key}">
+            <div id="${key}-code-view">
+                <pre class="prettyprint linenums">{{html code.replace(/</g,'&lt;').replace(/>/g,'&gt;')}}</pre>
+            </div>
+        </div>
+    </div>
     {{/if}}
 
 </script>

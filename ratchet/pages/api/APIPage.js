@@ -28,6 +28,7 @@
 
             setupCodeSnippets: function(el)
             {
+                /*
                 var topic = el.tokens["topic"];
                 var language = el.tokens["language"];
 
@@ -37,6 +38,7 @@
 
                     this.codeSnippets("codesnippets", codeSnippets);
                 }
+                */
             },
 
             determineTemplate: function(el)
