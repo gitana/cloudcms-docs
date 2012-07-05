@@ -18,7 +18,15 @@
         {
             var language = el.tokens["language"];
 
-            var current = "sidebar-overview";
+            var current = "sidebar";
+            if (el.tokens["topic"])
+            {
+                current += "-" + el.tokens["topic"];
+            }
+            if (el.tokens["section"]) {
+                current += "-" + el.tokens["section"];
+            }
+
             this.sidebar(Docs.Sidebars.API(language, this, current));
         },
 

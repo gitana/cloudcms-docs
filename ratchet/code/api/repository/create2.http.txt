@@ -1,0 +1,5 @@
+POST /repositories
+{
+  "title": "My first repository",
+  "description": "Oh my darling clementine"
+}

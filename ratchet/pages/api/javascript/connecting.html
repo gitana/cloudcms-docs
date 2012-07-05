@@ -1,8 +1,171 @@
-<script id="pageTemplate" type="text/x-jquery-tmpl">
+<script id="pageTemplate" type="text/x-jquery-tmpl" xmlns="http://www.w3.org/1999/html">
     <h1>Connecting to Cloud CMS</h1>
 
     <br/>
 
-    <p>JavaScript</p>
+    <p>
+        To connect to Cloud CMS, you need to establish two important pieces of information:
+    </p>
+    <ul>
+        <li>The client that you are connecting as</li>
+        <li>The user that you are signing on as</li>
+    </ul>
+
+    <p>
+        The only way that a remote application can connect to your platform is if it can produce the correct
+        credentials to identify itself as a client that you know about.  As the platform administrator, you issue
+        a client key/secret ahead of time.  The application then needs to present these credentials to you and
+        prove that it is who it says it is.
+        <br/>
+        <br/>
+        Once the server can trust that the application is who it says it is (and not someone who is trying to
+        access your platform independently), the user of your application then needs to log in.  The user must
+        present their own credentials (usually something like a username and password) and the server must check
+        things out and then sign them on.
+        <br/>
+        <br/>
+        That's basically how it works.  However, we've kept things pretty simple.  Cloud CMS provides a number of
+        configurations and authentication flows so that you avoid exposing secret credentials and keep things working
+        in a very secure manner.
+    </p>
+
+    <h2>Simple Connection using OAuth2 "Password" Flow</h2>
+    <p>
+        Let's take a simple example of how you might connect to Cloud CMS using the OAuth2 "password" flow.  This
+        flow connects over HTTPS so as to provide a strong guarantee that data won't be picked off by a man-in-the-middle
+        attack.  That said, it also hard codes client secret and user password into the source code.
+        <br/>
+        <br/>
+        Not a good thing you say?  Very astute observation.  We cover this below.
+    <p>
+        Let's take a look at how this might work.
+    </p>
+    <div gadget="codesnippet" snippetId="connect1"></div>
+    <p>
+        This creates an instance of the Gitana driver (that's the name of the driver that connects to Cloud CMS).
+        This instance will perform an authentication handshake to assert the identity of the client to the server.
+        <br/>
+        <br/>
+        However, it hasn't done this yet.  We first need to provide the other bit of information - our user identity.
+        <br/>
+        <br/>
+        The simplest way to connect is to simply pass over the username and password of a principal on your platform.
+        For example, here we pass in the username and password of a principal named "frodo".
+    </p>
+    <div gadget="codesnippet" snippetId="connect2"></div>
+    <p>
+        The authentication call will tell the Gitana driver to perform an OAuth2 handshake using the "password" flow.
+        When the handshake completes, you driver will have an OAuth2 <b>access token</b> and <b>refresh token</b>.
+        <br/>
+        <br/>
+        And so, now you can just go crazy with the cheese whiz.
+    </p>
+    <div gadget="codesnippet" snippetId="connect3"></div>
+
+    <br/>
+
+    <h2>Access Tokens and Refresh Tokens</h2>
+    <p>
+        When you authenticate using the Gitana driver, the Cloud CMS server issues you an OAuth access token and
+        refresh token.  With every subsequent operation that gets performed, the driver will automatically apply
+        your access token as stuff gets sent over the wire.
+        <br/>
+        <br/>
+        Eventually, your access token will expire.  This is normal.  It's actually a safety mechanism built into the
+        OAuth2 protocol.  That way, if someone sniffed your access token, there's a short window that they can use it
+        before it becomes invalid.
+        <br/>
+        <br/>
+        When your access token invalidates, the Gitana driver will automatically perform another handshake with the
+        Cloud CMS server using your refresh token (via the OAuth2 "refresh" flow).  In this way, the Gitana driver
+        will acquire a new access token and begin using it.
+        <br/>
+        <br/>
+        This all happens automatically for you behind the scenes.  That way, you don't have to manually manage any
+        tokens or handle any weird 401's that pop out of nowhere.  It's all taken care of for you.
+    </p>
+
+    <br/>
+
+    <h2>Security Concerns for JavaScript in the Browser</h2>
+    <p>
+        If you're running JavaScript in the browser, then the example above should really be for testing and nothing
+        more.  Why?  Well, the main reason is that we're storing the client secret and user password in our source code.
+        <br/>
+        <br/>
+        Anyone can view the source of a browser application and find the client secret or password.  All you would have
+        to do is "View Source" and there it is.
+        <br/>
+        <br/>
+        There are all kinds of tricks and games you can play to try to obfuscate the data but, in the end, it's just
+        a bad practice to expose the client secret or the user password.
+        <br/>
+        <br/>
+        Fortunately, Cloud CMS supports all of the OAuth2 Flows.  The "password" flow is just one of them.  It's really
+        intended for compiled or server-side applications (like Java, Android, iOS, NodeJS or even compiled Appcelerator
+        Titanium apps).  In all of those cases, it's really hard to get at the source.
+        <br/>
+        <br/>
+        For JavaScript/HTML5 applications running in a browser, we recommend the OAuth2 "code" authorization flow.
+        You can read more about that in the next section.
+    </p>
+
+    <br/>
+
+    <h2>Gitana Options</h2>
+    <p>
+        There are a few additional options you can specify when instantiating the Gitana driver.
+        Here is a full list of what you can specify:
+    </p>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>clientId</td>
+            <td>text</td>
+            <td></td>
+            <td>
+                The client key.
+            </td>
+        </tr>
+        <tr>
+            <td>clientSecret</td>
+            <td>text</td>
+            <td></td>
+            <td>
+                The client secret.
+            </td>
+        </tr>
+        <tr>
+            <td>baseURL</td>
+            <td>text</td>
+            <td>/proxy</td>
+            <td>
+                Sets the location of the Cloud CMS API.  Due to same-domain policies within the browser, this is set
+                to <code>/proxy</code> by default.  You must set up a proxy server at "/proxy" that points to
+                <code>https://api.cloudcms.com</code> to run within a browser.  If you're running in a native
+                or server-side environment, you can set this to <code>https://api.cloudcms.com</code> directly.
+            </td>
+        </tr>
+        <tr>
+            <td>locale</td>
+            <td>text</td>
+            <td></td>
+            <td>
+                Sets the value of the <code>accepts-language</code> header on any calls back to the Cloud CMS
+                server.  This header is used by the server to automatically localize any I18N-enabled translations
+                on content (nodes).
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
 
 </script>

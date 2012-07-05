@@ -9,7 +9,12 @@
             "java": {
                 "title": "Java",
                 "extension": "java"
+            },
+            "http": {
+                "title": "HTTP",
+                "extension": "http.txt"
             }
+
         };
     }
 

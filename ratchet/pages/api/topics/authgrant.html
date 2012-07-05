@@ -1,43 +1,228 @@
 <script id="pageTemplate" type="text/x-jquery-tmpl">
-    <h2>Authentication Grant</h2>
+    <h1>Authentication Grant</h1>
     <p>
-        An authentication grant lets you define an alternate set of credentials for authorizing a single user
-        access to your platform via a client.
+        An Authentication Grant provides a way for you to generate alternate credentials for authenticating as a user
+        to a platform.  These alternate credentials consist of a key and a secret (much like a client's key and secret).
+        You can use this key and secret in the same places where you might otherwise use a username and password.
         <br/>
         <br/>
-        Each authentication grant has a <b>key</b> and <b>secret</b> which operate much like a username/password
-        combination.
+        Why would you want to use an Authentication Grant?  Here are a few reasons:
+    </p>
+    <ul>
+        <li>
+            Authentication Grants provide a way for you to distribute user authentication credentials without actually
+            having to give out the usernames and passwords of your users.
+        </li>
+        <li>
+            Authentication Grants are constrained to specific users AND specific clients.  Thus, if someone hacks around
+            and manages to figure out your Authentication Grant's key and secret, they are still constrained to only
+            accessing a single platform as a single client and user.
+        </li>
+        <li>
+            If your Authentication Grant's key and secret are compromised (i.e. someone hacked around, figured out what
+            the key/secret is and started trying to do malicious things), you can disable the Authentication Grant.
+            This doesn't affect the user or the client.  But the Authentication Grant is shut down.  Booyah.
+        </li>
+    </ul>
+    <p>
+        Authentication Grants are also configurable so that you can enhance and control their security characteristics.
+        <br/>
+        <br/>
+        For example, by chaining to a specific client, you can specify exactly which OAuth2 Authorization Flows
+        an Authentication Grant can participate in (by tightening security around the client).  In this way, you could
+        do things like limit access only for those who authorize using the full "authentication code" OAuth2 Flow
+        (which is the most secure, in our view, of all flows).
+        <br/>
+        <br/>
+        Or, you might opt to allow for reduced security for certain grants that you know are being used by trusted
+        domains.  Authentication Grants can be configured for <b>Open Driver</b> authentication which is a variant of
+        the OAuth2 "password" Flow intended for JavaScript/HTML5 applications.
     </p>
 
-    <h3 id="read">Read</h3>
+    <!-- CONFIGURATION -->
+    <h2>Configuration</h2>
     <p>
-        You can read an authentication grant by its <pre>_doc</pre> field.
+        Authentication Grants maintain a configuration that you can adjust or consult as you create, update
+        and query for them.
+        <br/>
+        <br/>
+        The following table presents you the configuration properties.
+    </p>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>key</td>
+            <td>text</td>
+            <td>(auto-generated)</td>
+            <td>Read-Only</td>
+            <td>
+                The authentication grant key.
+            </td>
+        </tr>
+        <tr>
+            <td>secret</td>
+            <td>text</td>
+            <td>(auto-generated)</td>
+            <td></td>
+            <td>
+                The authentication grant secret.
+            </td>
+        </tr>
+        <tr>
+            <td>principalDomainId</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                The id of the domain of the principal to be authenticated.  The domain must be a domain on the
+                current platform.
+            </td>
+        </tr>
+        <tr>
+            <td>principalId</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                The id of the principal to be authenticated.
+            </td>
+        </tr>
+        <tr>
+            <td>clientId</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                The id of the client that must be authenticated in order to apply this grant.
+            </td>
+        </tr>
+        <tr>
+            <td>allowOpenDriverAuthentication</td>
+            <td>boolean</td>
+            <td></td>
+            <td></td>
+            <td>
+                Whether to allow "open-driver" authentication against this grant.
+            </td>
+        </tr>
+        <tr>
+            <td>enabled</td>
+            <td>boolean</td>
+            <td>true</td>
+            <td></td>
+            <td>
+                Whether this grant is enabled
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    <h2 id="create">Create an Authentication Grant</h2>
+    <p>
+        To create an Authentication Grant, we first have to have a Client and a Domain User.  Remember that an
+        Authentication Grant is basically a permission slip that lets someone come along and impersonate the
+        Domain User provided that they are using the right Client.
+        <br/>
+        <br/>
+        We just have to provide a few details.  It's basically as simple as this:
+    </p>
+    <div gadget="codesnippet" snippetId="create1"></div>
+    <p>
+        Note that the Authentication Grant key and secret are automatically generated for us.  In fact, this is a really
+        important detail since the server uses an encryption algorithm to generate the secret (using a cipher that is
+        unique per platform).
+    </p>
+
+    <h2 id="update">Update an Authentication Grant</h2>
+    <p>
+        To update, all you have to do is make changes to your Authentication Grant and fire away.
+    </p>
+    <div gadget="codesnippet" snippetId="update1"></div>
+    <p>
+        You are not allowed to update the <code>key</code> or <code>secret</code> fields.  These are Read-Only.
+        If you'd like to change the key or secret, you must create a new Authentication Grant.
+    </p>
+
+    <h2 id="delete">Delete an Authentication Grant</h2>
+    <p>
+        When you delete an Authentication Grant, any users of any applications that were authenticated using the
+        Authentication Grant's credentials will no longer have access to your platform.  They'll be shut down.  The
+        server will additionally clean up any OAuth2 access or refresh tokens.
+        <br/>
+        <br/>
+        Thus, the effect is pretty much instantaneous.
+    </p>
+    <div gadget="codesnippet" snippetId="delete1"></div>
+    <h3 id="disable">Disabling</h3>
+    <p>
+        As an alternative to deleting, you might opt to disable the Authentication Grant.  The effect is basically the
+        same but you will have the option to re-enable or reuse the Authentication Grant at some point in the future.
+        It's really up to you.
+    </p>
+    <div gadget="codesnippet" snippetId="disable1"></div>
+
+    <h2 id="read">Read an Authentication Grant</h2>
+    <p>
+        You can read an Authentication Grant by its <code>_doc</code> ID field.
     </p>
     <div gadget="codesnippet" snippetId="read1"></div>
 
-    <h3 id="list">List</h3>
+    <!-- LIST -->
+
+    <h2 id="list">List Authentication Grants</h2>
     <p>
-        TODO
+        You can retrieve a list of Authentication Grants for your platform quite easily.
+        The following code hands back the full list.
+    </p>
+    <div gadget="codesnippet" snippetId="list1"></div>
+    <p>
+        You can then iterate over the list to pick at what you'd like.
+    </p>
+    <div gadget="codesnippet" snippetId="list2"></div>
+    <p>
+        Retrieving the full list is potentially an expensive operation, depending how many items you have.
+        The more your retrieve, the more data goes over the wire and so forth.  Thus, you might wish to
+        <i>paginate</i> your call and retrieve a subset of the total list at a time.
+        <br/>
+        <br/>
+        Here is an example that retrieves in pages of size 10.
+        It starts on the second page (by skipping to starting index 20).
+        It also sorts by the <code>title</code> field in a descending sequence.
+    </p>
+    <div gadget="codesnippet" snippetId="list3"></div>
+    <p>
+        You don't have to have all of the pagination parameters (<code>limit</code>, <code>skip</code> and <code>sorting</code>).
+        You might only want to include one or two.  It's up to you.
     </p>
 
-    <h3 id="query">Query</h3>
-    <p>
-        TODO
-    </p>
 
-    <h3 id="create">Create</h3>
-    <p>
-        TODO
-    </p>
 
-    <h3 id="update">Update</h3>
-    <p>
-        TODO
-    </p>
+    <!-- QUERY -->
 
-    <h3 id="delete">Delete</h3>
+    <h2 id="query">Query Authentication Grants</h2>
     <p>
-        TODO
+        You can run custom queries against your Authentication Grants to find exactly what you're looking for.
+        Here is a query that looks for Authentication Grants which are disabled.
     </p>
-
+    <div gadget="codesnippet" snippetId="query1"></div>
+    <p>
+        Here is that same query followed by an iteration over the result map.
+    </p>
+    <div gadget="codesnippet" snippetId="query2"></div>
+    <p>
+        Finally, you can mix queries with pagination to reduce data over the wire and speed up performance.
+        Here is that same query with some pagination thrown in.
+        We limit to pages of size 10 and sort by <code>title</code>.
+    </p>
+    <div gadget="codesnippet" snippetId="query3"></div>
 </script>

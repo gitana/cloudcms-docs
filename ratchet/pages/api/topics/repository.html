@@ -1,290 +1,285 @@
 <script id="pageTemplate" type="text/x-jquery-tmpl">
 
-    <div class="row-fluid">
-        <div class="span12">
-
-            <h1>Repository</h1>
-            <p>
-                A repository is a data store where you can store content objects - things like articles, blog entries,
-                web site pages, video files, PDFs and much more.  Repositories feature changeset versioning so that
-                you can safely make changes without anything getting lost.  Repositories also give you dictionary
-                services for defining content types, validation logic, behaviors and rules that trigger when
-                content events are triggered.
-            </p>
+    <h1>Repository</h1>
+    <p>
+        A repository is a data store where you can store content objects - things like articles, blog entries,
+        web site pages, video files, PDFs and much more.  Repositories feature changeset versioning so that
+        you can safely make changes without anything getting lost.  Repositories also give you dictionary
+        services for defining content types, validation logic, behaviors and rules that trigger when
+        content events are triggered.
+    </p>
 
 
-            <!-- CONFIGURATION -->
-            <h2>Configuration</h2>
-            <p>
-                As with all data stores, repositories maintain a configuration document that contains system
-                and custom properties.  You can write your own properties onto this configuration document if you wish.
-                You might use those properties to query and retrieve the repository at a later time.
-                <br/>
-                <br/>
-                Some system properties are read-only and others are writable.  You can adjust the writable properties
-                to modify the behavior and characteristics of the repository.
-                <br/>
-                <br/>
-                The following table presents you the system properties.
-            </p>
-            <table class="table table-bordered table-striped">
-                <thead>
-                <tr>
-                    <th>Property</th>
-                    <th>Type</th>
-                    <th>Default</th>
-                    <th nowrap>Read-Only</th>
-                    <th>Description</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>title</td>
-                    <td>text</td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        The title of the repository.
-                    </td>
-                </tr>
-                <tr>
-                    <td>description</td>
-                    <td>text</td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        A description for the repository.
-                    </td>
-                </tr>
-                <tr>
-                    <td>enableAuthorities</td>
-                    <td>boolean</td>
-                    <td>true</td>
-                    <td></td>
-                    <td>
-                        If true, the repository will check whether the current principal has rights to perform an
-                        operation against content upon interaction.  If turned off, you'll see some performance
-                        benefits.  This should only ever be switched off for "published" or general availability
-                        content and never for authoring-side content.
-                    </td>
-                </tr>
-                <tr>
-                    <td>enableAuditing</td>
-                    <td>boolean</td>
-                    <td>false</td>
-                    <td></td>
-                    <td>
-                        If true, then the repository will collect audit records for all service-level operations
-                        (such as CRUD operations).  This incurs a slight performance penalty but guarantees you
-                        a record of all interactions with data for changesets, branches and nodes in the repository.
-                    </td>
-                </tr>
-                <tr>
-                    <td>locked</td>
-                    <td>boolean</td>
-                    <td>false</td>
-                    <td>Read-only</td>
-                    <td>
-                        Whether the repository is presently locked.  If the repository is locked, then write operations
-                        against it will block.
-                    </td>
-                </tr>
-                <tr>
-                    <td>lockedBy</td>
-                    <td>text</td>
-                    <td></td>
-                    <td>Read-only</td>
-                    <td>
-                        The principal that holds the lock (if the repository is locked).
-                    </td>
-                </tr>
-                <tr>
-                    <td>size</td>
-                    <td>number</td>
-                    <td>0</td>
-                    <td>Read-only</td>
-                    <td>
-                        The last-recorded allocation size (on disk) of the repository in bytes.  This value is updated
-                        periodically and may not be precise at the moment it is read.
-                    </td>
-                </tr>
-                <tr>
-                    <td>maxsize</td>
-                    <td>number</td>
-                    <td>-1</td>
-                    <td></td>
-                    <td>
-                        The maximum allowed allocation size (on disk) of the repository in bytes.  If this size of
-                        the repository exceeds this value, write operations will fail.  A value of -1 indicates that
-                        there is no upper limit.
-                    </td>
-                </tr>
-                <tr>
-                    <td>objectcount</td>
-                    <td>number</td>
-                    <td>0</td>
-                    <td>Read-only</td>
-                    <td>
-                        The number of objects stored within the repository.  This includes system-maintained objects.
-                        This value is updated periodically and may not be precise at the moment it is read.
-                    </td>
-                </tr>
-                <tr>
-                    <td>statisticsDate</td>
-                    <td>timestamp</td>
-                    <td></td>
-                    <td>Read-only</td>
-                    <td>
-                        Records the time when statistics were last run against the repository.  Statistics are run
-                        periodically to calculate the repository size and object allocations.
-                    </td>
-                </tr>
-                <tr>
-                    <td>statisticsDirty</td>
-                    <td>boolean</td>
-                    <td>false</td>
-                    <td>Read-only</td>
-                    <td>
-                        Whether writes have occurred against this repository since the last time statistics were run.
-                        This signals to the system that statistics need to be collected at the next available opportunity.
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <p>
-                Any system properties that are shown to be Read-Only are not modifiable on calls to <code>create()</code> or <code>update()</code>.
-                Anything else is fair game.
-            </p>
+    <!-- CONFIGURATION -->
+    <h2>Configuration</h2>
+    <p>
+        As with all data stores, repositories maintain a configuration document that contains system
+        and custom properties.  You can write your own properties onto this configuration document if you wish.
+        You might use those properties to query and retrieve the repository at a later time.
+        <br/>
+        <br/>
+        Some system properties are read-only and others are writable.  You can adjust the writable properties
+        to modify the behavior and characteristics of the repository.
+        <br/>
+        <br/>
+        The following table presents you the system properties.
+    </p>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>title</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                The title of the repository.
+            </td>
+        </tr>
+        <tr>
+            <td>description</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                A description for the repository.
+            </td>
+        </tr>
+        <tr>
+            <td>enableAuthorities</td>
+            <td>boolean</td>
+            <td>true</td>
+            <td></td>
+            <td>
+                If true, the repository will check whether the current principal has rights to perform an
+                operation against content upon interaction.  If turned off, you'll see some performance
+                benefits.  This should only ever be switched off for "published" or general availability
+                content and never for authoring-side content.
+            </td>
+        </tr>
+        <tr>
+            <td>enableAuditing</td>
+            <td>boolean</td>
+            <td>false</td>
+            <td></td>
+            <td>
+                If true, then the repository will collect audit records for all service-level operations
+                (such as CRUD operations).  This incurs a slight performance penalty but guarantees you
+                a record of all interactions with data for changesets, branches and nodes in the repository.
+            </td>
+        </tr>
+        <tr>
+            <td>locked</td>
+            <td>boolean</td>
+            <td>false</td>
+            <td>Read-only</td>
+            <td>
+                Whether the repository is presently locked.  If the repository is locked, then write operations
+                against it will block.
+            </td>
+        </tr>
+        <tr>
+            <td>lockedBy</td>
+            <td>text</td>
+            <td></td>
+            <td>Read-only</td>
+            <td>
+                The principal that holds the lock (if the repository is locked).
+            </td>
+        </tr>
+        <tr>
+            <td>size</td>
+            <td>number</td>
+            <td>0</td>
+            <td>Read-only</td>
+            <td>
+                The last-recorded allocation size (on disk) of the repository in bytes.  This value is updated
+                periodically and may not be precise at the moment it is read.
+            </td>
+        </tr>
+        <tr>
+            <td>maxsize</td>
+            <td>number</td>
+            <td>-1</td>
+            <td></td>
+            <td>
+                The maximum allowed allocation size (on disk) of the repository in bytes.  If this size of
+                the repository exceeds this value, write operations will fail.  A value of -1 indicates that
+                there is no upper limit.
+            </td>
+        </tr>
+        <tr>
+            <td>objectcount</td>
+            <td>number</td>
+            <td>0</td>
+            <td>Read-only</td>
+            <td>
+                The number of objects stored within the repository.  This includes system-maintained objects.
+                This value is updated periodically and may not be precise at the moment it is read.
+            </td>
+        </tr>
+        <tr>
+            <td>statisticsDate</td>
+            <td>timestamp</td>
+            <td></td>
+            <td>Read-only</td>
+            <td>
+                Records the time when statistics were last run against the repository.  Statistics are run
+                periodically to calculate the repository size and object allocations.
+            </td>
+        </tr>
+        <tr>
+            <td>statisticsDirty</td>
+            <td>boolean</td>
+            <td>false</td>
+            <td>Read-only</td>
+            <td>
+                Whether writes have occurred against this repository since the last time statistics were run.
+                This signals to the system that statistics need to be collected at the next available opportunity.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <p>
+        Any system properties that are shown to be Read-Only are not modifiable on calls to <code>create()</code> or <code>update()</code>.
+        Anything else is fair game.
+    </p>
 
 
 
 
-            <!-- CREATE -->
+    <!-- CREATE -->
 
-            <h2 id="create">Create a Repository</h2>
-            <p>
-                You can create an empty repository like this:
-            </p>
-            <div gadget="codesnippet" snippetId="create1"></div>
+    <h2 id="create">Create a Repository</h2>
+    <p>
+        You can create an empty repository like this:
+    </p>
+    <div gadget="codesnippet" snippetId="create1"></div>
 
-            <p>
-                Or you can pass in configuration which will be applied to the repository.  You can pass in
-                any properties you'd like.  These properties will become part of the repository configuration and you
-                can utilize that however you'd like.
-            </p>
-            <div gadget="codesnippet" snippetId="create2"></div>
-            <p>
-                Here is an example where we create a repository and then immediately display a property and then update it.
-            </p>
-            <div gadget="codesnippet" snippetId="create3"></div>
-
-
-
-            <!-- UPDATE -->
-
-            <h2 id="update">Update a Repository</h2>
-            <p>
-                To update a repository, you just adjust its properties and then tell the server to update.
-            </p>
-            <div gadget="codesnippet" snippetId="update1"></div>
-            <p>
-                Here is an example that creates a repository and then immediately updates it.
-            </p>
-            <div gadget="codesnippet" snippetId="update2"></div>
+    <p>
+        Or you can pass in configuration which will be applied to the repository.  You can pass in
+        any properties you'd like.  These properties will become part of the repository configuration and you
+        can utilize that however you'd like.
+    </p>
+    <div gadget="codesnippet" snippetId="create2"></div>
+    <p>
+        Here is an example where we create a repository and then immediately display a property and then update it.
+    </p>
+    <div gadget="codesnippet" snippetId="create3"></div>
 
 
 
-            <!-- DELETE -->
+    <!-- UPDATE -->
 
-            <h2 id="delete">Delete a Repository</h2>
-            <p>
-                Once you delete a repository, it's gone for good.
-                If you're not sure whether you'll need it again in the future, you might want to archive it first.
-                <br/>
-                <br/>
-                Here is an example of a simple delete.
-            </p>
-            <div gadget="codesnippet" snippetId="delete1"></div>
-            <p>
-                And here is an example where we create, update and then delete.
-            </p>
-            <div gadget="codesnippet" snippetId="delete2"></div>
+    <h2 id="update">Update a Repository</h2>
+    <p>
+        To update a repository, you just adjust its properties and then tell the server to update.
+    </p>
+    <div gadget="codesnippet" snippetId="update1"></div>
+    <p>
+        Here is an example that creates a repository and then immediately updates it.
+    </p>
+    <div gadget="codesnippet" snippetId="update2"></div>
 
 
 
+    <!-- DELETE -->
 
-            <!-- READ -->
-
-            <h2 id="read">Read a Repository</h2>
-            <p>
-                Reading a repository is really quite simple provided that you know what you're looking for.
-                You retrieve repositories by their ID - the <code>_doc</code> field.
-            </p>
-            <div gadget="codesnippet" snippetId="read1"></div>
-            <p>
-                Granted, in many cases you won't know the repository ID off-hand.  You'll likely need to look up the
-                repository ID ahead of time by some other means.  Read further on this page for examples of how you
-                can do this.
-            </p>
-
-
-
-            <!-- LIST -->
-
-            <h2 id="list">List Repositories</h2>
-            <p>
-                You can retrieve a list of repositories for your platform quite easily.
-                The following code hands back the full list.
-            </p>
-            <div gadget="codesnippet" snippetId="list1"></div>
-            <p>
-                You can then iterate over the list to pick at what you'd like.
-            </p>
-            <div gadget="codesnippet" snippetId="list2"></div>
-            <p>
-                Retrieving the full list is potentially an expensive operation, depending how many repositories you have.
-                The more your retrieve, the more data goes over the wire and so forth.  Thus, you might wish to
-                <i>paginate</i> your call and retrieve a subset of the total list at a time.
-                <br/>
-                <br/>
-                Here is an example that retrieves in pages of size 10.
-                It starts on the second page (by skipping to starting index 20).
-                It also sorts by the <code>title</code> field in a descending sequence.
-            </p>
-            <div gadget="codesnippet" snippetId="list3"></div>
-            <p>
-                You don't have to have all of the pagination parameters (<code>limit</code>, <code>skip</code> and <code>sorting</code>).
-                You might only want to include one or two.  It's up to you.
-            </p>
+    <h2 id="delete">Delete a Repository</h2>
+    <p>
+        Once you delete a repository, it's gone for good.
+        If you're not sure whether you'll need it again in the future, you might want to archive it first.
+        <br/>
+        <br/>
+        Here is an example of a simple delete.
+    </p>
+    <div gadget="codesnippet" snippetId="delete1"></div>
+    <p>
+        And here is an example where we create, update and then delete.
+    </p>
+    <div gadget="codesnippet" snippetId="delete2"></div>
 
 
 
-            <!-- QUERY -->
 
-            <h2 id="query">Query Repositories</h2>
-            <p>
-                You can run custom queries against your repositories to find exactly what you're looking for.
-                Here is a query that looks for repositories whose field <code>country</code> is <code>"USA"</code>.
-            </p>
-            <div gadget="codesnippet" snippetId="query1"></div>
-            <p>
-                Here is that same query followed by an iteration over the result map.
-            </p>
-            <div gadget="codesnippet" snippetId="query2"></div>
-            <p>
-                Cloud CMS utilizes the MongoDB query syntax under the hood.  As such, you can really go to town.
-                You're able to express queries with some pretty rich complexity.
-                <br/>
-                <br/>
-                Here is a query that finds all repositories created after July 4, 2012.
-            </p>
-            <div gadget="codesnippet" snippetId="query3"></div>
-            <p>
-                Finally, you can mix queries with pagination to reduce data over the wire and speed up performance.
-                Here is that same query with some pagination thrown in.  We limit to pages of size 10 and sort by <code>title</code>.
-            </p>
-            <div gadget="codesnippet" snippetId="query4"></div>
+    <!-- READ -->
 
-        </div>
-    </div>
+    <h2 id="read">Read a Repository</h2>
+    <p>
+        Reading a repository is really quite simple provided that you know what you're looking for.
+        You retrieve repositories by their ID - the <code>_doc</code> field.
+    </p>
+    <div gadget="codesnippet" snippetId="read1"></div>
+    <p>
+        Granted, in many cases you won't know the repository ID off-hand.  You'll likely need to look up the
+        repository ID ahead of time by some other means.  Read further on this page for examples of how you
+        can do this.
+    </p>
+
+
+
+    <!-- LIST -->
+
+    <h2 id="list">List Repositories</h2>
+    <p>
+        You can retrieve a list of repositories for your platform quite easily.
+        The following code hands back the full list.
+    </p>
+    <div gadget="codesnippet" snippetId="list1"></div>
+    <p>
+        You can then iterate over the list to pick at what you'd like.
+    </p>
+    <div gadget="codesnippet" snippetId="list2"></div>
+    <p>
+        Retrieving the full list is potentially an expensive operation, depending how many repositories you have.
+        The more your retrieve, the more data goes over the wire and so forth.  Thus, you might wish to
+        <i>paginate</i> your call and retrieve a subset of the total list at a time.
+        <br/>
+        <br/>
+        Here is an example that retrieves in pages of size 10.
+        It starts on the second page (by skipping to starting index 20).
+        It also sorts by the <code>title</code> field in a descending sequence.
+    </p>
+    <div gadget="codesnippet" snippetId="list3"></div>
+    <p>
+        You don't have to have all of the pagination parameters (<code>limit</code>, <code>skip</code> and <code>sorting</code>).
+        You might only want to include one or two.  It's up to you.
+    </p>
+
+
+
+    <!-- QUERY -->
+
+    <h2 id="query">Query Repositories</h2>
+    <p>
+        You can run custom queries against your repositories to find exactly what you're looking for.
+        Here is a query that looks for repositories whose field <code>country</code> is <code>"USA"</code>.
+    </p>
+    <div gadget="codesnippet" snippetId="query1"></div>
+    <p>
+        Here is that same query followed by an iteration over the result map.
+    </p>
+    <div gadget="codesnippet" snippetId="query2"></div>
+    <p>
+        Cloud CMS utilizes the MongoDB query syntax under the hood.  As such, you can really go to town.
+        You're able to express queries with some pretty rich complexity.
+        <br/>
+        <br/>
+        Here is a query that finds all repositories created after July 4, 2012.
+    </p>
+    <div gadget="codesnippet" snippetId="query3"></div>
+    <p>
+        Finally, you can mix queries with pagination to reduce data over the wire and speed up performance.
+        Here is that same query with some pagination thrown in.  We limit to pages of size 10 and sort by <code>title</code>.
+    </p>
+    <div gadget="codesnippet" snippetId="query4"></div>
+
 </script>

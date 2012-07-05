@@ -19,3 +19,12 @@ body {
 footer p {
     text-align: center;
 }
+
+h1 {
+    padding-bottom: 10px;
+}
+
+h2 {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}

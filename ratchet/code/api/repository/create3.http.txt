@@ -1,0 +1,14 @@
+POST /repositories
+{
+  "title": "My first repository",
+  "country": "USA"
+}
+
+-> { "ok": true, "_doc": "abcdef" }
+
+GET /repositories/abcdef
+{
+  "_doc": "abcdef",
+  "title": "My first repository",
+  "country": "USA"
+}
