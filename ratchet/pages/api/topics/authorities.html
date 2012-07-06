@@ -1,7 +1,306 @@
 <script id="pageTemplate" type="text/x-jquery-tmpl">
     <h1>Authorities</h1>
     <p>
-        Coming Soon...
+        Every data store and object in Cloud CMS maintains access control lists so that you can finely describe the
+        rights of any principal in the system against it.  This lets you finely tune the rights of individual users
+        against data stores and objects down to a single permission.
+        <br/>
+        <br/>
+        This access control is authority-based which means that it's applied by granting authorities (or roles) that
+        a principal has over an object.
+        <br/>
+        <br/>
+        Let's buckle down on the terminology for a moment:
     </p>
+    <ul>
+        <li>
+            A <b>Permissioned</b> entity is a data store or object that the permissions service knows how to work with.
+            As noted, this includes absolutely everything within Cloud CMS.
+        </li>
+        <li>
+            A <b>Principal</b> is the user or person acting upon a Permissioned.
+        </li>
+        <li>
+            A <b>Permission</b> is a capability that you can grant to a principal.
+        </li>
+        <li>
+            An <b>Authority</b> is a Role that packages together multiple permissions.  When you grant a principal an
+            authority over an object or data store, all of the permissions of that authority are in turn granted.
+        </li>
+    </ul>
+    <p>
+        Let's take a look at the list of permissions:
+    </p>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Authority</th>
+            <th>Permissions</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>connector</td>
+            <td>CONNECT</td>
+            <td>Someone who is able to connect to the object or data store.</td>
+        </tr>
+        <tr>
+            <td>consumer</td>
+            <td>
+                CONNECT
+                <br/>
+                READ
+            </td>
+            <td>Someone who is able to connect to the object or data store.</td>
+        </tr>
+        <tr>
+            <td>contributor</td>
+            <td>
+                CONNECT
+                <br/>
+                READ
+                <br/>
+                CREATE_SUBOBJECTS
+            </td>
+            <td>Someone who is able to connect to the object or data store.</td>
+        </tr>
+        <tr>
+            <td>editor</td>
+            <td>
+                CONNECT
+                <br/>
+                READ
+                <br/>
+                UPDATE
+                <br/>
+                DELETE
+            </td>
+            <td>Someone who is able to connect to the object or data store.</td>
+        </tr>
+        <tr>
+            <td>collaborator</td>
+            <td>
+                CONNECT
+                <br/>
+                READ
+                <br/>
+                CREATE_SUBOBJECTS
+                <br/>
+                UPDATE
+                <br/>
+                DELETE
+            </td>
+            <td>Someone who is able to connect to the object or data store.</td>
+        </tr>
+        <tr>
+            <td>manager</td>
+            <td>
+                CONNECT
+                <br/>
+                READ
+                <br/>
+                CREATE_SUBOBJECTS
+                <br/>
+                UPDATE
+                <br/>
+                DELETE
+                <br/>
+                MODIFY_PERMISSIONS
+                <br/>
+                MODIFY_CREDENTIALS
+            </td>
+            <td>Someone who is able to connect to the object or data store.</td>
+        </tr>
+        <tr>
+            <td>owner</td>
+            <td>* (all permissions)</td>
+            <td>Someone who is able to connect to the object or data store.</td>
+        </tr>
+    </table>
+
+    <h2>Group Inheritance of Authorities</h2>
+    <p>
+        Cloud CMS supports group-based inheritance of authorities.
+        <br/>
+        <br/>
+        If you grant an authority to a Domain Group, all principal members of that Domain Group will also be
+        granted that authority.  This is the concept of "group inheritance".  It makes it so that you don't have to
+        go to every single member of the group, one by one, and grant the authority.
+        <br/>
+        <br/>
+        This is just one of the many benefits of groups.
+        <br/>
+        <br/>
+        A good way to think about this is to imagine a sales team with, say, five people on it.  You might create a
+        group called "Sales" and then add all five sales people as members of the team.  You might also have a folder
+        called "Sales Documents" which you want only the sales people to be able to collaborate upon.
+        <br/>
+        <br/>
+        Simple.  All you have to do is grant the "Sales" group the "collaborator" authority to the folder.  By the
+        magic of group inheritance, all of the sales people on the "Sales" team will also be collaborators.
+    </p>
+
+    <h2>Container-based Propagation of Authorities</h2>
+    <p>
+        Cloud CMS supports container-based propagation of authorities.
+        <br/>
+        <br/>
+        This applies most directly in the case of Repositories.  Within a Repository, you can create folders.  Folders
+        are a like folders on your desktop.  They are directories inside of which you put your content.
+        <br/>
+        <br/>
+        If you grant a user the "collaborator" authority over a folder, he'll automatically receive "collaborator"
+        authorities over the things contained inside that folder.  This is because folders are "containers".  Cloud CMS
+        automatically propagates the rights of the user over the container as rights over the children.
+        <br/>
+        <br/>
+        Getting more into the details, what actually happens is that folders have associations
+        of type <code>a:child</code> with their contained nodes.  This association type has a feature on it called
+        <code>f:propagates-authority</code> which indicates that this association should bestow its granted authorities
+        to the target of the association.
+        <br/>
+        <br/>
+        You can disable this propagation by disabling the feature on the node.  Or, you can model your own association
+        types and take advantage of propagation as you see fit.
+        <br/>
+        <br/>
+        The folder scenario provided above works out-of-the-box but you're free to model content as you require.
+    </p>
+
+    <h2>Some Terminology</h2>
+    <p>
+        It's worth taking a moment to point out some terminology with respect to group inheritance and container-based
+        propagation.
+    </p>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Terminology</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>direct</td>
+            <td>Describes a grant that was made directly to a Permissioned.</td>
+        </tr>
+        <tr>
+            <td>indirect</td>
+            <td>
+                Describes a grant that was understood to be made against a Permissioned as a result of group-based inheritance.
+            </td>
+        </tr>
+        <tr>
+            <td>inherited</td>
+            <td>
+                Describes a grant that is direct but which was created as a result of container-based propagation.
+                <br/>
+                Inherited grants cannot be revoked directly.  They can only be revoked by revoking the original grant.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <p>
+        Indirect and inherited authority grants will appear as you interrogate the access control set up of objects.
+        They are flagged accordingly.  Inherited grants contain references to their origination (i.e. the location of the original direct grant).
+    </p>
+
+    <h2>List Authorities</h2>
+    <p>
+        You can request a list <b>direct</b> authorities that a given principal has against an object or data store.
+    </p>
+    <div gadget="codesnippet" snippetId="list1"></div>
+
+
+    <h2>Check Authority</h2>
+    <p>
+        You can check whether a principal has been granted a given authority over a data store or an object by
+        making a simple call over to the server to ask.
+        <br/>
+        <br/>
+        This method checks both the <b>direct</b> and <b>indirect</b> authorities.  It is a fully evaluative check and
+        is intended to answer the runtime question as to whether a user has a given authority.
+        <br/>
+        <br/>
+        It does not answer the question of whether the user was directly granted the authority over the data store or
+        object.
+        <br/>
+        <br/>
+        Here is an example that checks whether a user has the "consumer" role over a domain.
+    </p>
+    <div gadget="codesnippet" snippetId="check1"></div>
+
+    <h2>Grant Authority</h2>
+    <p>
+        You can grant a <b>direct</b> authority to other principals over a data store or object.
+    </p>
+    <div gadget="codesnippet" snippetId="grant1"></div>
+    <p>
+        Bear in mind that you can only do this if you are authenticated to Cloud CMS as a user who has the
+        <code>MODIFY_PERMISSIONS</code> permission against the data store or object.
+    </p>
+
+    <h2>Revoke Authority</h2>
+    <p>
+        You can revoke a <b>direct</b> authority from other principals over a data store or object.
+    </p>
+    <div gadget="codesnippet" snippetId="revoke1"></div>
+    <p>
+        Bear in mind that you can only do this if you are authenticated to Cloud CMS as a user who has the
+        <code>MODIFY_PERMISSIONS</code> permission against the data store or object.
+    </p>
+
+    <h2>Revoke All Authorities</h2>
+    <p>
+        If you want to completely revoke any <b>direct</b> authorities that a user might have been granted to
+        an object, there is a shortcut method you can use.
+    </p>
+    <div gadget="codesnippet" snippetId="revokeAll1"></div>
+    <p>
+        Bear in mind that you can only do this if you are authenticated to Cloud CMS as a user who has the
+        <code>MODIFY_PERMISSIONS</code> permission against the data store or object.
+        <br/>
+        <br/>
+        In addition, one must consider that a user might receive the granted authority in multiple ways.  They might
+        have been granted it directly.  But they may also belong to a group that has been granted it.  In this case,
+        if you revoke the direct authority, the user will still have the grant since they get it from the group.
+    </p>
+
+    <h2>Access Control List</h2>
+    <p>
+        At various times you may want to consult the full access control list (ACL) for a data store or an object.
+        The access control list shows exactly which principals have been <b>directly</b> granted which authorities.
+        <br/>
+        <br/>
+        It's worth repeating.  This only shows <b>direct</b> grants.  If you want a fully evaluative list of
+        authority grants, see the section below on Authority Grants.
+        <br/>
+        <br/>
+        Here is an example that retrieves the access control list for a node in the master branch of a repository.
+        It then prints out the ACL to console.
+    </p>
+    <div gadget="codesnippet" snippetId="acl1"></div>
+
+    <h2>Full Authority Grants</h2>
+    <p>
+        In many applications, when rendering a page, you need to make a front-end decision about what rights one
+        or more users has to elements being rendered.  A good example of this is when you need to figure out what
+        state to render buttons (i.e. active, disabled, hidden).
+        <br/>
+        <br/>
+        Cloud CMS lets you bulk all of these checks into a single "authority grant" request.  You pass in the
+        users that you're interested in and Cloud CMS hands back a list of every authority granted for those users.
+        <br/>
+        <br/>
+        This method also provides a fully evaluative list of all authorities for the set of users.  This includes
+        <b>direct</b> and <b>indirect</b> authority grants.  And, as you would expect, among the <b>direct</b>
+        authority grants are any inherited grants from container-based propagation.
+        <br/>
+        <br/>
+        Here is an example that displays the list of fully evaluative authority grants for a repository.
+    </p>
+    <div gadget="codesnippet" snippetId="full1"></div>
+
 
 </script>

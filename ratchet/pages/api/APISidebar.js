@@ -314,24 +314,10 @@
 
 
 
-
-
-
-
                 {
-                    "id" : "header-services",
-                    "title" : "Services",
+                    "id" : "header-all",
+                    "title" : "All",
                     "header" : true
-                },
-                {
-                    "id" : "sidebar-teams",
-                    "topic" : "teams",
-                    "title" : "Teams"
-                },
-                {
-                    "id" : "sidebar-authorities",
-                    "topic" : "authorities",
-                    "title" : "Authorities"
                 },
                 {
                     "id" : "sidebar-permissions",
@@ -339,19 +325,51 @@
                     "title" : "Permissions"
                 },
                 {
+                    "id" : "sidebar-authorities",
+                    "topic" : "authorities",
+                    "title" : "Authorities"
+                },
+                {
                     "id" : "sidebar-transfer",
                     "topic" : "transfer",
                     "title" : "Transfer"
                 },
+
+
+
+
                 {
-                    "id" : "sidebar-attachments",
-                    "topic" : "attachments",
-                    "title" : "Attachments"
+                    "id" : "header-teamables",
+                    "title" : "Teamables",
+                    "header" : true
+                },
+                {
+                    "id" : "sidebar-teams",
+                    "topic" : "teams",
+                    "title" : "Teams"
+                },
+
+                {
+                    "id" : "header-datastores",
+                    "title" : "Data Stores",
+                    "header" : true
                 },
                 {
                     "id" : "sidebar-binaries",
                     "topic" : "binaries",
                     "title" : "Binaries"
+                },
+
+
+                {
+                    "id" : "header-attachables",
+                    "title" : "Attachables",
+                    "header" : true
+                },
+                {
+                    "id" : "sidebar-attachments",
+                    "topic" : "attachments",
+                    "title" : "Attachments"
                 },
 
 

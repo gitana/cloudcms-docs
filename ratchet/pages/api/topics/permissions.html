@@ -1,7 +1,163 @@
 <script id="pageTemplate" type="text/x-jquery-tmpl">
     <h1>Permissions</h1>
     <p>
-        Coming Soon...
+        Every data store and object in Cloud CMS maintains access control lists so that you can finely describe the
+        rights of any principal in the system against it.  This lets you finely tune the rights of individual users
+        against data stores and objects down to a single permission.
+        <br/>
+        <br/>
+        This access control is authority-based which means that it's applied by granting authorities (or roles) that
+        a principal has over an object.
+        <br/>
+        <br/>
+        Let's buckle down on the terminology for a moment:
     </p>
+    <ul>
+        <li>
+            A <b>Permissioned</b> entity is a data store or object that the permissions service knows how to work with.
+            As noted, this includes absolutely everything within Cloud CMS.
+        </li>
+        <li>
+            A <b>Principal</b> is the user or person acting upon a Permissioned.
+        </li>
+        <li>
+            A <b>Permission</b> is a capability that you can grant to a principal.
+        </li>
+        <li>
+            An <b>Authority</b> is a Role that packages together multiple permissions.  When you grant a principal an
+            authority over an object or data store, all of the permissions of that authority are in turn granted.
+        </li>
+    </ul>
+    <p>
+        Let's take a look at the list of permissions:
+    </p>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Permission</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>CONNECT</td>
+            <td>The principal can connect to a Permissioned.  This permission supercedes all others.  If not granted, the principal is not aware of the Permissioned and can perform no operations against it.</td>
+        </tr>
+        <tr>
+            <td>READ</td>
+            <td>The principal can read the Permissioned.</td>
+        </tr>
+        <tr>
+            <td>CREATE_SUBOBJECTS</td>
+            <td>The principal can create objects that are contained within the Permissioned.</td>
+        </tr>
+        <tr>
+            <td>UPDATE</td>
+            <td>The principal can update the Permissioned.</td>
+        </tr>
+        <tr>
+            <td>DELETE</td>
+            <td>The principal can delete the Permissioned</td>
+        </tr>
+        <tr>
+            <td>MODIFY_PERMISSIONS</td>
+            <td>The principal can assign, revoke and modify permissions against the Permissioned.</td>
+        </tr>
+        <tr>
+            <td>GRANTAUTH</td>
+            <td>The principal can assign impersonating around another principal.  This is solely used for Authentication Grants as a means of describing who can create new grants for a principal.</td>
+        </tr>
+        <tr>
+            <td>MODIFY_CREDENTIALS</td>
+            <td>The principal can modify the credentials for another principal.  This is solely used to describe rights against Identities.</td>
+        </tr>
+    </table>
+    <p>
+        For Nodes, the following additional permissions are available:
+    </p>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Permission</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>CREATE_WITH_DEFINITION</td>
+            <td>
+                The principal can create objects of the given type.
+                <br/>
+                This is solely used for Node Definitions (type, feature or association).
+            </td>
+        </tr>
+        <tr>
+            <td>READ_WITH_DEFINITION</td>
+            <td>
+                The principal can read objects of the given type.
+                <br/>
+                This is solely used for Node Definitions (type, feature or association).
+            </td>
+        </tr>
+        <tr>
+            <td>UPDATE_WITH_DEFINITION</td>
+            <td>
+                The principal can update objects of the given type.
+                <br/>
+                This is solely used for Node Definitions (type, feature or association).
+            </td>
+        </tr>
+        <tr>
+            <td>DELETE_WITH_DEFINITION</td>
+            <td>
+                The principal can delete objects of the given type.
+                <br/>
+                This is solely used for Node Definitions (type, feature or association).
+            </td>
+        </tr>
+        <tr>
+            <td>MODIFY_PERMISSIONS_WITH_DEFINITION</td>
+            <td>
+                The principal can modify permissions for objects of the given type.
+                <br/>
+                This is solely used for Node Definitions (type, feature or association).
+            </td>
+        </tr>
+    </table>
+
+    <h2>Assign Permission</h2>
+    <p>
+        Cloud CMS does not let you assign individual permissions to data stores or objects.  Instead, permissions
+        are collected together into Roles/Authorities.  When a principal is granted a Role over a data store or
+        object, they are granted all of the roles' permissions.
+        <br/>
+        <br/>
+        See the section on Authorities for information on working with role-based security.
+    </p>
+
+
+    <h2>Check Permission</h2>
+    <p>
+        We can check whether a principal has a given permission over a datastore or object by making a simple
+        call over to the server to ask.
+    </p>
+    <div gadget="codesnippet" snippetId="check1"></div>
+    <p>
+        Bear in mind that this approach makes a call over to Cloud CMS to check the permission.  Thus, it's fairly
+        expensive to do.  Fortunately, Cloud CMS permission checks everything for you, before it allows the caller
+        to interact with data stores or objects.  Thus, most of the checks that you'd probably find yourself wanting
+        to perform happen automatically on the server side.
+    </p>
+
+    <h2>Bulk Permission Checks</h2>
+    <p>
+        In the case shown above, we checked a single permission against a data store.  Well, what if wanted to check
+        a whole bunch of permissions?  Rather than make lots of HTTP calls, we can send them all over the wire at once
+        and have the bulk check and come back in one fell swoop.
+        <br/>
+        <br/>
+        This works much faster than going one-at-a-time.
+    </p>
+    <div gadget="codesnippet" snippetId="bulkcheck1"></div>
 
 </script>
