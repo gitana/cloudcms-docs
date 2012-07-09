@@ -1,7 +1,182 @@
 <script id="pageTemplate" type="text/x-jquery-tmpl">
+
     <h1>Web Host</h1>
+
+    <table class="table table-bordered table-striped">
+        <tbody>
+        <tr>
+            <td>Type</td>
+            <td>Data Store</td>
+        </tr>
+        <tr>
+            <td>Key</td>
+            <td><code>webhost</code></td>
+        </tr>
+        <tr>
+            <td>Supports</td>
+            <td>
+                <a href="#/api/teams/${language}">Teams</a>,
+                <a href="#/api/authorities/${language}">Authorities</a>,
+                <a href="#/api/permissions/${language}">Permissions</a>,
+                <a href="#/api/binaries/${language}">Binaries</a>,
+                <a href="#/api/transfer/${language}">Transfer</a>
+            </td>
+        </tr>
+    </table>
+
     <p>
-        Coming Soon...
+        A web host is a data store where you store tenants and plans.
     </p>
+
+
+    <!-- CONFIGURATION -->
+    <h2>Configuration</h2>
+    <p>
+        As with all data stores, web hosts maintain a configuration document that contains system
+        and custom properties.  You can write your own properties onto this configuration document if you wish.
+        You might use those properties to query and retrieve the web host at a later time.
+        <br/>
+        <br/>
+        Some system properties are read-only and others are writable.  You can adjust the writable properties
+        to modify the behavior and characteristics of the web host.
+        <br/>
+        <br/>
+        The following table presents you the system properties.
+    </p>
+    <h4>Data Store Properties</h4>
+    <div gadget="include" page="pages/api/topics/shared/datastore-config-table"></div>
+    <p>
+        Any system properties that are shown to be Read-Only are not modifiable on calls to <code>create()</code> or <code>update()</code>.
+        Anything else is fair game.
+    </p>
+
+
+
+
+    <!-- CREATE -->
+
+    <h2 id="create">Create a Web Host</h2>
+    <p>
+        You can create an empty web host like this:
+    </p>
+    <div gadget="codesnippet" snippetId="create1"></div>
+
+    <p>
+        Or you can pass in configuration which will be applied to the web host.  You can pass in
+        any properties you'd like.  These properties will become part of the web host configuration and you
+        can utilize that however you'd like.
+    </p>
+    <div gadget="codesnippet" snippetId="create2"></div>
+    <p>
+        Here is an example where we create a web host and then immediately display a property and then update it.
+    </p>
+    <div gadget="codesnippet" snippetId="create3"></div>
+
+
+
+    <!-- UPDATE -->
+
+    <h2 id="update">Update a Web Host</h2>
+    <p>
+        To update a web host, you just adjust its properties and then tell the server to update.
+    </p>
+    <div gadget="codesnippet" snippetId="update1"></div>
+    <p>
+        Here is an example that creates a web host and then immediately updates it.
+    </p>
+    <div gadget="codesnippet" snippetId="update2"></div>
+
+
+
+    <!-- DELETE -->
+
+    <h2 id="delete">Delete a Web Host</h2>
+    <p>
+        Once you delete a web host, it's gone for good.
+        If you're not sure whether you'll need it again in the future, you might want to archive it first.
+        <br/>
+        <br/>
+        Here is an example of a simple delete.
+    </p>
+    <div gadget="codesnippet" snippetId="delete1"></div>
+    <p>
+        And here is an example where we create, update and then delete.
+    </p>
+    <div gadget="codesnippet" snippetId="delete2"></div>
+
+
+
+
+    <!-- READ -->
+
+    <h2 id="read">Read a Web Host</h2>
+    <p>
+        Reading a web host is really quite simple provided that you know what you're looking for.
+        You retrieve web hosts by their ID - the <code>_doc</code> field.
+    </p>
+    <div gadget="codesnippet" snippetId="read1"></div>
+    <p>
+        Granted, in many cases you won't know the web host ID off-hand.  You'll likely need to look up the
+        web host ID ahead of time by some other means.  Read further on this page for examples of how you
+        can do this.
+    </p>
+
+
+
+    <!-- LIST -->
+
+    <h2 id="list">List Web Hosts</h2>
+    <p>
+        You can retrieve a list of web hosts for your platform quite easily.
+        The following code hands back the full list.
+    </p>
+    <div gadget="codesnippet" snippetId="list1"></div>
+    <p>
+        You can then iterate over the list to pick at what you'd like.
+    </p>
+    <div gadget="codesnippet" snippetId="list2"></div>
+    <p>
+        Retrieving the full list is potentially an expensive operation, depending how many web hosts you have.
+        The more your retrieve, the more data goes over the wire and so forth.  Thus, you might wish to
+        <i>paginate</i> your call and retrieve a subset of the total list at a time.
+        <br/>
+        <br/>
+        Here is an example that retrieves in pages of size 10.
+        It starts on the second page (by skipping to starting index 20).
+        It also sorts by the <code>title</code> field in a descending sequence.
+    </p>
+    <div gadget="codesnippet" snippetId="list3"></div>
+    <p>
+        You don't have to have all of the pagination parameters (<code>limit</code>, <code>skip</code> and <code>sorting</code>).
+        You might only want to include one or two.  It's up to you.
+    </p>
+
+
+
+    <!-- QUERY -->
+
+    <h2 id="query">Query Web Hosts</h2>
+    <p>
+        You can run custom queries against your web hosts to find exactly what you're looking for.
+        Here is a query that looks for web hosts whose field <code>country</code> is <code>"USA"</code>.
+    </p>
+    <div gadget="codesnippet" snippetId="query1"></div>
+    <p>
+        Here is that same query followed by an iteration over the result map.
+    </p>
+    <div gadget="codesnippet" snippetId="query2"></div>
+    <p>
+        Cloud CMS utilizes the MongoDB query syntax under the hood.  As such, you can really go to town.
+        You're able to express queries with some pretty rich complexity.
+        <br/>
+        <br/>
+        Here is a query that finds all web hosts created after July 4, 2012.
+    </p>
+    <div gadget="codesnippet" snippetId="query3"></div>
+    <p>
+        Finally, you can mix queries with pagination to reduce data over the wire and speed up performance.
+        Here is that same query with some pagination thrown in.  We limit to pages of size 10 and sort by <code>title</code>.
+    </p>
+    <div gadget="codesnippet" snippetId="query4"></div>
 
 </script>

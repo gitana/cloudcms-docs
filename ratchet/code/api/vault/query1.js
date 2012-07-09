@@ -1,0 +1,3 @@
+platform.queryVaults({
+    "country": "USA"
+});

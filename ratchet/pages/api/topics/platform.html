@@ -1,5 +1,29 @@
 <script id="pageTemplate" type="text/x-jquery-tmpl">
+
     <h1>Platform</h1>
+
+    <table class="table table-bordered table-striped">
+        <tbody>
+        <tr>
+            <td>Type</td>
+            <td>Data Store</td>
+        </tr>
+        <tr>
+            <td>Key</td>
+            <td><code>platform</code></td>
+        </tr>
+        <tr>
+            <td>Supports</td>
+            <td>
+                <a href="#/api/teams/${language}">Teams</a>,
+                <a href="#/api/authorities/${language}">Authorities</a>,
+                <a href="#/api/permissions/${language}">Permissions</a>,
+                <a href="#/api/binaries/${language}">Binaries</a>,
+                <a href="#/api/transfer/${language}">Transfer</a>
+            </td>
+        </tr>
+    </table>
+
     <p>
         When you authenticate to Cloud CMS, you are given access to your platform.  You can only authenticate to one
         platform at a time.  This is because clients are scoped to a single platform.  When you authenticate using
@@ -9,5 +33,96 @@
         Your platform provides access to all of the underlying data stores and platform-scoped objects.  You can
         also store data on your platform data store itself, if you wish.
     </p>
+
+    <h2>Platform Data Stores</h2>
+    <p>
+        You can create as many data stores as part of your platform as you wish.
+        <br/>
+        <br/>
+        There are 8 data store types:
+    </p>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Data Store</th>
+            <th>Key</th>
+            <th>What is stored within</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Application</td>
+            <td><code>application</code></td>
+            <td>
+                <a href="#/api/registration/${language}">Registration</a>
+                <br/>
+                <a href="#/api/email/${language}">Email</a>
+                <br/>
+                <a href="#/api/settings/${language}">Settings</a>
+            </td>
+        </tr>
+        <tr>
+            <td>Directory</td>
+            <td><code>directory</code></td>
+            <td>
+                <a href="#/api/identity/${language}">Identity</a>
+                <br/>
+                <a href="#/api/socialconnection/${language}">Social Connection</a>
+            </td>
+        </tr>
+        <tr>
+            <td>Domain</td>
+            <td><code>domain</code></td>
+            <td>
+                <a href="#/api/domainuser/${language}">Domain User</a>
+                <br/>
+                <a href="#/api/domaingroup/${language}">Domain Group</a>
+            </td>
+        </tr>
+        <tr>
+            <td>Registrar</td>
+            <td><code>registrar</code></td>
+            <td>
+                <a href="#/api/plan/${language}">Plan</a>
+                <br/>
+                <a href="#/api/tenant/${language}">Tenant</a>
+            </td>
+        </tr>
+        <tr>
+            <td>Repository</td>
+            <td><code>repository</code></td>
+            <td>
+                <a href="#/api/branch/${language}">Branch</a>
+                <br/>
+                <a href="#/api/changeset/${language}">Changeset</a>
+                <br/>
+                <a href="#/api/node/${language}">Node</a>
+                <br/>
+            </td>
+        </tr>
+        <tr>
+            <td>Vault</td>
+            <td><code>vault</code></td>
+            <td>
+                <a href="#/api/archive/${language}">Archive</a>
+            </td>
+        </tr>
+        <tr>
+            <td>Warehouse</td>
+            <td><code>warehouse</code></td>
+            <td>
+                <a href="#/api/interaction/${language}">Interaction</a>
+            </td>
+        </tr>
+        <tr>
+            <td>Web Host</td>
+            <td><code>webhost</code></td>
+            <td>
+                <a href="#/api/autoclientmapping/${language}">Auto Client Mapping</a>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
 
 </script>

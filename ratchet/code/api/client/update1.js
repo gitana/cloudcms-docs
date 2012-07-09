@@ -1,0 +1,15 @@
+// assume we have a domain user
+var user = ...;
+
+// assume we have a client
+var client = ...;
+
+platform.createAuthenticationGrant({
+    "domainPrincipalId": user.getDomainId(),
+    "principalId": user.getId(),
+    "clientId": client.getId()
+}).update({
+    "title": "iPad Application"
+}).then(function() {
+    console.log("The title of this auth grant is: " + this.getTitle());
+});

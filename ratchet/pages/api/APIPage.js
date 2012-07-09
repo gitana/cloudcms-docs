@@ -41,6 +41,13 @@
                 */
             },
 
+            index: function(el)
+            {
+                el.model["language"] = el.tokens["language"];
+
+                this.base(el);
+            },
+
             determineTemplate: function(el)
             {
                 return "pages/api/topics/" + el.tokens["topic"];

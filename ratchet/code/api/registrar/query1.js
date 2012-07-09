@@ -1,0 +1,3 @@
+platform.queryRegistrars({
+    "country": "USA"
+});

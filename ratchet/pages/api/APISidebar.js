@@ -48,10 +48,42 @@
                     "title" : "Authentication Grant"
                 },
                 {
+                    "id" : "sidebar-billingproviderconfiguration",
+                    "topic" : "billingproviderconfiguration",
+                    "title" : "Billing Provider Configuration"
+                },
+                {
                     "id" : "sidebar-client",
                     "topic" : "client",
                     "title" : "Client"
                 },
+
+
+
+
+
+                {
+                    "id" : "header-applications",
+                    "title" : "Applications",
+                    "header" : true
+                },
+                {
+                    "id" : "sidebar-registration",
+                    "topic" : "registration",
+                    "title" : "Registration"
+                },
+                {
+                    "id" : "sidebar-email",
+                    "topic" : "email",
+                    "title" : "Email"
+                },
+                {
+                    "id" : "sidebar-settings",
+                    "topic" : "settings",
+                    "title" : "Settings"
+                },
+
+
 
 
 
@@ -157,88 +189,12 @@
                 {
                     "id" : "sidebar-node",
                     "topic" : "node",
-                    "title" : "Node",
-                    "items" : [
-                        {
-                            "id" : "sidebar-node-read",
-                            "topic" : "node",
-                            "section": "read",
-                            "title" : "Read"
-                        },
-                        {
-                            "id" : "sidebar-node-list",
-                            "topic" : "node",
-                            "section": "list",
-                            "title" : "List"
-                        },
-                        {
-                            "id" : "sidebar-node-query",
-                            "topic" : "node",
-                            "section": "query",
-                            "title" : "Query"
-                        },
-                        {
-                            "id" : "sidebar-node-create",
-                            "topic" : "node",
-                            "section": "create",
-                            "title" : "Create"
-                        },
-                        {
-                            "id" : "sidebar-node-update",
-                            "topic" : "node",
-                            "section": "update",
-                            "title" : "Update"
-                        },
-                        {
-                            "id" : "sidebar-node-delete",
-                            "topic" : "node",
-                            "section": "delete",
-                            "title" : "Delete"
-                        }
-                    ]
+                    "title" : "Node"
                 },
                 {
                     "id" : "sidebar-association",
                     "topic" : "association",
-                    "title" : "Association",
-                    "items" : [
-                        {
-                            "id" : "sidebar-association-read",
-                            "topic" : "association",
-                            "section": "read",
-                            "title" : "Read"
-                        },
-                        {
-                            "id" : "sidebar-association-list",
-                            "topic" : "association",
-                            "section": "list",
-                            "title" : "List"
-                        },
-                        {
-                            "id" : "sidebar-association-query",
-                            "topic" : "association",
-                            "section": "query",
-                            "title" : "Query"
-                        },
-                        {
-                            "id" : "sidebar-association-create",
-                            "topic" : "association",
-                            "section": "create",
-                            "title" : "Create"
-                        },
-                        {
-                            "id" : "sidebar-association-update",
-                            "topic" : "association",
-                            "section": "update",
-                            "title" : "Update"
-                        },
-                        {
-                            "id" : "sidebar-association-delete",
-                            "topic" : "association",
-                            "section": "delete",
-                            "title" : "Delete"
-                        }
-                    ]
+                    "title" : "Association"
                 },
 
 
@@ -315,8 +271,8 @@
 
 
                 {
-                    "id" : "header-all",
-                    "title" : "All",
+                    "id" : "header-general",
+                    "title" : "General Services",
                     "header" : true
                 },
                 {
@@ -334,37 +290,15 @@
                     "topic" : "transfer",
                     "title" : "Transfer"
                 },
-
-
-
-
-                {
-                    "id" : "header-teamables",
-                    "title" : "Teamables",
-                    "header" : true
-                },
                 {
                     "id" : "sidebar-teams",
                     "topic" : "teams",
                     "title" : "Teams"
                 },
-
-                {
-                    "id" : "header-datastores",
-                    "title" : "Data Stores",
-                    "header" : true
-                },
                 {
                     "id" : "sidebar-binaries",
                     "topic" : "binaries",
                     "title" : "Binaries"
-                },
-
-
-                {
-                    "id" : "header-attachables",
-                    "title" : "Attachables",
-                    "header" : true
                 },
                 {
                     "id" : "sidebar-attachments",

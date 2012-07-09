@@ -1,0 +1,1 @@
+platform.createRegistrar().update().del();

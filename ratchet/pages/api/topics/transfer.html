@@ -1,7 +1,416 @@
 <script id="pageTemplate" type="text/x-jquery-tmpl">
     <h1>Transfer</h1>
     <p>
-        Coming Soon...
+        Cloud CMS supports transfer (import and export) for all data stores and objects.
+        <br/>
+        <br/>
+        Transfer allows you to export your data into Archives.  An Archive is a ZIP file which contains a
+        manifest file that fully describes the contents of the ZIP.  Archives are automatically stored within
+        Vaults.
+        <br/>
+        <br/>
+        Transfer lets you import existing archives into new data stores.  This lets you quickly restore the state of
+        previous projects or reuse previous projects within new endeavors.
+        <br/>
+        <br/>
+        You can download archives at any time for offline storage and backup.
     </p>
+    <h2>Dependencies</h2>
+    <p>
+        Coming Soon
+    </p>
+    <h2>Publication vs. Replication</h2>
+    <p>
+        Coming Soon
+    </p>
+
+    <h2>Export an Archive</h2>
+    <p>
+        To export an archive, all you need to do is provide the target vault and the archive identification properties.
+        These archive identification properties are <code>groupId</code>, <code>artifactId</code> and <code>versionId</code>.
+        <br/>
+        <br/>
+        Here is an example where we perform a full export of a domain.
+    </p>
+    <div gadget="codesnippet" snippetId="export1"></div>
+    <p>
+        By default, the export runs as a SYNCHRONOUS job.  If you want to run the job in the background, you can do
+        that as well.  Take a look:
+    </p>
+    <div gadget="codesnippet" snippetId="export2"></div>
+    <p>
+        Here is an example of some code that exports synchronously and then grabs the archive from the vault.
+    </p>
+    <div gadget="codesnippet" snippetId="export3"></div>
+
+    <h2>Export Configuration</h2>
+    <p>
+        You can pass in export configuration settings to tweak and control the export process.  The full set of
+        options is provided here:
+    </p>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>startDate</td>
+            <td>timestamp</td>
+            <td></td>
+            <td></td>
+            <td>
+                The starting date for the modification date of any resources to be included.
+            </td>
+        </tr>
+        <tr>
+            <td>endDate</td>
+            <td>timestamp</td>
+            <td></td>
+            <td></td>
+            <td>
+                The ending date for the modification date of any resources to be included.
+            </td>
+        </tr>
+        <tr>
+            <td>startChangeset</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                The starting changeset id to include for any resources to be included.
+                <br/>
+                This property applies only to branches.
+            </td>
+        </tr>
+        <tr>
+            <td>endChangeset</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                The ending date for the modification date of any resources to be included.
+                <br/>
+                This property applies only to branches.
+            </td>
+        </tr>
+        <tr>
+            <td>payload</td>
+            <td>text</td>
+            <td></td>
+            <td>Read-Only</td>
+            <td>
+                Indicates whether the archive is a REPLICATION or a PUBLICATION.
+            </td>
+        </tr>
+        <tr>
+            <td>includeACLs</td>
+            <td>boolean</td>
+            <td>true</td>
+            <td></td>
+            <td>
+                Whether to include ACLs during export.
+            </td>
+        </tr>
+        <tr>
+            <td>includeTeams</td>
+            <td>boolean</td>
+            <td>true</td>
+            <td></td>
+            <td>
+                Whether to include Teams during export.
+            </td>
+        </tr>
+        <tr>
+            <td>includeActivities</td>
+            <td>boolean</td>
+            <td>true</td>
+            <td></td>
+            <td>
+                Whether to include Activities during export.
+            </td>
+        </tr>
+        <tr>
+            <td>includeBinaries</td>
+            <td>boolean</td>
+            <td>true</td>
+            <td></td>
+            <td>
+                Whether to include Binaries for data stores during export.
+            </td>
+        </tr>
+        <tr>
+            <td>includeAttachments</td>
+            <td>boolean</td>
+            <td>true</td>
+            <td></td>
+            <td>
+                Whether to include Attachments for Attachables during export.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    <h2>Export Job</h2>
+    <p>
+        An export produces an export job that either runs on a SYNCHRONOUS or ASYNCHRONOUS schedule.  If it runs
+        synchronously, then the export will complete before control is handed back to your code.  If it runs
+        asynchronously, then you will have wait for the job to complete.  Meanwhile, you're free to do other things.
+        <br/>
+        <br/>
+        The Export Job contains a few properties which are interesting:
+    </p>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>archiveGroup</td>
+            <td>text</td>
+            <td>
+                The group id of the archive.
+            </td>
+        </tr>
+        <tr>
+            <td>archiveArtifact</td>
+            <td>text</td>
+            <td>
+                The artifact id of the archive.
+            </td>
+        </tr>
+        <tr>
+            <td>archiveVersion</td>
+            <td>text</td>
+            <td>
+                The version id of the archive.
+            </td>
+        </tr>
+        <tr>
+            <td>vaultId</td>
+            <td>text</td>
+            <td>
+                The vault id of the archive.
+            </td>
+        </tr>
+        <tr>
+            <td>configuration</td>
+            <td>object</td>
+            <td>
+                The export configuration settings being utilized by the job.
+            </td>
+        </tr>
+        <tr>
+            <td>sources</td>
+            <td>array</td>
+            <td>
+                An array of objects which describe the source data stores or objects being exported.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    <h2>Import an Archive</h2>
+    <p>
+        You can import any archive from any vault that you have access to.  An archive can either be imported into
+        an existing object or it can be imported into a container.
+    </p>
+    <ul>
+        <li>
+            When importing into an existing object, you can specify whether you want to <b>overwrite</b>.
+            If you elect to overwrite, the original object will be destroyed before it is imported again.
+            If you do not overwrite, the new object will be merged with the old.
+        </li>
+        <li>
+            When imported into a container, you can specify whether you want to <b>preserve IDs</b>.
+            If you elect to preserve IDs, the imports will keep their IDs and write into the container.
+            If collisions then occur, the <b>overwrite</b> flag determines whether the colliding objects are
+            overwritten or merged.
+            <br/>
+            <br/>
+            Other the other hand, if you set do not elect to preserve IDs, the imports will take on new IDs and
+            you will essentially create brand new copies.
+        </li>
+    </ul>
+    <p>
+        Here is an example of a simple import:
+    </p>
+    <div gadget="codesnippet" snippetId="import1"></div>
+    <p>
+        By default, the import runs as a SYNCHRONOUS job.  If you want to run the job in the background, you can do
+        that as well.  Let's lay it down:
+    </p>
+    <div gadget="codesnippet" snippetId="import2"></div>
+    <p>
+        Once the job completes, the properties of the job can be used to find out what was imported.
+        Here is an example where we import a domain and then look to the job to tell us what was created.
+    </p>
+    <div gadget="codesnippet" snippetId="export3"></div>
+
+    <h2>Import Configuration</h2>
+    <p>
+        You can pass in import configuration settings to tweak and control the import process.  The full set of
+        options is provided here:
+    </p>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>overwrite</td>
+            <td>boolean</td>
+            <td>false</td>
+            <td></td>
+            <td>
+                Whether to overwrite any collisions.
+            </td>
+        </tr>
+        <tr>
+            <td>preserveIds</td>
+            <td>boolean</td>
+            <td>true</td>
+            <td></td>
+            <td>
+                Whether to preserve the IDs of any collisions.
+            </td>
+        </tr>
+        <tr>
+            <td>includeACLs</td>
+            <td>boolean</td>
+            <td>true</td>
+            <td></td>
+            <td>
+                Whether to include ACLs during import.
+            </td>
+        </tr>
+        <tr>
+            <td>includeTeams</td>
+            <td>boolean</td>
+            <td>true</td>
+            <td></td>
+            <td>
+                Whether to include Teams during import.
+            </td>
+        </tr>
+        <tr>
+            <td>includeActivities</td>
+            <td>boolean</td>
+            <td>true</td>
+            <td></td>
+            <td>
+                Whether to include Activities during import.
+            </td>
+        </tr>
+        <tr>
+            <td>includeBinaries</td>
+            <td>boolean</td>
+            <td>true</td>
+            <td></td>
+            <td>
+                Whether to include Binaries for data stores during import.
+            </td>
+        </tr>
+        <tr>
+            <td>includeAttachments</td>
+            <td>boolean</td>
+            <td>true</td>
+            <td></td>
+            <td>
+                Whether to include Attachments for Attachables during import.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    <h2>Import Job</h2>
+    <p>
+        An import produces an import job that either runs on a SYNCHRONOUS or ASYNCHRONOUS schedule.  If it runs
+        synchronously, then the import will complete before control is handed back to your code.  If it runs
+        asynchronously, then you will have wait for the job to complete.  Meanwhile, you're free to do other things.
+        <br/>
+        <br/>
+        The Import Job contains a few properties which are interesting:
+    </p>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>archiveGroup</td>
+            <td>text</td>
+            <td>
+                The group id of the archive.
+            </td>
+        </tr>
+        <tr>
+            <td>archiveArtifact</td>
+            <td>text</td>
+            <td>
+                The artifact id of the archive.
+            </td>
+        </tr>
+        <tr>
+            <td>archiveVersion</td>
+            <td>text</td>
+            <td>
+                The version id of the archive.
+            </td>
+        </tr>
+        <tr>
+            <td>vaultId</td>
+            <td>text</td>
+            <td>
+                The vault id of the archive.
+            </td>
+        </tr>
+        <tr>
+            <td>configuration</td>
+            <td>object</td>
+            <td>
+                The import configuration settings being utilized by the job.
+            </td>
+        </tr>
+        <tr>
+            <td>targets</td>
+            <td>array</td>
+            <td>
+                An array of objects which describe the target data stores or objects that the job
+                is importing into.
+            </td>
+        </tr>
+        <tr>
+            <td>imports</td>
+            <td>array</td>
+            <td>
+                An array of objects which describe the newly created or updated data stores or objects that
+                are a result or product of the import process.
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
 </script>

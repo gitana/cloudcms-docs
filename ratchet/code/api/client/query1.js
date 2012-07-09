@@ -1,0 +1,3 @@
+platform.queryAuthenticationGrants({
+    "enabled": false
+});

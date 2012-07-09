@@ -1,0 +1,1 @@
+platform.createVault().update().del();

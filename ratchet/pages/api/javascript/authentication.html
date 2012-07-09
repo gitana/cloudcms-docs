@@ -1,8 +1,326 @@
 <script id="pageTemplate" type="text/x-jquery-tmpl">
     <h1>Authentication</h1>
 
-    <br/>
+    <p>
+        Cloud CMS supports OAuth2 for server authorization.  OAuth2 provides a secure and robust method for
+        authenticating clients and users to the server.  It's become well-adopted across the industry by other
+        vendors including Facebook, Twitter and Salesforce.
+        <br/>
+        <br/>
+        We feel that OAuth2 is a best practice authorization mechanism for the applications that our customers build.
+        <br/>
+        <br/>
+        As we move forward, we intend to support additional authorization schemes as they are requested.  However,
+        we find that OAuth2 is a great foundation and best-of-breed today.
+    </p>
+    <p>
+        This section will provide a quick overview of OAuth2 and how it is supported by Cloud CMS within the API.
+        If you would like all of the nitty-gritty details, you can browse over to the
+        <a target="_blank" href="http://tools.ietf.org/html/draft-ietf-oauth-v2-28">OAuth 2.0 Authorization Framework</a>
+        specification document and soak up the wisdom therein.
+    </p>
+    <h2>Clients and Users</h2>
+    <p>
+        The first thing to understand about OAuth2 is that it's really just a specification describing safe and secure
+        ways for a user and a client to prove to the server that they are who they say they are.
+        <br/>
+        <br/>
+        Let's define the following:
+    </p>
+    <ul>
+        <li><b>Client</b> -  the application (for example, a web site or a mobile application)</li>
+        <li><b>User</b> - the user who is using the client (for example, "joe smith")</li>
+    </ul>
+    <p>
+        OAuth2 describes a few strategies that the client and user can use to separately prove that they are who they
+        say they are.  These strategies are called "authorization flows".
+    </p>
+    <p>
+        While there are multiple OAuth2 authorization flows, the main one that you need to understand is the
+        "authorization code" flow.  The other flows are just simplified (and potentially less secure) variations
+        of this flow.  So let's take a look at an example.
+    </p>
+    <h2>Example: Steven Spielberg</h2>
+    <p>
+        Let's walk through an fun, real-world example of a full authorization flow.
+    </p>
+    <div class="story">
+        <h3>Steven Spielberg and the Studio Lot Pass</h3>
+        <p>
+            Here's a really simple but fun example.  It's based on a true story.
+            <br/>
+            <br/>
+            When Steven Spielberg was a young man, he took a tour of Universal Studios in Hollywood.  During a bathroom
+            break, he slipped away and happened to run into a film executive.  They struck up a conversation and
+            Steven mentioned some of his home-made films.  The executive wrote him a pass so that Steven could return the
+            next day.  And the next day after that.  For two weeks.
+            <br/>
+            <br/>
+            Each day, Steven would arrive to the front gate, greet the security guard, show him the pass and proceed
+            into the studio lot.
+            <br/>
+            <br/>
+            Eventually, the film executive couldn't write any more passes and wished Steven the best of luck.  So the
+            next day, Steven arrived wearing a suit and tie.  He waved to the guard.  And the guard simply waved right
+            back.  So he walked right in.  He proceeded to do that for two years!  No one knew who he was.
+            Everyone simply assumed that someone else knew who he was.
+            <br/>
+            <br/>
+            Steven earned a front-row seat and watched some of the great movie makers practice their craft.
+            He was eventually thrown out during the filming of Alfred Hitchcock's famous film 'Torn Curtain'.
+        </p>
+    </div>
+    <p>
+        This is a pretty cool story.  However, it's also demonstrates a security breach on a number of levels.
+        For example, the pass he was issued should have expired after 2 weeks.  And the security guard never checked
+        whether he had lot rights.
+        <br/>
+        <br/>
+        OAuth2 splits the authorization flow into three distinct "legs".  Each leg is a distinct isolated step whose
+        participants are separated from other participants in the process.  This makes it much more difficult for
+        others to spoof the rights needed to access your data.
+        <br/>
+        <br/>
+        Let's take a look at how this sequence might play out if Universal Studios had an OAuth2-like framework in place:
+    </p>
+    <h3>Steven and the Guard Part I</h3>
+    <ul>
+        <li>Steven ('Client') wants to access the Universal Studios lot ('Resource').</li>
+        <li>The Guard ('Resource Server') says, "No way kid, you have to have a pass to enter."</li>
+        <li>Steven ('Client') says, "Can I request a pass?  Come on, I'm Steven Spielberg!  Here is my ID!"</li>
+        <li>The Guard ('Resource Server') says, "That is fascinating.  I don't care.  Go to Customer Service and get a pass first."</li>
+    </ul>
+    <h3>First Leg - Client and Authorization Server</h3>
+    <ul>
+        <li>Steven ('Client') goes to Customer Service ('Authorization Server').  He says, "I'd like a pass."</li>
+        <li>Customer Service ('Authorization Server') asks, "Who is the pass going to be for?"</li>
+        <li>Steven ('Client') says, "Steven Spielberg."</li>
+        <li>Customer Service ('Authorization Server') takes the request for a pass and says, "Thanks, wait here..."</li>
+    </ul>
+    <h3>Second Leg - User and Authorization Server</h3>
+    <ul>
+        <li>Customer Service ('Authorization Server') places a call to the Executive ('User') and asks him to come to the office.</li>
+        <li>The Executive ('User') walks in and shows his ID to Customer Service ('Authorization Server').</li>
+        <li>Customer Service ('Authorization Server') asks the Executive ("User"), "Are you sure you want to let Steven Spielberg onto the lot?"</li>
+        <li>The Executive ('User') says, "Yeah, absolutely.  I can see into the future.  Someday, he is going to direct E.T."</li>
+    </ul>
+    <h3>Third Leg - Client and Authorization Server</h3>
+        <li>Customer Service ('Authorization Server') creates an authorization approval document and gives it back to Steven ('Client').</li>
+        <li>Steven ('Client') walks over to the next window and gives the authorization approval document to Customer Service ('Authorization Service').</li>
+        <li>Customer Service ('Authorization Server') says, "This says that Steven Spielberg can get a pass.  Are you Steven Spielberg?  Prove it!"</li>
+        <li>Steven ('Client') takes out his wallet and shows them his ID.</li>
+        <li>Customer Service ('Authorization Server') says, "Alright.  Here is a pass ('Access Token').  It's valid for two weeks."</li>
+    </ul>
+    <h3>Steven and the Guard Part II</h3>
+    <ul>
+        <li>Steven ('Client') says, "I'm back.  Now let me in!"</li>
+        <li>The Guard ('Resource Server') says, "Let me see your pass."</li>
+        <li>Steven ('Client') says, "Here it is."</li>
+        <li>The Guard ('Resource Server') checks to see whether the pass is still valid.  It is, so he says, "Go on in!"</li>
+    </ul>
+    <p>
+        On subsequent visits, he simply needs to give the pass to the security guard.
+        He doesn't need to go through this whole "OAuth dance" again unless his pass expires.
+        <br/>
+        <br/>
+        That's it.  That's the basic <b>three-legged</b> authorization flow.
+        <br/>
+        <br/>
+        In addition, there exists a back-channel of communication so that the Guard can talk to Customer Service
+        and vice versa.  That way, they can detect whether Steven is trying to trick them (for example, if he tried
+        walking up with a forged authorization approval document).
+        <br/>
+        <br/>
+        Also take notice that there are two signatures required - Steven's signature and the signature of the Executive.
+        The Executive has to be sure which request he's authorizing (i.e. only Steven's) and so he requires Steven
+        to first authorize his own request for a pass.
+    </p>
+    <h2>Authorization Flows</h2>
+    <p>
+        OAuth2 supports several different authorization flows.  An authorization flow is a strategy that lets
+        the Cloud CMS server rest assured that the client is who they say they are and the user is who they say
+        they are.
+        <br/>
+        <br/>
+        Cloud CMS supports the following authorization flows:
+    </p>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Authorization Flow</th>
+            <th>Key</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Authorization Code</td>
+            <td><code>code</code></td>
+            <td>
+                Full three-legged authorization (most secure) for untrusted client.
+                <br/>
+                This is what we saw in the Steven Spielberg example above.
+            </td>
+        </tr>
+        <tr>
+            <td>Implicit</td>
+            <td><code>implicit</code></td>
+            <td>Two-legged for trusted client</td>
+        </tr>
+        <tr>
+            <td>Resource Owner Password</td>
+            <td><code>password</code></td>
+            <td>Two-legged for trusted client</td>
+        </tr>
+        <tr>
+            <td>Refresh Token</td>
+            <td><code>refresh</code></td>
+            <td>Authorization via a refresh token</td>
+        </tr>
+        </tbody>
+    </table>
 
-    <p>Coming Soon...</p>
+    <h2>Authorization Code Flow</h2>
+    <p>
+        The "authorization code" flow is the full authorization flow described above.  Cloud CMS supports this flow over
+        HTTP as provided in the OAuth2 specification.  This flow is intended for web applications and works best if
+        you're web application is built using server-side technology (like PHP, Java or .NET).
+        <br/>
+        <br/>
+        If you're building HTML5/JavaScript applications using browser-side technology, there are some limitations
+        since you cannot securely embed the client secret into the HTML page or JS source.  Cloud CMS provides
+        "Open Driver" authentication which allows you to operate this flow without the client secret being exposed.
+        <br/>
+        <br/>
+        Here's how this works for the case where the client secret is contained in the flow:
+    </p>
+    <h4>First Leg</h4>
+    <ul>
+        <li>The application calls <code>oauth/authorize</code> and passes along its client key.</li>
+        <li>The server responds with a redirect to a user login page.  The redirect contains a request token in the URL.</li>
+    </ul>
+    <h4>Second Leg</h4>
+    <ul>
+        <li>The User signs in using their username and password.</li>
+        <li>The server validates the identity of the user.</li>
+        <li>The server prompts the user to approve the request for access to the resource.</li>
+        <li>If the user approves the request, the server creates an "authorization code".</li>
+        <li>The server responds with a redirect back to the original page.  The redirect contains the authorization code in the URL.</li>
+    </ul>
+    <h4>Third Leg</h4>
+    <ul>
+        <li>The application reloads and finds the authorization code in the URL.</li>
+        <li>The application calls <code>oauth/token</code> with the code.</li>
+        <li>The server authenticates the client and hands back an Access Token and Refresh Token.</li>
+    </ul>
+    <p>
+        The Cloud CMS driver handles the third leg and beyond.  You initialize the driver with the authorization code.
+        The driver does the rest.  It calls <code>oauth/token</code> and passes over the
+        authorization code.  It gets an access token.  The driver then passes this access token across the
+        wire with every call it makes going forward.
+        <br/>
+        <br/>
+        It also gets a refresh token.  This token isn't used until the access token expires.  After all, the access
+        token isn't intended to live forward.  When the access token expires, the driver will get back a 401.
+        The driver then automatically employs the <code>refresh</code> authorization flow to acquire a new access
+        token.  Your code doesn't have to worry about any of this.  The driver handles it.
+    </p>
+    <p>
+        Here is an example of an HTML page that kicks off an "authorization code" flow.  When the flow completes, it
+        will return to this page at which point we'll pick up the authorization code from the URL and feed it into
+        the driver to sign on.
+    </p>
+    <div gadget="codesnippet" snippetId="authorizationcode1" fileext="html"></div>
+
+    <h2>Implicit Flow</h2>
+    <p>
+        The "implicit" flow is a two-legged, simplified version of the authorization flow wherein the Client is
+        never authenticated and is simply assumed to be who the Client claims to be.  Upon authenticating the User,
+        an Access Token is returned immediately.
+        <br/>
+        <br/>
+        This flow is called "implicit" because the client is assumed to be implicitly trustworthy.
+        <br/>
+        <br/>
+        In terms of the example, this is a bit like Steven Spielberg walking up to the Customer Service window and
+        saying, "I'm Steven Spielberg" and having them just believe him.  They never ask for his ID.  And, in addition,
+        instead of giving him an authorization approval document, they just give him the Access Token directly.
+        <br/>
+        <br/>
+        Why?  Because they trust him.  He's a good guy.
+        <br/>
+        <br/>
+        Here is how the legs look:
+    </p>
+    <h4>First Leg</h4>
+    <ul>
+        <li>The application calls <code>oauth/authorize</code> and passes along its client key.</li>
+        <li>The server responds with a redirect to a user login page.  The redirect contains a request token in the URL.</li>
+    </ul>
+    <h4>Second Leg</h4>
+    <ul>
+        <li>The User signs in using their username and password.</li>
+        <li>The server validates the identity of the user.</li>
+        <li>The server prompts the user to approve the request for access to the resource.</li>
+        <li>If the user approves the request, the server hands back an Access Token.</li>
+    </ul>
+    <p>
+        The Cloud CMS driver allows you to authenticate using the Access Token and redirection URI from the second leg.
+        It is worth noting that with the implicit flow, there is no Refresh Token.  Thus, if the Access Token
+        expires, the Cloud CMS driver will begin to catch 401 (Not Authorized) responses.  Your code needs to handle
+        this exception state.
+        <br/>
+        <br/>
+        Here is an example of an HTML page that kicks of an "implicit" flow.  When the flow completes, it will return
+        to this page at which point we'll pick up the Access Token from the URL and feed it into the driver to
+        sign on.
+    </p>
+    <div gadget="codesnippet" snippetId="implicit1" fileext="html"></div>
+
+    <h2>Resource Owner Password Flow</h2>
+    <p>
+        The "password" flow is a one-legged, simplified version of the authorization flow that applies when the
+        client is capable of and trusted to obtain the User's username and password.  In this flow, the client
+        and user are authorized in a single call.
+        <br/>
+        <br/>
+        In terms of the example, this is kind of like if Steven Spielberg walked right up to the Customer Service
+        center and said, "Hey look, I don't want to wait.  Here is my ID.  Here is the Executive's ID and a note from
+        him saying he already approves.  Just give me the pass."
+        <br/>
+        <br/>
+        The Customer Service folks technically have everything they need to do their job.  However, this requires that
+        they can trust Steven (as the Client) to have collected the IDs with their best interests in mind.
+        <br/>
+        <br/>
+        Here is the flow:
+    </p>
+    <h4>First Leg</h4>
+    <ul>
+        <li>The application prompts the user for their username and password (via a form) or perhaps these values are hard-coded.</li>
+        <li>The application calls <code>oauth/token</code> and passes along the client key, client secret, username and password.</li>
+        <li>The server validates the identity of the client and the user.</li>
+        <li>If everything is okay, the server hands back an Access Token.</li>
+    </ul>
+    <p>
+        In order to use this flow, you must be very certain that the runtime environment for your code is secure.
+        This flow requires the client secret and password to be made available within the client.  Thus, it is
+        imperative that these values not be exposed in clear text.
+        <br/>
+        <br/>
+        This flow should not be used for JavaScript or HTML5 applications running in the browser.  Browser-based
+        applications allow interested parties to "View Source" or Firebug the code.  Any Client Secrets or Passwords
+        can easily be snooped.
+        <br/>
+        <br/>
+        If you would like to use JavaScript or HTML5 in the browser, we suggest either the Authorization Code or
+        Implicit Flows.  If you must use the Resource Owner Password Flow, we recommend utilizing the Cloud CMS
+        "Open Driver" strategy for enhancing your application security.
+        <br/>
+        <br/>
+        Here is an example of an HTML page that kicks off a "password" flow.  Unlike the Authorization Code and
+        Implicit Flows, this flow does not utilize redirects.  The user never leaves the same page.
+    </p>
+    <div gadget="codesnippet" snippetId="password1" fileext="html"></div>
 
 </script>

@@ -1,0 +1,3 @@
+platform.queryDomains({
+    "country": "USA"
+});

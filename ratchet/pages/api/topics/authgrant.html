@@ -1,5 +1,23 @@
 <script id="pageTemplate" type="text/x-jquery-tmpl">
+
     <h1>Authentication Grant</h1>
+
+    <table class="table table-bordered table-striped">
+        <tbody>
+        <tr>
+            <td>Type</td>
+            <td>Object</td>
+        </tr>
+        <tr>
+            <td>Supports</td>
+            <td>
+                <a href="#/api/authorities/${language}">Authorities</a>,
+                <a href="#/api/permissions/${language}">Permissions</a>,
+                <a href="#/api/transfer/${language}">Transfer</a>
+            </td>
+        </tr>
+    </table>
+
     <p>
         An Authentication Grant provides a way for you to generate alternate credentials for authenticating as a user
         to a platform.  These alternate credentials consist of a key and a secret (much like a client's key and secret).

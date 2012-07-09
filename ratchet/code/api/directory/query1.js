@@ -1,0 +1,3 @@
+platform.queryDirectories({
+    "country": "USA"
+});

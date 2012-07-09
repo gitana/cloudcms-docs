@@ -1,0 +1,3 @@
+platform.queryWarehouses({
+    "country": "USA"
+});

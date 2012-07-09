@@ -1,0 +1,128 @@
+<script id="pageTemplate" type="text/x-jquery-tmpl">
+
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>title</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                The title of the data store.
+            </td>
+        </tr>
+        <tr>
+            <td>description</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                A description for the data store.
+            </td>
+        </tr>
+        <tr>
+            <td>enableAuthorities</td>
+            <td>boolean</td>
+            <td>true</td>
+            <td></td>
+            <td>
+                If true, the data store will check whether the current principal has rights to perform an
+                operation against content upon interaction.  If turned off, you'll see some performance
+                benefits.  This should only ever be switched off for "published" or general availability
+                content and never for authoring-side content.
+            </td>
+        </tr>
+        <tr>
+            <td>enableAuditing</td>
+            <td>boolean</td>
+            <td>false</td>
+            <td></td>
+            <td>
+                If true, then the data store will collect audit records for all service-level operations
+                (such as CRUD operations).  This incurs a slight performance penalty but guarantees you
+                a record of all interactions with data for changesets, branches and nodes in the data store.
+            </td>
+        </tr>
+        <tr>
+            <td>locked</td>
+            <td>boolean</td>
+            <td>false</td>
+            <td>Read-only</td>
+            <td>
+                Whether the data store is presently locked.  If the data store is locked, then write operations
+                against it will block.
+            </td>
+        </tr>
+        <tr>
+            <td>lockedBy</td>
+            <td>text</td>
+            <td></td>
+            <td>Read-only</td>
+            <td>
+                The principal that holds the lock (if the data store is locked).
+            </td>
+        </tr>
+        <tr>
+            <td>size</td>
+            <td>number</td>
+            <td>0</td>
+            <td>Read-only</td>
+            <td>
+                The last-recorded allocation size (on disk) of the data store in bytes.  This value is updated
+                periodically and may not be precise at the moment it is read.
+            </td>
+        </tr>
+        <tr>
+            <td>maxsize</td>
+            <td>number</td>
+            <td>-1</td>
+            <td></td>
+            <td>
+                The maximum allowed allocation size (on disk) of the data store in bytes.  If this size of
+                the data store exceeds this value, write operations will fail.  A value of -1 indicates that
+                there is no upper limit.
+            </td>
+        </tr>
+        <tr>
+            <td>objectcount</td>
+            <td>number</td>
+            <td>0</td>
+            <td>Read-only</td>
+            <td>
+                The number of objects stored within the data store.  This includes system-maintained objects.
+                This value is updated periodically and may not be precise at the moment it is read.
+            </td>
+        </tr>
+        <tr>
+            <td>statisticsDate</td>
+            <td>timestamp</td>
+            <td></td>
+            <td>Read-only</td>
+            <td>
+                Records the time when statistics were last run against the data store.  Statistics are run
+                periodically to calculate the data store size and object allocations.
+            </td>
+        </tr>
+        <tr>
+            <td>statisticsDirty</td>
+            <td>boolean</td>
+            <td>false</td>
+            <td>Read-only</td>
+            <td>
+                Whether writes have occurred against this data store since the last time statistics were run.
+                This signals to the system that statistics need to be collected at the next available opportunity.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</script>

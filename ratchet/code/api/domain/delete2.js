@@ -1,0 +1,1 @@
+platform.createDomain().update().del();

@@ -23,9 +23,14 @@
                 var topic = el.tokens["topic"];
                 var language = el.tokens["language"];
                 var snippetId = el.params["snippetid"] ? el.params["snippetid"] : el.params["snippetId"];
+                var fileext = el.params["fileext"] ? el.params["fileext"] : null;
                 var extension = Docs.APILanguages[language].extension;
 
                 var url = "ratchet/code/api/" + topic + "/" + snippetId + "." + extension;
+                if (fileext)
+                {
+                    url += "." + fileext;
+                }
 
                 var render = function(html)
                 {

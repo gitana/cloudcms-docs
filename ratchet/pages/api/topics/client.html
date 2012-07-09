@@ -1,7 +1,297 @@
 <script id="pageTemplate" type="text/x-jquery-tmpl">
+
     <h1>Client</h1>
+
+    <table class="table table-bordered table-striped">
+        <tbody>
+        <tr>
+            <td>Type</td>
+            <td>Object</td>
+        </tr>
+        <tr>
+            <td>Supports</td>
+            <td>
+                <a href="#/api/authorities/${language}">Authorities</a>,
+                <a href="#/api/permissions/${language}">Permissions</a>,
+                <a href="#/api/transfer/${language}">Transfer</a>
+            </td>
+        </tr>
+    </table>
+
     <p>
-        Coming Soon...
+        A Client defines an entry point for applications to connect to your platform.  Applications utilize a
+        key and secret to identify themselves as a particular client of your platform.
+        <br/>
+        <br/>
+        You can have as many Clients as you would like.  Each client has a key/secret combination which the calling
+        application will need to provide in order to assert their identity as the client.  This prevents unknown
+        applications from using your platform without your knowledge.
+        <br/>
+        <br/>
+        Clients supports the OAuth2 authentication flows.  You can specify for each Client which flows you intend for
+        it to support.  You can also enable Open Driver authentication support for JavaScript/HTML5 applications
+        running on the Cloud CMS hosted tier.
+        <br/>
+        <br/>
+        Finally, you can at any point disable Clients if you suspect they are being tampered with or if you decide
+        you would like to issue new credentials.
     </p>
+
+    <!-- CONFIGURATION -->
+    <h2>Configuration</h2>
+    <p>
+        Clients maintain a configuration that you can adjust or consult as you create, update and query for them.
+        <br/>
+        <br/>
+        The following table presents you the configuration properties.
+    </p>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>key</td>
+            <td>text</td>
+            <td>(auto-generated)</td>
+            <td>Read-Only</td>
+            <td>
+                The authentication grant key.
+            </td>
+        </tr>
+        <tr>
+            <td>secret</td>
+            <td>text</td>
+            <td>(auto-generated)</td>
+            <td></td>
+            <td>
+                The authentication grant secret.
+            </td>
+        </tr>
+        <tr>
+            <td>scope</td>
+            <td>array</td>
+            <td>["api"]</td>
+            <td></td>
+            <td>
+                An array of strings that define the scopes of access that the user must have granted the caller
+                in order to use this Client.
+                <br/>
+                <br/>
+                The Cloud CMS driver requires the following scope: <code>api</code>.
+            </td>
+        </tr>
+        <tr>
+            <td>authorizedGrantTypes</td>
+            <td>array</td>
+            <td></td>
+            <td></td>
+            <td>
+                An array of Strings which define the OAuth2 authorization flows that are supported by this Client.
+                <br/>
+                <br/>
+                Valid values are: <code>authorization_code</code>, <code>implicit</code>, <code>password</code> and <code>refresh</code>.
+            </td>
+        </tr>
+        <tr>
+            <td>registeredRedirectUri</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                If provided, this is the required redirect URI to be used for the "authorizaton code" flow.
+                It is not required.  OAuth2 allows the redirect URI to be passed in by the originating authorize request.
+                However, if you want tighter security, you can specify the redirect URI here and enforce redirects
+                only back to known pages.
+            </td>
+        </tr>
+        <tr>
+            <td>domainUrls</td>
+            <td>array</td>
+            <td></td>
+            <td></td>
+            <td>
+                If you're using Open Driver authentication, then this is an array of URLs which identify valid
+                HTTP "Referrer" (spelling) headers for the incoming request.  This allows for a safety check to
+                help ensure that the client application is running at a known address.
+                <br/>
+                <br/>
+                Note: This is only a safeguard.  But it isn't foolproof.  It's still possible for malicious clients
+                to fake HTTP "Referrer" headers if they wanted to.  If you detect misuse of Client keys, you can
+                disable the client and issue a new one.
+            </td>
+        </tr>
+        <tr>
+            <td>allowOpenDriverAuthentication</td>
+            <td>boolean</td>
+            <td></td>
+            <td></td>
+            <td>
+                Whether to enable "Open Driver" authentication.  Open Driver authentication does not require
+                the client secret to be present for client authorization in the "password" flow.  Instead, it checks
+                for valid domain URLs for the hosted application.
+            </td>
+        </tr>
+        <tr>
+            <td>allowAutoApprovalForImplicitFlow</td>
+            <td>boolean</td>
+            <td></td>
+            <td></td>
+            <td>
+                If true, then Cloud CMS will automatically approve the requested scopes when the user
+                authenticates in the "implicit" flow.  Normally, a successful authentication will take the user to a
+                confirmation page where they can authorize the requested scopes.  This skips that step.
+                After authenticating, the scopes are automatically approved and the browser is redirected to the
+                redirect URI.
+            </td>
+        </tr>
+        <tr>
+            <td>isTenantDefault</td>
+            <td>boolean</td>
+            <td>false</td>
+            <td>Read-Only</td>
+            <td>
+                Whether this Client is the default Client for the tenant.  Every Tenant has a default Client and it
+                is best-practice not to share this Client information with anyone except the administrator of your
+                platform.
+            </td>
+        </tr>
+        <tr>
+            <td>defaultTenantId</td>
+            <td>text</td>
+            <td></td>
+            <td>Read-Only</td>
+            <td>
+                If this Client is the default Client for a Tenant, then this is the ID of that Tenant.
+            </td>
+        </tr>
+        <tr>
+            <td>enabled</td>
+            <td>boolean</td>
+            <td>true</td>
+            <td></td>
+            <td>
+                Whether this grant is enabled
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h2 id="create">Create a Client</h2>
+    <p>
+        You can create as many Clients as you would like.  Each Client is essentially a "door" with a lock that lets
+        anyone who has the keys sign on to your platform.  Each Client has a public key and a private secret.  For
+        a fully-secure authorization flow, the application that aspires to sign on as the Client will need to
+        provide the key and secret during the authorization handshake.
+        <br/>
+        <br/>
+        Here is how you create a Client:
+    </p>
+    <div gadget="codesnippet" snippetId="create1"></div>
+    <p>
+        The key and secret are generated for us.  You cannot specify the key and/or secret by hand.
+        In fact, this is a really important detail since the server uses an encryption algorithm to
+        generate the secret (using a cipher that is unique per platform).
+    </p>
+    <p>
+        Here we create a Client that only allows for the "authorization_code" (3-legged) flow.  If an application tries
+        to authorize with this Client using any other OAuth2 flow, they'll be rejected.  This example also contains a
+        preconfigured redirect uri for a known entry page that we trust.
+    </p>
+    <div gadget="codesnippet" snippetId="create2"></div>
+    <p>
+        And here is an example of a Client that utilizes the "Open Driver" authentication scheme.  This is a Cloud CMS
+        supported variation of the "password" flow whereby we do not require the client secret to authenticate.
+        Thus, we don't need the client secret anywhere in the source code of the application.  This is ideal for
+        HTML5 and JavaScript applications running in the browser.
+        <br/>
+        <br/>
+        In place of the client secret, we check the incoming domain URL to identify the application.
+        The <code>domainUrls</code> array lets us define valid domain URLs on which the application may be running.
+    </p>
+    <div gadget="codesnippet" snippetId="create3"></div>
+
+    <h2 id="update">Update a Client</h2>
+    <p>
+        To update, all you have to do is make changes to your Client and fire away.
+    </p>
+    <div gadget="codesnippet" snippetId="update1"></div>
+    <p>
+        You are not allowed to update the <code>key</code> or <code>secret</code> fields.  These are Read-Only.
+        If you'd like to change the key or secret, you must create a new Client.
+    </p>
+
+    <h2 id="delete">Delete a Client</h2>
+    <p>
+        When you delete an Client, any users of any applications that were authenticated using the
+        Client's credentials will no longer have access to your platform.  They'll be shut down.  The
+        server will additionally clean up any OAuth2 access or refresh tokens.
+        <br/>
+        <br/>
+        Thus, the effect is pretty much instantaneous.
+    </p>
+    <div gadget="codesnippet" snippetId="delete1"></div>
+    <h3 id="disable">Disabling</h3>
+    <p>
+        As an alternative to deleting, you might opt to disable the Client.  The effect is basically the
+        same but you will have the option to re-enable or reuse the Client at some point in the future.
+        It's really up to you.
+    </p>
+    <div gadget="codesnippet" snippetId="disable1"></div>
+
+    <h2 id="read">Read a Client</h2>
+    <p>
+        You can read a Client by its <code>_doc</code> ID field.
+    </p>
+    <div gadget="codesnippet" snippetId="read1"></div>
+
+    <h2 id="list">List Clients</h2>
+    <p>
+        You can retrieve a list of Clients for your platform quite easily.
+        The following code hands back the full list.
+    </p>
+    <div gadget="codesnippet" snippetId="list1"></div>
+    <p>
+        You can then iterate over the list to pick at what you'd like.
+    </p>
+    <div gadget="codesnippet" snippetId="list2"></div>
+    <p>
+        Retrieving the full list is potentially an expensive operation, depending how many items you have.
+        The more your retrieve, the more data goes over the wire and so forth.  Thus, you might wish to
+        <i>paginate</i> your call and retrieve a subset of the total list at a time.
+        <br/>
+        <br/>
+        Here is an example that retrieves in pages of size 10.
+        It starts on the second page (by skipping to starting index 20).
+        It also sorts by the <code>title</code> field in a descending sequence.
+    </p>
+    <div gadget="codesnippet" snippetId="list3"></div>
+    <p>
+        You don't have to have all of the pagination parameters (<code>limit</code>, <code>skip</code> and <code>sorting</code>).
+        You might only want to include one or two.  It's up to you.
+    </p>
+
+    <h2 id="query">Query Clients</h2>
+    <p>
+        You can run custom queries against your Clients to find exactly what you're looking for.
+        Here is a query that looks for Clients which are disabled.
+    </p>
+    <div gadget="codesnippet" snippetId="query1"></div>
+    <p>
+        Here is that same query followed by an iteration over the result map.
+    </p>
+    <div gadget="codesnippet" snippetId="query2"></div>
+    <p>
+        Finally, you can mix queries with pagination to reduce data over the wire and speed up performance.
+        Here is that same query with some pagination thrown in.
+        We limit to pages of size 10 and sort by <code>title</code>.
+    </p>
+    <div gadget="codesnippet" snippetId="query3"></div>
 
 </script>

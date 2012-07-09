@@ -1,0 +1,54 @@
+<html>
+    <head>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+        <script type="text/javascript" src="gitana.js"></script>
+        <script>
+
+            // assume the client key is known
+            // note: we do not need the client secret
+            var clientKey = ...;
+
+            // the uri to this page - we'll return back here with the code once the flow finishes
+            // this is something like - http://myserver:port/page.html
+            var redirectUri = window.location.protocol + "//" + window.location.hostname + ":"
+                    + window.location.port + window.location.pathname;
+
+            // the uri to request a token
+            // note that we're requesting the "api" scope (which is what the driver needs)
+            var authorizeUri = "/proxy/oauth/authorize?client_id=" + clientKey + "&redirect_uri=" + redirectUri + "&response_type=token&scope=api">
+
+            // here we use jquery
+            $(document).ready(function() {
+
+                // see if we were passed an access token
+                var accessToken = Gitana.getCurrentHashStringParameter("access_token");
+                if (accessToken) {
+                    console.log("Received access token: " + accessToken);
+
+                    // build the gitana driver
+                    var gitana = new Gitana({
+                        "clientId": clientKey
+                    });
+
+                    // authenticate with the token
+                    gitana.authenticate({ "accessToken": accessToken, "redirectUri": redirectUri }).then(function() {
+
+                        console.log("Successfully authenticated");
+                    });
+                }
+
+                var error = Gitana.getCurrentQueryStringParameter("error");
+                if (error) {
+                    console.log("Error: " + Gitana.getCurrentQueryStringparameter("error_description"));
+                }
+
+                // add in a link
+                $("#linkDiv").append("<a href='" + authorizeUri + "'>Click here to authorize</a>");
+            });
+
+        </script>
+    </head>
+    <body>
+        <div id="linkDiv"></div>
+    </body>
+</html>
