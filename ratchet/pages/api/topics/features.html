@@ -1,0 +1,905 @@
+<script id="pageTemplate" type="text/x-jquery-tmpl">
+    <h1>Features</h1>
+    <p>
+        Features are aspect-oriented, cross-cutting concerns that can be applied to nodes.  Once applied, they
+        introduce new behaviors and metadata to your content objects.
+    </p>
+    <p>
+        Here we provide a catalog of out-of-the-box features along with their configuration options.
+        <br/>
+        <br/>
+        All features support the following features:
+    </p>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>enabled</td>
+            <td>boolean</td>
+            <td></td>
+            <td>true</td>
+            <td>
+                Whether this feature is enabled for this node.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    <h3>Audit</h3>
+    <p>Type: <code>f:audit</code></p>
+    <p>
+        This feature marks a node as auditable.  Operations against this node will be logged and recorded by the
+        Cloud CMS auditing service and stored as audit records on your platform.
+    </p>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td colspan="5">There are no custom properties for this feature.</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3>Behavior Binding</h3>
+    <p>Type: <code>f:behavior-binding</code></p>
+    <p>
+        Marks an association as pointing to the implementation of a behavior for a policy on the source node.
+        Valid target nodes include script nodes and rules.  By applying this feature, you indicate that the
+        target node script or rule should execute when the policy triggers.
+        <br/>
+        <br/>
+        The target node (script or rule) must implement the <code>f:behavior</code> feature.
+    </p>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>policy</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                The QName of the node policy being bound to.
+            </td>
+        </tr>
+        <tr>
+            <td>property</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                Optional property name if the policy binding is to a property, otherwise empty.
+            </td>
+        </tr>
+        <tr>
+            <td>scope</td>
+            <td>number</td>
+            <td></td>
+            <td></td>
+            <td>
+                Defines the scope of the binding.  To bind to a specific instance, set to <code>0</code>.
+                To bind to all instances of a class type, set to <code>1</code>.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3>Behavior</h3>
+    <p>Type: <code>f:behavior</code></p>
+    <p>
+        This features indicates that a node provides the implementation of a behavior.  This feature simply tags
+        the node as a behavior implementation.
+        <br/>
+        <br/>
+        The node must be a script or a rule.
+    </p>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td colspan="5">There are no custom properties for this feature.</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3>Container</h3>
+    <p>Type: <code>f:container</code></p>
+    <p>
+        Makes a node as a container.
+        <br/>
+        <br/>
+        Cloud CMS nodes do not assume any kind of containment model.  You can use them to model any set of relationships
+        between nodes.  For example, you might have nodes that maintain only a kind of "linked" relationship.
+        An example of this might be an image that appears on multiple pages of a web site.  It doesn't belong
+        to any of those pages.  So if you delete one of those pages, you wouldn't necessarily delete the image too.
+        <br/>
+        <br/>
+        File systems, on the other hand, are an example of containment-based navigation.  A folder in a file system
+        is an "owner" of the items inside the folder.  If you delete the folder you delete the contents of the
+        folder as well.
+        <br/>
+        <br/>
+        Cloud CMS allows you mark certain nodes as container.  Once marked as a container, the node is considered
+        to support zero or more "a:child" associations.  This feature is then utilized by containment-based
+        APIs such as WebDAV or FTP to allow navigation of the node hierarchy.
+    </p>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td colspan="5">There are no custom properties for this feature.</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3>Filename</h3>
+    <p>Type: <code>f:filename</code></p>
+    <p>
+        Allows you to specify a filename for the node.  This filename is utilized by containment-based
+        navigation systems when the name of the file is required.
+        <br/>
+        <br/>
+        If not present, Cloud CMS will utilize the ID of the file as the file name.  This feature provides
+        a way to plug in a more meaningful file name.
+        <br/>
+        <br/>
+        If present, upon creation of a document, the file name will automatically be determined from metadata about
+        the object.
+    </p>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>filename</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                The file name.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3>GeoLocation</h3>
+    <p>Type: <code>f:geolocation</code></p>
+    <p>
+        Indicates that this node supports geolocation properties.
+        <br/>
+        <br/>
+        Geolocation properties are specially-treated.  They're indexed and are available fast query and lookup
+        via MongoDB's geolocation indices.
+    </p>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>latitude</td>
+            <td>number</td>
+            <td></td>
+            <td></td>
+            <td>
+                The latitude.  Minimum value is -180.  Maximum value is 180.
+            </td>
+        </tr>
+        <tr>
+            <td>longitude</td>
+            <td>number</td>
+            <td></td>
+            <td></td>
+            <td>
+                The longitude.  Minimum value is -180.  Maximum value is 180.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3>Indexable</h3>
+    <p>Type: <code>f:indexable</code></p>
+    <p>
+        Indicates that a node's payload and attachments should be indexed.
+    </p>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td colspan="5">There are no custom properties for this feature.</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3>Multilingual</h3>
+    <p>Type: <code>f:multilingual</code></p>
+    <p>
+        When applied to a node, this indicates that you wish to have the contents of this node support multilingual
+        behavior and translated content.  This node then serves as the "master node" for translation support.
+    </p>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>edition</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                The active edition of any localized nodes to utilize.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3>Non-Cyclic</h3>
+    <p>Type: <code>f:non-cyclic</code></p>
+    <p>
+        Marks an association as one that does not allow cyclical chains in the graph.
+        <br/>
+        <br/>
+        Cloud CMS does not assume that cyclical chains are invalid.  In fact, for modeling some content, they may be
+        encouraged.  This feature gives you a way to indicate that some associations should not support them.
+        <br/>
+        <br/>
+        An example is the <code>a:child</code> association.  If parent A has child B, then child B should not be a
+        parent of parent A.
+    </p>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td colspan="5">There are no custom properties for this feature.</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3>Previewable</h3>
+    <p>Type: <code>f:previewable</code></p>
+    <p>
+        Indicates that you would like this to generate preview attachments for its content.
+        <br/>
+        <br/>
+        Preview attachments are content transformations into a target mimetype (like JPG) for all of the content
+        stored in the JSON or in an attachment for a node.  A good example of to imagine uploading a heavy PDF file.
+        This feature could generate resized JPG files for use in previewing all of the pages of the PDF on a
+        mobile device.
+        <br/>
+        <br/>
+        Previews are generated whenever a node is created or updated or has its relevant attachment modified.
+    </p>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>schedule</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                Determines when previews will be generated.
+                <br/>
+                Either <code>synchronous</code> or <code>asynchronous</code>.
+                The active edition of any localized nodes to utilize.
+            </td>
+        </tr>
+        <tr>
+            <td>previews</td>
+            <td>object</td>
+            <td></td>
+            <td></td>
+            <td>
+                Defines the previews that you would like to have generated.
+                <br/>
+                <br/>
+                This supports multiple preview generations.  You may want some preview images to be generated for
+                an iPad device and others for an Android depending on the form factor (size, color options, etc).
+                <br/>
+                <br/>
+                This object consists of a named preview key and an preview config for the key.
+                <br/>
+                <br/>
+                Here is an example of two configured previews:
+                <pre>
+                    "previews": {
+                        "ipad": {
+                            "mimetype": "image/png",
+                            "width": 1600,
+                            "height": -1,
+                            "prefix": "ipad",
+                            "maxFileSize": 200000
+                        },
+                        "iphone": {
+                            "mimetype": "image/jpeg",
+                            "width": 512,
+                            "height": -1,
+                            "prefix": "iphone"
+                        }
+                    }
+                </pre>
+                <p>
+                    We defined a preview named "ipad" which generates PNG files with a width constrained to 1600 pixels.
+                    The height can scale as it needs to to achieve this fit.  The max file size is 200,000 bytes.
+                    To achieve this, Cloud CMS will degrade colors and PPI and also apply compression.
+                    All of attachments generated with be prefixed with "ipad_".
+                    <br/>
+                    <br/>
+                    We also defined another preview named "iphone" that produces JPG files with a width constrained
+                    to 512 pixels.  These are prefixed with "iphone_".
+                </p>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3>Propagates Authorities</h3>
+    <p>Type: <code>f:propagates-authorities</code></p>
+    <p>
+        Flags an association as one that propagates inherited authorities from the source to the target.
+        <br/>
+        <br/>
+        If a parent has authorities assigned to it, those authorities are propagated to the children as
+        masked <code>a:hasRole</code> associations.  These associations have <code>inherited</code> set to true
+        and <code>inheritsAssociation</code> set to the association ID being masked.
+    </p>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td colspan="5">There are no custom properties for this feature.</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3>Rates</h3>
+    <p>Type: <code>f:rates</code></p>
+    <p>
+        Applied to an association to indicate that the source node contains a property that provides a rating for
+        the target node.
+        <br/>
+        <br/>
+        This feature automatically computes rating statistics on the target node for the property indicated on
+        the source node.  This includes total count, total value and average value for the rating of the property.
+    </p>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>ratingTotalCount</td>
+            <td>number</td>
+            <td></td>
+            <td></td>
+            <td>
+                The total number of aggregated ratings.
+            </td>
+        </tr>
+        <tr>
+            <td>ratingTotalValue</td>
+            <td>number</td>
+            <td></td>
+            <td></td>
+            <td>
+                The total rating sum.
+            </td>
+        </tr>
+        <tr>
+            <td>ratingAverageValue</td>
+            <td>number</td>
+            <td></td>
+            <td></td>
+            <td>
+                The average rating (value / count).
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3>Rendition</h3>
+    <p>Type: <code>f:rendition</code></p>
+    <p>
+        Applied to a node to indicate that its existence is the result of having been rendered automatically
+        from the contents of another node (one that has the <code>f:renditionable</code> feature).
+    </p>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td colspan="5">There are no custom properties for this feature.</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3>Renditionable</h3>
+    <p>Type: <code>f:renditionable</code></p>
+    <p>
+        Marks that an instance or type is to have one or more renditions.
+        <br/>
+        <br/>
+        Renditions are other nodes in the branch whose content is automatically generated and kept in sync
+        as the source node is created, updated and deleted (or has its relevant attachment modified).
+    </p>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>schedule</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                Determines when renditions will be generated.
+                <br/>
+                Either <code>synchronous</code> or <code>asynchronous</code>.
+                The active edition of any localized nodes to utilize.
+            </td>
+        </tr>
+        <tr>
+            <td>renditions</td>
+            <td>object</td>
+            <td></td>
+            <td></td>
+            <td>
+                Defines the renditions that you would like to have generated.  Each rendition is keyed with a name
+                and provides a configuration that is passed to a rendition engine for execution.
+                <br/>
+                <br/>
+                In general, this takes on the structure:
+                <pre>
+                    "renditions": {
+                        "{renditionKey}": {
+                            "engineId": "{id of the renditioning engine to use}",
+                            "targetNodeId": "{targetNodeId}",
+                            "targetAttachmentId": "{targetAttachmentId}",
+                            "targetAttachmentMimeType": "{targetAttachmentMimeType}",
+
+                            .. other properties ...
+                        }
+                    }
+                </pre>
+                <p>
+                    The exact properties that should be specified depend on the requirements of the renditioning engine.
+                    Here is a more concrete example that executes a script to create the new node:
+                </p>
+                <pre>
+                    "myRenditionKey": {
+                        "engineId": "script",
+                        "scriptNodeId": "custom:script1"
+                    }
+                </pre>
+                <p>
+                    When a node with this feature and configuration is created, the script with
+                    QName <code>custom:script1</code> will execute.  The script must implement the
+                    <code>renditionable</code> interface.  It might look like this:
+                </p>
+                <pre>
+                    function rendition(node) {
+                        return {
+                            "description": node.data.title + " is your " + node.data.relation
+                        };
+                    }
+                </pre>
+                <p>
+                    Now whenever our original node is updated, the renditioned node will be kept in sync.  If the
+                    original node is: <code>{"title": "Joe", "relation": "Uncle"}</code> then the renditioned node
+                    will be: <code>{"description": "Joe is your Uncle"}</code>.
+                </p>
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3>Renditioned</h3>
+    <p>Type: <code>f:renditioned</code></p>
+    <p>
+        Indicates that a Renditionable node has been renditioned.
+    </p>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td colspan="5">There are no custom properties for this feature.</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3>Stats Sum Counter</h3>
+    <p>Type: <code>f:stats-sum-counter</code></p>
+    <p>
+        Applied to an association to indicate that a statistics counter from one of end of the association
+        should be aggregated up into another counter on the other end of the association.
+    </p>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>fromCounter</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                The name of the counter from which a value should be drawn.
+            </td>
+        </tr>
+        <tr>
+            <td>toCounter</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                The name of the counter to which a value should be applied.
+            </td>
+        </tr>
+        <tr>
+            <td>from</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                Either <code>source</code> to indicate the source of the association or
+                <code>target></code> to indicate the target of the association.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3>Taggable</h3>
+    <p>Type: <code>f:taggable</code></p>
+    <p>
+        Indicates that a node supports tags.
+        <br/>
+        <br/>
+        By supporting tags, the node maintains a "tags" array as well as associations of type <code>a:has_tag</code>
+        that point to tag nodes.  The Cloud CMS framework automatically maintains a single tag node for each tag
+        and takes care to create and destroy associations to these tag nodes as tags are applied to source nodes
+        of type <code>f:taggable</code>.
+    </p>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>tags</td>
+            <td>array</td>
+            <td></td>
+            <td></td>
+            <td>
+                An array of text elements constituting the tags.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3>Thumbnailable</h3>
+    <p>Type: <code>f:thumbnailable</code></p>
+    <p>
+        Configures a node to automatically generate thumbnails for the node content or attachments.
+        <br/>
+        <br/>
+        With this feature applied, one or more thumbnail images will be generated based on the node's JSON or
+        attachment content.  These thumbnails can be of various sizes and are automatically generated when the
+        node's content is created, updated or deleted or its relevant attachment is updated.
+        <br/>
+        <br/>
+        Thumbnail generation is always synchronous.
+    </p>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{thumbnailId}</td>
+            <td>object</td>
+            <td></td>
+            <td></td>
+            <td>
+                You can have as many thumbnail configurations as you'd like provided that they're keyed uniquely.
+                <br/>
+                <br/>
+                Here is an example configuration with three different thumbnails, each sized differently and each in
+                a different output format.
+                <pre>
+                    "thumb500": {
+                        "mimetype": "image/png",
+                        "width": 500,
+                        "height": 500
+                    },
+                    "thumb300": {
+                        "mimetype": "image/gif",
+                        "width": 300,
+                        "height": 300
+                    },
+                    "thumb150": {
+                        "mimetype": "image/jpeg",
+                        "width": 150,
+                        "height": 150
+                    }
+                </pre>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3>Titled</h3>
+    <p>Type: <code>f:titled</code></p>
+    <p>
+        Simple feature that applies additional common properties to the JSON of a node for <code>title</code>
+        and <code>description</code>.
+    </p>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>title</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                The title of the node.
+            </td>
+        </tr>
+        <tr>
+            <td>description</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                The description of the node.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3>Titled</h3>
+    <p>Type: <code>f:titled</code></p>
+    <p>
+        Simple feature that applies additional common properties to the JSON of a node for <code>title</code>
+        and <code>description</code>.
+    </p>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>title</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                The title of the node.
+            </td>
+        </tr>
+        <tr>
+            <td>description</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                The description of the node.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3>Translation</h3>
+    <p>Type: <code>f:transaction</code></p>
+    <p>
+        Indicates this node contains the translated content of a "master node".
+        <br/>
+        <br/>
+        The master node is the original node.  This feature is applied to the node which contains the translation.
+        <br/>
+        <br/>
+        Note: This node will be pointed to from the master node via an <code>a:has_translation</code> association.
+        The <code>a:has_translation</code> association contains the <code>locale</code> and <code>edition</code>
+        as properties.
+    </p>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>translation-node-id</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                The node ID of the node that bears the translated content.
+            </td>
+        </tr>
+        <tr>
+            <td>locale</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                The locale key.
+            </td>
+        </tr>
+        <tr>
+            <td>edition</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                The edition of the translated value.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    TODO  -
+
+    f_translation.json
+
+</script>

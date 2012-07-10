@@ -196,6 +196,11 @@
                     "topic" : "association",
                     "title" : "Association"
                 },
+                {
+                    "id" : "sidebar-features",
+                    "topic" : "features",
+                    "title" : "Features"
+                },
 
 
 

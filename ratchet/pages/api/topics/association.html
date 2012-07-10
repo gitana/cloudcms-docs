@@ -1,7 +1,282 @@
 <script id="pageTemplate" type="text/x-jquery-tmpl">
+
     <h1>Association</h1>
+
+    <table class="table table-bordered table-striped">
+        <tbody>
+        <tr>
+            <td>Object Type</td>
+            <td><code>association</code></td>
+        </tr>
+        <tr>
+            <td>Container</td>
+            <td><code>repository</code></td>
+        </tr>
+        <tr>
+            <td>Supports</td>
+            <td>
+                <a href="#/api/attachments/${language}">Attachments</a>,
+                <a href="#/api/authorities/${language}">Authorities</a>,
+                <a href="#/api/permissions/${language}">Permissions</a>,
+                <a href="#/api/transfer/${language}">Transfer</a>
+            </td>
+        </tr>
+    </table>
+
     <p>
-        Coming Soon...
+        Associations are a special kind of node which is responsible for defining a relationship between two other
+        non-association nodes.  By all accounts, Associations are proper nodes.  You can create custom Types for
+        associations, define new attributes and override behaviors.  Associations are indexed and full-text
+        searchable.
+        <br/>
+        <br/>
+        Associations, on the other hand, do not bear permissions.  They are considered structural elements that provide
+        several meanings for the content in a branch:
     </p>
+    <ul>
+        <li>
+            The "linked" relationships between nodes.  These relationships can be broken by either party without
+            validating the integrity of either object.  An example is a "related items" relationship in a web site.
+            Suppose Product A points to Product B via a linked relationship.  If Product B is deleted, the association
+            is also deleted and no harm is done.
+        </li>
+        <li>
+            The "owned" relationships between nodes.  These relationships imply that one or both ends of the association
+            require the other end to exist and be valid in order for the entire structure to be valid.  An example is
+            a Book with multiple Chapters, where each Chapter has multiple Pages.  One way to model this is to think
+            of a Book as owning its Chapters.  And each Chapter owns its Pages.  If you were to delete a Page, you
+            would invalidate the Chapter (since its now missing pages).  And invalidating a Chapter would in turn
+            invalidate the entire Book.
+        </li>
+        <li>
+            Any other kind of relationship that you wish to model.  Since associations are nodes, you're free to define
+            custom metadata and custom server-side behaviors for your objects.  You might, for example, need to make
+            remote calls to a third-party service to determine the validity of the object model.
+        </li>
+    </ul>
+    <h2>Directionality</h2>
+    <p>
+        Each Association defines a <code>source</code> and a <code>target</code> node which are related together
+        via the association.  Associations also have a <code>directionality</code> field which defines the
+        direction of the association.  This field can have one of two values:
+    </p>
+    <ul>
+        <li><code>directed</code> - the association points from source to target</li>
+        <li><code>undirected</code> - the association points both from source to target and target to source</li>
+    </ul>
+    <p>
+        An undirected association gives equal merit to the idea that the association points from source to target
+        as from target to source.  This allows for a mutual relationship.
+        <br/>
+        <br/>
+        An example of a mutual (or undirected) relationship is a married couple.  A wife is married to her husband
+        and the husband is also married to his wife.  Both are convinced they're in a mutual relationship.
+        Except, of course, when he obsesses over football and forgets to the dishes.  Well...
+    </p>
+
+    <!-- CONFIGURATION -->
+    <h2>Configuration</h2>
+    <p>
+        Associations are Nodes and so any configuration properties for Nodes also apply to Associations.
+        However, there are a few additional system properties that Associations maintain.
+        <br/>
+        <br/>
+        As always, you're free to plug in your own custom properties as you see fit.
+        <br/>
+        <br/>
+        The following table presents you the system properties.
+    </p>
+    <h4>Node Properties</h4>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>source</td>
+            <td>text</td>
+            <td></td>
+            <td>Read-Only</td>
+            <td>
+                The source node ID.
+            </td>
+        </tr>
+        <tr>
+            <td>source_type</td>
+            <td>text</td>
+            <td></td>
+            <td>Read-Only</td>
+            <td>
+                The type (QName) of the source node.
+            </td>
+        </tr>
+        <tr>
+            <td>source_changeset</td>
+            <td>text</td>
+            <td></td>
+            <td>Read-Only</td>
+            <td>
+                The changeset ID of the source node.
+            </td>
+        </tr>
+        <tr>
+            <td>target</td>
+            <td>text</td>
+            <td></td>
+            <td>Read-Only</td>
+            <td>
+                The target node ID.
+            </td>
+        </tr>
+        <tr>
+            <td>target_type</td>
+            <td>text</td>
+            <td></td>
+            <td>Read-Only</td>
+            <td>
+                The type (QName) of the target node.
+            </td>
+        </tr>
+        <tr>
+            <td>target_changeset</td>
+            <td>text</td>
+            <td></td>
+            <td>Read-Only</td>
+            <td>
+                The changeset ID of the target node.
+            </td>
+        </tr>
+        <tr>
+            <td>directionality</td>
+            <td>text</td>
+            <td></td>
+            <td>Read-Only</td>
+            <td>
+                Either <code>directed</code> or <code>undirected</code>.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+
+
+    <!-- CREATE -->
+
+    <h2 id="create">Create an Association</h2>
+    <p>
+        You can create an arbitrary, untyped relationship between two nodes.  If you don't specify the type of
+        relationship, Cloud CMS uses the generic but much-esteemed <code>a:linked</code> association type.
+        <br/>
+        <br/>
+        Here's an example of a simple, generic association:
+    </p>
+    <div gadget="codesnippet" snippetId="create1"></div>
+    <p>
+        Of course, you're far better off if you give your associations a type.  By giving them a type, you add
+        some meaning to the association.  You define the type using association type definitions.  See the
+        section on Definitions for information on how to do this.
+        <br/>
+        <br/>
+        Let's revisit our book example from above.  Suppose we have an association type called
+        <code>custom:hasChapter</code>.  We can create an association like this:
+        <br/>
+        <br/>
+    </p>
+    <div gadget="codesnippet" snippetId="create2"></div>
+    <p>
+        What about undirected associations?  It's pretty easy.  Here is our marriage example from above:
+    </p>
+    <div gadget="codesnippet" snippetId="create3"></div>
+    <p>
+        Finally, what if you want to create an association to a target node.  This is the same operation but
+        looking at from the viewpoint of the target (rather than the source).  You can do that like this:
+    </p>
+    <div gadget="codesnippet" snippetId="create4"></div>
+
+
+
+    <!-- UPDATE -->
+
+    <h2 id="update">Update an Association</h2>
+    <p>
+        Associations are simply nodes.  We update them in exactly the same way that we update Nodes.
+    </p>
+    <div gadget="codesnippet" snippetId="update1"></div>
+
+
+
+    <!-- DELETE -->
+
+    <h2 id="delete">Delete an Association</h2>
+    <p>
+        You can delete an association just like you delete a node:
+    </p>
+    <div gadget="codesnippet" snippetId="delete1"></div>
+    <p>
+        Or you can simple delete an association just as you would delete a node:
+    </p>
+    <div gadget="codesnippet" snippetId="delete2"></div>
+
+
+
+
+    <!-- READ -->
+
+    <h2 id="read">Read an Association</h2>
+    <p>
+        You can read an association just like you read a Node.
+        For example, you can read the node by its ID or its QName:
+    </p>
+    <div gadget="codesnippet" snippetId="read1"></div>
+
+
+
+    <!-- LIST -->
+
+    <h2 id="list">List Associations</h2>
+    <p>
+        You can list the associations that connect a specific node.  Associations, from the perspective of a node,
+        are considered to be <code>OUTGOING</code> or <code>INCOMING</code>.
+        <br/>
+        <br/>
+        Here is an example of retrieving all associations that flow in or out of a node.
+    </p>
+    <div gadget="codesnippet" snippetId="list1"></div>
+    <p>
+        You can specify the association <code>type</code> and the <code>direction</code> that you're seeking.
+        Here is an example that retrieves any <code>INCOMING</code> associations of type "custom:hasChapter".
+    </p>
+    <div gadget="codesnippet" snippetId="list2"></div>
+    <p>
+        Finally, you can apply pagination to reduce the amount of traffic over the wire and enhance performance.
+    </p>
+    <div gadget="codesnippet" snippetId="list3"></div>
+
+
+
+
+    <!-- LIST INCOMING ASSOCIATIONS -->
+
+    <h2 id="list-incoming">List Incoming Associations</h2>
+    <p>
+        If you just want to retrieve a list of the incoming associations, you can use this shortcut:
+    </p>
+    <div gadget="codesnippet" snippetId="list-incoming1"></div>
+
+
+
+    <!-- LIST INCOMING ASSOCIATIONS -->
+
+    <h2 id="list-outgoing">List Outgoing Associations</h2>
+    <p>
+        If you just want to retrieve a list of the outgoing associations, you can use this shortcut:
+    </p>
+    <div gadget="codesnippet" snippetId="list-outgoing1"></div>
 
 </script>

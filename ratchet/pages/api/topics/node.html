@@ -1,7 +1,207 @@
 <script id="pageTemplate" type="text/x-jquery-tmpl">
     <h1>Node</h1>
+
+    <table class="table table-bordered table-striped">
+        <tbody>
+        <tr>
+            <td>Object Type</td>
+            <td><code>node</code></td>
+        </tr>
+        <tr>
+            <td>Container</td>
+            <td><code>repository</code></td>
+        </tr>
+        <tr>
+            <td>Supports</td>
+            <td>
+                <a href="#/api/attachments/${language}">Attachments</a>,
+                <a href="#/api/authorities/${language}">Authorities</a>,
+                <a href="#/api/permissions/${language}">Permissions</a>,
+                <a href="#/api/transfer/${language}">Transfer</a>
+            </td>
+        </tr>
+    </table>
+
     <p>
-        Coming Soon...
+        All of the content in your branch is stored as Nodes.  Nodes are vertexes in an arbitrarily structured
+        graph.  You store your content in Nodes and you relate Nodes to one another using Associations.
+        Associations are a special kind of Node that points from one non-association Node to another.
+        <br/>
+        <br/>
+        Nodes are also typed.  Every node you create takes on a type.  Types are identified by their QName which
+        is consists of a <code>prefix</code> and <code>local name</code>.  You don't have to provide types for your
+        Nodes if you don't want to.  If nothing is provided, the default node type of <code>n:node</code> is used.
     </p>
+
+    <!-- CONFIGURATION -->
+    <h2>Configuration</h2>
+    <p>
+        The node configuration contains system and custom properties.  You can write your own properties
+        as you see fit.  However, system properties should be left alone as they are read-only.
+        <br/>
+        <br/>
+        The following table presents you the system properties.
+    </p>
+    <h4>Node Properties</h4>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>        </thead>
+
+        <tbody>
+        <tr>
+            <td>_features</td>
+            <td>object</td>
+            <td></td>
+            <td>Read-Only</td>
+            <td>
+                This object contains all of the configuration for features which have been applied to this node
+                instance.  Feature configurations are keyed by feature QName.
+            </td>
+        </tr>
+        <tr>
+            <td>_qname</td>
+            <td>text</td>
+            <td></td>
+            <td>Read-Only</td>
+            <td>
+                The QName for this node instance.
+            </td>
+        </tr>
+        <tr>
+            <td>_type</td>
+            <td>text</td>
+            <td></td>
+            <td>Read-Only</td>
+            <td>
+                The QName for the type of this node.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <p>
+        Any system properties that are shown to be Read-Only are not modifiable on calls to <code>create()</code> or <code>update()</code>.
+        Anything else is fair game.
+    </p>
+
+    <!-- CREATE -->
+
+    <h2 id="create">Create a Node</h2>
+    <p>
+        You can create as many nodes in a branch as you like.  By default, nodes are empty JSON documents.  They
+        are also disconnected from any other nodes.
+        <br/>
+        <br/>
+        Creating a node is as simple as:
+    </p>
+    <div gadget="codesnippet" snippetId="create1"></div>
+    <p>
+        The example above creates an empty node.  We can also pass in JSON that we want to store onto the node.
+        <br/>
+        <br/>
+        Here is an example where we create an "album" node.  We store the title of the album, the artist who
+        recorded it and the year it was released.
+    </p>
+    <div gadget="codesnippet" snippetId="create2"></div>
+
+
+
+    <!-- UPDATE -->
+
+    <h2 id="update">Update a Node</h2>
+    <p>
+        You can update any of the non-system properties of a node.  You can also add your own custom properties.
+    </p>
+    <div gadget="codesnippet" snippetId="update1"></div>
+
+
+
+    <!-- DELETE -->
+
+    <h2 id="delete">Delete a Node</h2>
+    <p>
+        When you delete a node, the node is marked as deleted on the tip changeset.  Effectively, it is deleted,
+        however repositories allow you to restore (or rewind) in case you make a mistake.  Your previous edits and
+        versions of the node are preserved.
+        <br/>
+        <br/>
+        Here is an example of a node deletion:
+    </p>
+    <div gadget="codesnippet" snippetId="delete1"></div>
+
+
+
+
+    <!-- READ -->
+
+    <h2 id="read">Read a Node</h2>
+    <p>
+        You can read a node by its ID or its QName.
+    </p>
+    <div gadget="codesnippet" snippetId="read1"></div>
+
+
+
+    <!-- SEARCH -->
+
+    <h2 id="list">Search for Nodes</h2>
+    <p>
+        By default, all of nodes you put into a Cloud CMS branch are indexed for full-text search.  The JSON content
+        of your node is indexed as well as any attachments.  If you upload a PDF document, for example, Cloud CMS will
+        extract any tokens from the PDF document and make those searchable.
+        <br/>
+        <br/>
+        Thus, you have automatic full-text search for everything you drop into a Cloud CMS repository.
+        <br/>
+        <br/>
+        Here is an example of a simple full text search:
+    </p>
+    <div gadget="codesnippet" snippetId="search1"></div>
+    <p>
+        As you can imagine, the set of results can be pretty large.  You can utilize pagination to reduce the traffic
+        over the wire and enhance performance.
+    </p>
+    <div gadget="codesnippet" snippetId="search2"></div>
+    <p>
+        Cloud CMS utilizes <a target="_blank" href="http://www.elasticsearch.org/">Elastic Search</a> for full-text
+        search and indexing.  As such, you can write much more powerful full-text search queries against the JSON
+        of your documents.  The full JSON object is indexed.  Thus, you can utilize the
+        <a target="_blank" href="http://www.elasticsearch.org/guide/reference/query-dsl/">Elastic Search Query DSL</a>
+        to define more advanced queries.
+        <br/>
+        <br/>
+        Here is an example that uses the Elastic Search Query DSL and also applies some pagination:
+    </p>
+    <div gadget="codesnippet" snippetId="search3"></div>
+
+
+
+    <!-- QUERY -->
+
+    <h2 id="query">Query for Nodes</h2>
+    <p>
+        You can run custom queries against your nodes to find exactly what you're looking for.
+        Here is a query that looks for nodes whose field <code>artist</code> is <code>Mary Lou Lord</code>.
+    </p>
+    <div gadget="codesnippet" snippetId="query1"></div>
+    <p>
+        Here is that same query followed by an iteration over the result map.
+    </p>
+    <div gadget="codesnippet" snippetId="query2"></div>
+    <p>
+        Cloud CMS utilizes the MongoDB query syntax under the hood.  As such, you can really go to town.
+        You're able to express queries with some pretty rich complexity.
+        <br/>
+        <br/>
+        Here is a query that finds all albums created between the years 2002 and 2006.
+    </p>
+    <div gadget="codesnippet" snippetId="query3"></div>
+
+
 
 </script>

@@ -1,7 +1,356 @@
 <script id="pageTemplate" type="text/x-jquery-tmpl">
     <h1>Branch</h1>
+
+    <table class="table table-bordered table-striped">
+        <tbody>
+        <tr>
+            <td>Object Type</td>
+            <td><code>branch</code></td>
+        </tr>
+        <tr>
+            <td>Container</td>
+            <td><code>repository</code></td>
+        </tr>
+        <tr>
+            <td>Supports</td>
+            <td>
+                <a href="#/api/teams/${language}">Teams</a>,
+                <a href="#/api/authorities/${language}">Authorities</a>,
+                <a href="#/api/permissions/${language}">Permissions</a>,
+                <a href="#/api/transfer/${language}">Transfer</a>
+            </td>
+        </tr>
+    </table>
+
     <p>
-        Coming Soon...
+        A branch is a workspace for your content.  Each repository supports one or more branches.  You basically
+        create all of your content items in a branch.  This includes articles, blog posts, new items, documents,
+        Office files, PDFs, etc.  You name it.  They go into a branch.
+        <br/>
+        <br/>
+        You can have as many branches as you want.  Each branch is a completely isolated workspace.  Thus, you can
+        create your own branch for your own projects.  You can work on those projects and when you're happy with it,
+        you can share it with the rest of the team.
+        <br/>
+        <br/>
+        Or, you can create a branch and invite a bunch of people to work with you.  They're your own workspaces.
+        You can play with them however you want.
     </p>
+    <h2>Changesets and Branches</h2>
+    <p>
+        You can think of a branch in the same way as you might think of the tree of a branch.  Like that old Maple
+        tree in the backyard when you were a kid.  Remember that tree?  You used to climb it.  Then one day, you
+        fell out of it and now, pretty much, that's all you hear about when you go home for family reunions.
+        <br/>
+        <br/>
+        Anyway, yeah, so a branch is like a tree branch.  Each tree branch stems from a previous branch.  And branches
+        are made up of changesets.
+        <br/>
+        <br/>
+        A changeset is a bit like a layer from a transparency.  When you write content into a branch, it goes onto
+        a new changeset.  Every time you make a change, like when you update something or delete something, it also
+        goes onto a new changeset.  And so, in this way, branches grow in length.
+        <br/>
+        <br/>
+        Branches also maintain a "tip" view which is the sum total of all changes, creates, updates and deletes that
+        you make while working with the branch.  Thus, at all times, the full "changeset history" of everything
+        you've done is maintained but so is a "tip" view that gives you a real-time view of what is effectively a
+        top-most version of all your content.
+    </p>
+
+    <!-- CONFIGURATION -->
+    <h2>Configuration</h2>
+    <p>
+        The branch configuration contains system and custom properties.  You can write your own properties
+        onto this configuration document if you wish.  You might use those properties to query and retrieve the
+        branch at a later time.
+        <br/>
+        <br/>
+        Some system properties are read-only and others are writable.  You can adjust the writable properties
+        to modify the behavior and characteristics of the branch.
+        <br/>
+        <br/>
+        The following table presents you the system properties.
+    </p>
+    <h4>Branch Properties</h4>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>title</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                The title of the data store.
+            </td>
+        </tr>
+        <tr>
+            <td>description</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                A description for the data store.
+            </td>
+        </tr>
+        <tr>
+            <td>root</td>
+            <td>text</td>
+            <td></td>
+            <td>Read-Only</td>
+            <td>
+                The changeset ID that constitutes the root of this branch.
+            </td>
+        </tr>
+        <tr>
+            <td>readonly</td>
+            <td>boolean</td>
+            <td></td>
+            <td></td>
+            <td>
+                Whether this branch is marked as read-only.  If it is, then any create, delete or update
+                operations against content in this branch will fail.  Branches are often placed into a read-only
+                state once they are end-of-life'd.
+            </td>
+        </tr>
+        <tr>
+            <td>snapshot</td>
+            <td>boolean</td>
+            <td></td>
+            <td>Read-Only</td>
+            <td>
+                Whether this branch is a snapshot.  A snapshot is intended to produce a production-ready, non-writable
+                view of the repository for publication.
+            </td>
+        </tr>
+        <tr>
+            <td>frozen</td>
+            <td>boolean</td>
+            <td></td>
+            <td></td>
+            <td>
+                Whether this branch is a frozen.
+            </td>
+        </tr>
+        <tr>
+            <td>join-branch</td>
+            <td>text</td>
+            <td></td>
+            <td>Read-Only</td>
+            <td>
+                If this branch was joined with another branch to form a new branch, then this is the ID of the
+                new branch.
+            </td>
+        </tr>
+        <tr>
+            <td>root-branch</td>
+            <td>text</td>
+            <td></td>
+            <td>Read-Only</td>
+            <td>
+                If this branch was forked from another branch (which is the case for all branches other than the
+                <code>master</code> branch), then this is the ID of the branch from which this branch was forked.
+            </td>
+        </tr>
+        <tr>
+            <td>type</td>
+            <td>text</td>
+            <td></td>
+            <td>Read-Only</td>
+            <td>
+                The type of branch - either: <code>custom</code> or <code>master</code>.
+                <br/>
+                Only one branch will be marked as <code>master</code>.  Everything else is <code>custom</code>.
+            </td>
+        </tr>
+        <tr>
+            <td>tip</td>
+            <td>text</td>
+            <td></td>
+            <td>Read-Only</td>
+            <td>
+                The changeset ID that constitutes the tip of this branch.
+            </td>
+        </tr>
+        <tr>
+            <td>archives</td>
+            <td>array</td>
+            <td></td>
+            <td>Read-Only</td>
+            <td>
+                An array that describes archives that have been deployed to this branch.
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+    <p>
+        Any system properties that are shown to be Read-Only are not modifiable on calls to <code>create()</code> or <code>update()</code>.
+        Anything else is fair game.
+    </p>
+
+
+
+
+    <!-- CREATE -->
+
+    <h2 id="create">Create a Branch</h2>
+    <p>
+        You can create as many new branches as you'd like.  To create a branch, you simply need to specify the root
+        changeset for the new branch.  You can create a branch from any existing changeset.  The root changeset
+        identifies the point at which the new branch "branches off" from the old branch.
+    </p>
+    <div gadget="codesnippet" snippetId="create1"></div>
+    <p>
+        Here is an example where we create a branch that "branches off" from the master branch.
+    </p>
+
+
+
+    <!-- UPDATE -->
+
+    <h2 id="update">Update a Branch</h2>
+    <p>
+        You can update any of the non-system properties of a branch.  You can also add your own custom properties.
+    </p>
+    <div gadget="codesnippet" snippetId="update1"></div>
+
+
+
+    <!-- DELETE -->
+
+    <h2 id="delete">Delete a Branch</h2>
+    <p>
+        Branch deletion at present is not supported.  This will be coming in the future.
+        <br/>
+        <br/>
+        However, in its place, you can accomplish must of the same desired effect by marking a branch as "frozen".
+        Frozen branches are effectively disabled.
+    </p>
+
+    <h2 id="freeze">Freeze a Branch</h2>
+    <p>
+        You can mark a branch as frozen to indicate that no further work should occur on the branch.  A frozen branch
+        cannot be updated, written to, or deleted from.  New changesets cannot be added to the frozen branch.
+        Effectively, the branch is no longer permitted to grow in size.
+        <br/>
+        <br/>
+        In addition, frozen branches cannot be forked.  In other words, you cannot stem a new branch from a
+        frozen branch.
+        <br/>
+        <br/>
+        Here is an example of freezing a branch:
+    </p>
+    <div gadget="codesnippet" snippetId="freeze1"></div>
+    <p>
+        You are also able to unfreeze branches at any time which restores them to their normal operational state.
+    </p>
+
+    <h2 id="readonly">Mark a branch as read-only</h2>
+    <p>
+        Alternatively, you may simple want to mark a branch as read-only.  A read-only branch can still be utilized
+        but not create, update or deletion operations may be performed against it.  Read-only branches can be
+        forked.
+        <br/>
+        <br/>
+        Here is an example marking a branch as read-only:
+    </p>
+    <div gadget="codesnippet" snippetId="readonly1"></div>
+
+
+
+
+    <!-- READ -->
+
+    <h2 id="read">Read a Branch</h2>
+    <p>
+        You can read a branch by its ID.
+        <br/>
+        As a special case, you can retrieve the master branch by using the text <code>master</code>.
+    </p>
+    <div gadget="codesnippet" snippetId="read1"></div>
+
+
+
+    <!-- LIST -->
+
+    <h2 id="list">List Branches</h2>
+    <p>
+        You can retrieve a list of branches for your repository quite easily.
+        The following code hands back the full list.
+    </p>
+    <div gadget="codesnippet" snippetId="list1"></div>
+    <p>
+        You can then iterate over the list to pick at what you'd like.
+    </p>
+    <div gadget="codesnippet" snippetId="list2"></div>
+    <p>
+        Retrieving the full list is potentially an expensive operation, depending how many branches you have.
+        The more your retrieve, the more data goes over the wire and so forth.  Thus, you might wish to
+        <i>paginate</i> your call and retrieve a subset of the total list at a time.
+        <br/>
+        <br/>
+        Here is an example that retrieves in pages of size 10.
+        It starts on the second page (by skipping to starting index 20).
+        It also sorts by the <code>title</code> field in a descending sequence.
+    </p>
+    <div gadget="codesnippet" snippetId="list3"></div>
+    <p>
+        You don't have to have all of the pagination parameters (<code>limit</code>, <code>skip</code> and <code>sorting</code>).
+        You might only want to include one or two.  It's up to you.
+    </p>
+
+
+
+    <!-- QUERY -->
+
+    <h2 id="query">Query Branches</h2>
+    <p>
+        You can run custom queries against your branches to find exactly what you're looking for.
+        Here is a query that looks for branches whose field <code>department</code> is <code>"sales"</code>.
+    </p>
+    <div gadget="codesnippet" snippetId="query1"></div>
+    <p>
+        Here is that same query followed by an iteration over the result map.
+    </p>
+    <div gadget="codesnippet" snippetId="query2"></div>
+    <p>
+        Cloud CMS utilizes the MongoDB query syntax under the hood.  As such, you can really go to town.
+        You're able to express queries with some pretty rich complexity.
+        <br/>
+        <br/>
+        Here is a query that finds all branches created after July 4, 2012.
+    </p>
+    <div gadget="codesnippet" snippetId="query3"></div>
+    <p>
+        Finally, you can mix queries with pagination to reduce data over the wire and speed up performance.
+        Here is that same query with some pagination thrown in.  We limit to pages of size 10 and sort by <code>title</code>.
+    </p>
+    <div gadget="codesnippet" snippetId="query4"></div>
+
+
+
+    <!-- MOUNTS -->
+
+    <h2 id="mounts">List Mount Nodes</h2>
+    <p>
+        You can retrieve a list of mount nodes for a given branch.  Mount nodes are starting points for
+        container-based navigation of the node hierarchy.  You can designate specific container nodes as "mount points"
+        by associating them to the "root node" (with QName <code>r:root</code>) via an association type of
+        <code>a:has_mount</code>.
+        <br/>
+        <br/>
+        Here is a quick way to find them:
+    </p>
+    <div gadget="codesnippet" snippetId="mount-list1"></div>
 
 </script>

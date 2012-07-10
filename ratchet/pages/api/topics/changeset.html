@@ -1,7 +1,227 @@
 <script id="pageTemplate" type="text/x-jquery-tmpl">
     <h1>Changeset</h1>
+
+    <table class="table table-bordered table-striped">
+        <tbody>
+        <tr>
+            <td>Object Type</td>
+            <td><code>branch</code></td>
+        </tr>
+        <tr>
+            <td>Container</td>
+            <td><code>repository</code></td>
+        </tr>
+        <tr>
+            <td>Supports</td>
+            <td>
+                <a href="#/api/authorities/${language}">Authorities</a>,
+                <a href="#/api/permissions/${language}">Permissions</a>,
+                <a href="#/api/transfer/${language}">Transfer</a>
+            </td>
+        </tr>
+    </table>
+
     <p>
-        Coming Soon...
+        Cloud CMS automatically creates and maintains the state of the individual changesets that compose
+        your branches as you work with content.  A changeset is like a transparency for a visual projector.
+        When you write content into a branch (via a create, update or delete), the content is written onto a
+        changeset (or transparency).  That way, the things you worked on before are never affected.  They new updates
+        are just overlaid on top.
+        <br/>
+        <br/>
+        In this sense, a branch can be thought of as a stack of changesets.  There is a root changeset (where the
+        branch starts) and a tip changeset (where the branch ends).  Everything in-between constitutes the
+        changeset history of the branch.
+        <br/>
+        <br/>
+        This portion of the API therefore is largely for advanced users.  The Cloud CMS API lets you dig in
+        and poke around at the changeset history of branches to do things like discover what changes were introduced
+        on which changeset in the branch.
+        <br/>
+        <br/>
+        You probably don't need to do this unless you're building some really cool authoring or curation tools.
+        Cloud CMS provides applications out-of-the-box that hopefully let you do most of the heavy lifting
+        from an authoring viewpoint.  So most of these APIs are cool but probably not very commonly used.
     </p>
+    <h2>Changeset IDs</h2>
+    <p>
+        Most of the <code>_doc</code> identifiers for objects inside of Cloud CMS are GUIDs (globally unique IDs).
+        Changesets are a bit different.  Changeset IDs are stored in the <code>_doc</code> field but they have
+        a special structure which looks like this:
+    </p>
+    <p align="center">
+        <code>{revision}:{guid}</code>
+    </p>
+    <p>
+        As you write nodes into your branch, new changesets are layered into the branch.  One at a time.  Each
+        new changeset has an incremented revision and a brand new GUID.  Thus, the revision number always goes up
+        one integer at a time.
+        The changeset ID ends up looking something like this: <code>452:4b5b685c980c10f98beb</code>
+    </p>
+    <h2>Transactions</h2>
+    <p>
+        Changesets play an important role in transaction handling for writes onto branches.  When a transaction begins,
+        a new changeset is created.  All of the writes (creates, updates and deletes) which occur as part of the
+        transaction are committed to the database and flagged with the changeset.  Only once all the writes have
+        succeeded is the changeset flipped to an 'active' state.
+        <br/>
+        <br/>
+        If a transaction fails, the changeset is not flipped to an 'active' state.  Instead, the transaction rolls
+        back and the database state is cleaned up.
+        <br/>
+        <br/>
+        Only one changeset in a branch can be written to at a time.  Thus, if a transaction is started and another
+        thread running in your application attempts to write to the branch, it will be blocked and forced to wait
+        until the first thread completes.
+    </p>
+
+    <!-- CONFIGURATION -->
+    <h2>Configuration</h2>
+    <p>
+        The changeset configuration contains system and custom properties.  You can write your own properties
+        onto this configuration document if you wish.  However, as noted above, this should be exceedingly rare.
+        <br/>
+        <br/>
+        Some system properties are read-only and others are writable.  You can adjust the writable properties
+        to modify the behavior and characteristics of the branch.
+        <br/>
+        <br/>
+        The following table presents you the system properties.
+    </p>
+
+    <h4>Branch Properties</h4>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>revision</td>
+            <td>number</td>
+            <td></td>
+            <td>Read-Only</td>
+            <td>
+                The revision number.  This is the portion of the changeset ID before the ":".
+            </td>
+        </tr>
+        <tr>
+            <td>tags</td>
+            <td>text</td>
+            <td></td>
+            <td>Read-Only</td>
+            <td>
+                An array of text elements that tag the changeset.
+            </td>
+        </tr>
+        <tr>
+            <td>active</td>
+            <td>text</td>
+            <td></td>
+            <td>Read-Only</td>
+            <td>
+                Indicates whether the changeset has been successfully "committed" to the branch.
+                See the section on transations above.
+            </td>
+        </tr>
+        <tr>
+            <td>parents</td>
+            <td>array</td>
+            <td></td>
+            <td>Read-Only</td>
+            <td>
+                In the case of a merge, this is an text array that contains the IDs of any parent changesets which
+                were merged together underneath this changeset.
+            </td>
+        </tr>
+        <tr>
+            <td>branch</td>
+            <td>text</td>
+            <td></td>
+            <td>Read-Only</td>
+            <td>
+                The ID of the branch that this changeset sits within.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <p>
+        Any system properties that are shown to be Read-Only are not modifiable on calls to <code>create()</code> or <code>update()</code>.
+        Anything else is fair game.
+    </p>
+
+
+    <!-- READ -->
+
+    <h2 id="read">Read a Changeset</h2>
+    <p>
+        If you have the ID of a changeset, you can retrieve the individual changeset like this:
+    </p>
+    <div gadget="codesnippet" snippetId="read1"></div>
+
+    <!-- LIST CHANGESET PARENTS -->
+
+    <h2 id="list-parents">Retrieve Changeset Parents</h2>
+    <p>
+        Every changeset has at least one parent changeset.  The parent changeset is the previous changeset in the
+        sequence that composes the branch.  The only exception is the <code>0:root</code> changeset which is the first
+        changeset installed for any new repository.  The <code>0:root</code> changeset does not have a parent.
+        <br/>
+        <br/>
+        If a changeset is the changeset that "joins" two or more branches, then it may have multiple changeset
+        parents.
+        <br/>
+        <br/>
+        Here is an example that retrieves the parents of a changeset:
+    </p>
+    <div gadget="codesnippet" snippetId="list-parents1"></div>
+
+    <!-- LIST CHANGESET PARENTS -->
+
+    <h2 id="list-children">Retrieve Changeset Children</h2>
+    <p>
+        Every changeset has at least one child.  The child is the next changeset in the sequence that
+        composes the branch.  The only exception is the "tip" changeset of the branch.  The "tip" is the most
+        recent changeset applied to the branch.  It does not have children.
+        <br/>
+        <br/>
+        If a new branch has been forked from the current branch, then the changeset sitting at the point of the
+        fork may have multiple children.  One child may be the next changeset in the current branch.  And the other
+        child may be the first changeset in the new branch.
+        <br/>
+        <br/>
+        Here is an example that retrieves the children of a changeset:
+    </p>
+    <div gadget="codesnippet" snippetId="list-children1"></div>
+
+    <!-- LIST -->
+
+    <h2 id="create">List Changesets</h2>
+    <p>
+        You can retrieve a manual list of all of the changesets in the repository.  This call is potentially very
+        expensive.  For performance, it is recommended instead to query with pagination.
+        <br/>
+        <br/>
+        Here is an example that lists changesets and logs to console:
+    </p>
+    <div gadget="codesnippet" snippetId="list1"></div>
+
+    <!-- QUERY -->
+
+    <h2 id="query">Query Changesets</h2>
+    <p>
+        You can run custom queries against your changesets to find exactly what you're looking for.
+        Here is a query that looks for changesets that sit in a specific branch.
+    </p>
+    <div gadget="codesnippet" snippetId="query1"></div>
+    <p>
+        And here is an example that paginates instead of retrieving everything all at once:
+    </p>
+    <div gadget="codesnippet" snippetId="query2"></div>
 
 </script>
