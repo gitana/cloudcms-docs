@@ -1,0 +1,1 @@
+platform.createApplication().update().del();

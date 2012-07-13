@@ -1,0 +1,3 @@
+platform.queryApplications({
+    "country": "USA"
+});

@@ -1,6 +1,6 @@
 <script id="pageTemplate" type="text/x-jquery-tmpl">
 
-    <h1>Domain</h1>
+    <h1>Application</h1>
 
     <table class="table table-bordered table-striped">
         <tbody>
@@ -25,20 +25,20 @@
     </table>
 
     <p>
-        A domain is a data store where you can store users, groups and memberships.
+        A application is a data store where you can store users, groups and memberships.
     </p>
 
 
     <!-- CONFIGURATION -->
     <h2>Configuration</h2>
     <p>
-        As with all data stores, domains maintain a configuration document that contains system
+        As with all data stores, applications maintain a configuration document that contains system
         and custom properties.  You can write your own properties onto this configuration document if you wish.
-        You might use those properties to query and retrieve the domain at a later time.
+        You might use those properties to query and retrieve the application at a later time.
         <br/>
         <br/>
         Some system properties are read-only and others are writable.  You can adjust the writable properties
-        to modify the behavior and characteristics of the domain.
+        to modify the behavior and characteristics of the application.
         <br/>
         <br/>
         The following table presents you the system properties.
@@ -55,20 +55,20 @@
 
     <!-- CREATE -->
 
-    <h2 id="create">Create a Domain</h2>
+    <h2 id="create">Create an Application</h2>
     <p>
-        You can create an empty domain like this:
+        You can create an empty application like this:
     </p>
     <div gadget="codesnippet" snippetId="create1"></div>
 
     <p>
-        Or you can pass in configuration which will be applied to the domain.  You can pass in
-        any properties you'd like.  These properties will become part of the domain configuration and you
+        Or you can pass in configuration which will be applied to the application.  You can pass in
+        any properties you'd like.  These properties will become part of the application configuration and you
         can utilize that however you'd like.
     </p>
     <div gadget="codesnippet" snippetId="create2"></div>
     <p>
-        Here is an example where we create a domain and then immediately display a property and then update it.
+        Here is an example where we create an application and then immediately display a property and then update it.
     </p>
     <div gadget="codesnippet" snippetId="create3"></div>
 
@@ -76,13 +76,13 @@
 
     <!-- UPDATE -->
 
-    <h2 id="update">Update a Domain</h2>
+    <h2 id="update">Update an Application</h2>
     <p>
-        To update a domain, you just adjust its properties and then tell the server to update.
+        To update an application, you just adjust its properties and then tell the server to update.
     </p>
     <div gadget="codesnippet" snippetId="update1"></div>
     <p>
-        Here is an example that creates a domain and then immediately updates it.
+        Here is an example that creates an application and then immediately updates it.
     </p>
     <div gadget="codesnippet" snippetId="update2"></div>
 
@@ -90,9 +90,9 @@
 
     <!-- DELETE -->
 
-    <h2 id="delete">Delete a Domain</h2>
+    <h2 id="delete">Delete an Application</h2>
     <p>
-        Once you delete a domain, it's gone for good.
+        Once you delete an application, it's gone for good.
         If you're not sure whether you'll need it again in the future, you might want to archive it first.
         <br/>
         <br/>
@@ -109,15 +109,15 @@
 
     <!-- READ -->
 
-    <h2 id="read">Read a Domain</h2>
+    <h2 id="read">Read an Application</h2>
     <p>
-        Reading a domain is really quite simple provided that you know what you're looking for.
-        You retrieve domains by their ID - the <code>_doc</code> field.
+        Reading an application is really quite simple provided that you know what you're looking for.
+        You retrieve applications by their ID - the <code>_doc</code> field.
     </p>
     <div gadget="codesnippet" snippetId="read1"></div>
     <p>
-        Granted, in many cases you won't know the domain ID off-hand.  You'll likely need to look up the
-        domain ID ahead of time by some other means.  Read further on this page for examples of how you
+        Granted, in many cases you won't know the application ID off-hand.  You'll likely need to look up the
+        application ID ahead of time by some other means.  Read further on this page for examples of how you
         can do this.
     </p>
 
@@ -125,9 +125,9 @@
 
     <!-- LIST -->
 
-    <h2 id="list">List Domains</h2>
+    <h2 id="list">List Applications</h2>
     <p>
-        You can retrieve a list of domains for your platform quite easily.
+        You can retrieve a list of applications for your platform quite easily.
         The following code hands back the full list.
     </p>
     <div gadget="codesnippet" snippetId="list1"></div>
@@ -136,7 +136,7 @@
     </p>
     <div gadget="codesnippet" snippetId="list2"></div>
     <p>
-        Retrieving the full list is potentially an expensive operation, depending how many domains you have.
+        Retrieving the full list is potentially an expensive operation, depending how many applications you have.
         The more your retrieve, the more data goes over the wire and so forth.  Thus, you might wish to
         <i>paginate</i> your call and retrieve a subset of the total list at a time.
         <br/>
@@ -155,10 +155,10 @@
 
     <!-- QUERY -->
 
-    <h2 id="query">Query Domains</h2>
+    <h2 id="query">Query Applications</h2>
     <p>
-        You can run custom queries against your domains to find exactly what you're looking for.
-        Here is a query that looks for domains whose field <code>country</code> is <code>"USA"</code>.
+        You can run custom queries against your applications to find exactly what you're looking for.
+        Here is a query that looks for applications whose field <code>country</code> is <code>"USA"</code>.
     </p>
     <div gadget="codesnippet" snippetId="query1"></div>
     <p>
@@ -170,7 +170,7 @@
         You're able to express queries with some pretty rich complexity.
         <br/>
         <br/>
-        Here is a query that finds all domains created after July 4, 2012.
+        Here is a query that finds all applications created after July 4, 2012.
     </p>
     <div gadget="codesnippet" snippetId="query3"></div>
     <p>

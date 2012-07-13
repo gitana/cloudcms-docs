@@ -68,6 +68,11 @@
                     "header" : true
                 },
                 {
+                    "id" : "sidebar-application",
+                    "topic" : "application",
+                    "title" : "Application"
+                },
+                {
                     "id" : "sidebar-registration",
                     "topic" : "registration",
                     "title" : "Registration"
