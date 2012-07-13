@@ -1,7 +1,228 @@
 <script id="pageTemplate" type="text/x-jquery-tmpl">
+
     <h1>Billing Provider Configuration</h1>
+
+    <table class="table table-bordered table-striped">
+        <tbody>
+        <tr>
+            <td>Type</td>
+            <td>Object</td>
+        </tr>
+        <tr>
+            <td>Supports</td>
+            <td>
+                <a href="#/api/authorities/${language}">Authorities</a>,
+                <a href="#/api/permissions/${language}">Permissions</a>,
+                <a href="#/api/transfer/${language}">Transfer</a>
+            </td>
+        </tr>
+    </table>
+
     <p>
-        Coming Soon...
+        Cloud CMS provides integration with billing providers
+        (such as <a href="https://www.braintreepayments.com">Braintree Payments</a>) so that you can provide
+        subscription-level billing for your sub-tenants.  This billing may include base subscription prices,
+        discounts and addons.  It also may include <i>metered billing</i> in which your tenants are billed at
+        the end of a plan's billing period for any accumulated storage or data transfer.
+        <br/>
+        <br/>
+        If this sounds familiar, it's because it's exactly what Cloud CMS uses to supports its own subscription
+        plans for Cloud CMS customers.  Just as we bill our customers for metered usage of the platform, you are
+        free to pass those costs downstream to your own clients.  And you can use the very same technical
+        capabilities and facilities to do so.
+        <br/>
+        <br/>
+        Cloud CMS offers billing provider integration that is compatible with the APIs and client libraries made
+        available by the billing providers themselves.  These billing providers will issue you some credentials
+        (such as a public/private key and a merchant account id).  You can use those on your own, in your own code
+        and in your own products.  However, you can also plug those values into Cloud CMS and Cloud CMS can manage
+        the platform-level billing for you.
+        <br/>
+        <br/>
+        A Billing Provider Configuration is a place where you store those values.  Each Billing Provider Configuration
+        will differ slightly depending on what the individual billing provider needs to store.
+        <br/>
+        <br/>
+        We will be adding more billing provider support as it is requested.
     </p>
+
+
+    <!-- CONFIGURATION -->
+    <h2>Configuration</h2>
+    <p>
+        Billing Provider Configurations will vary from provider to provider, however there are some properties which
+        are in common among all of them.  Those properties along with any custom properties by provider type
+        are shown below:
+    </p>
+    <h3>Common Properties</h3>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>key</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                A friendly ID for identifying the billing provider configuration.  This can be any text you'd like.
+                You can retrieve Billing Provider Configurations either by their IDs or this key value.
+            </td>
+        </tr>
+        <tr>
+            <td>providerId</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                The type of the provider that this configuration is for.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <h2>Braintree Payments Provider</h2>
+    <table class="table table-bordered table-striped">
+        <tbody>
+        <tr>
+            <td>Type</td>
+            <td><code>braintree</code></td>
+        </tr>
+    </table>
+    <h3>Configuration Settings</h3>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>environment</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                Either <code>SANDBOX</code> or <code>PRODUCTION</code>.
+            </td>
+        </tr>
+        <tr>
+            <td>merchantId</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                Your Braintree-issued merchant id.
+            </td>
+        </tr>
+        <tr>
+            <td>publicKey</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                Your Braintree-issued public key.
+            </td>
+        </tr>
+        <tr>
+            <td>privateKey</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                Your Braintree-issued private key.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h2 id="create">Create a Billing Provider Configuration</h2>
+    <p>
+        You can create as many billing provider configurations as you would like.  Billing Provider Configurations
+        are stored within your platform and are used by your platform's registrar data stores to handle subscriptions
+        for any tenants contained therein.
+        <br/>
+        <br/>
+        As such, you probably won't have too many billing provider configurations but you might have multiple if, for
+        example, you wish to switch between test and production configurations.
+        <br/>
+        <br/>
+        Here is an example that creates a configuration for Braintree Payments.
+    </p>
+    <div gadget="codesnippet" snippetId="create1"></div>
+
+    <h2 id="update">Update a Billing Provider Configuration</h2>
+    <p>
+        There's really nothing to it.  You can modify the properties of your billing provider configuration
+        as you see fit.
+    </p>
+    <div gadget="codesnippet" snippetId="update1"></div>
+
+    <h2 id="delete">Delete a Billing Provider Configuration</h2>
+    <p>
+        You can delete billing provider configurations as you wish.  If a billing provider configuration is presently
+        in use by a registrar, this will throw back at you (a good thing).
+    </p>
+    <div gadget="codesnippet" snippetId="delete1"></div>
+
+    <h2 id="read">Read a Billing Provider Configuration</h2>
+    <p>
+        You can read a Billing Provider Configuration by its <code>_doc</code> ID field or by its <code>key</code>
+        field.
+    </p>
+    <div gadget="codesnippet" snippetId="read1"></div>
+
+    <h2 id="list">List Billing Provider Configurations</h2>
+    <p>
+        You can retrieve a list of Billing Provider Configurations for your platform quite easily.
+        The following code hands back the full list.
+    </p>
+    <div gadget="codesnippet" snippetId="list1"></div>
+    <p>
+        You can then iterate over the list to pick at what you'd like.
+    </p>
+    <div gadget="codesnippet" snippetId="list2"></div>
+    <p>
+        Retrieving the full list is potentially an expensive operation, depending how many items you have.
+        The more your retrieve, the more data goes over the wire and so forth.  Thus, you might wish to
+        <i>paginate</i> your call and retrieve a subset of the total list at a time.
+        <br/>
+        <br/>
+        Here is an example that retrieves in pages of size 10.
+        It starts on the second page (by skipping to starting index 20).
+        It also sorts by the <code>title</code> field in a descending sequence.
+    </p>
+    <div gadget="codesnippet" snippetId="list3"></div>
+    <p>
+        You don't have to have all of the pagination parameters (<code>limit</code>, <code>skip</code> and <code>sorting</code>).
+        You might only want to include one or two.  It's up to you.
+    </p>
+
+    <h2 id="query">Query Billing Provider Configurations</h2>
+    <p>
+        You can run custom queries against your Billing Provider Configurations to find exactly what you're looking for.
+        Here is a query that looks for Billing Provider Configurations for "braintree".
+    </p>
+    <div gadget="codesnippet" snippetId="query1"></div>
+    <p>
+        Here is that same query followed by an iteration over the result map.
+    </p>
+    <div gadget="codesnippet" snippetId="query2"></div>
+    <p>
+        Finally, you can mix queries with pagination to reduce data over the wire and speed up performance.
+        Here is that same query with some pagination thrown in.
+        We limit to pages of size 10 and sort by <code>title</code>.
+    </p>
+    <div gadget="codesnippet" snippetId="query3"></div>
 
 </script>
