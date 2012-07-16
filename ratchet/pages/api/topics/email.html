@@ -1,7 +1,314 @@
 <script id="pageTemplate" type="text/x-jquery-tmpl">
+
     <h1>Email</h1>
+
+    <table class="table table-bordered table-striped">
+        <tbody>
+        <tr>
+            <td>Type</td>
+            <td>Object</td>
+        </tr>
+        <tr>
+            <td>Supports</td>
+            <td>
+                <a href="#/api/authorities/${language}">Authorities</a>,
+                <a href="#/api/permissions/${language}">Permissions</a>,
+                <a href="#/api/transfer/${language}">Transfer</a>
+            </td>
+        </tr>
+    </table>
+
     <p>
-        Coming Soon...
+        Cloud CMS lets your application code create and send emails using online email providers (such as Google Mail
+        or your own personal email server).
+        <br/>
+        <br/>
+        You can create as many emails as you'd like.  Email objects can be queried and retrieved for inspection.
+        Emails automatically track opens and clicks on links embedded in the body of the emai.
     </p>
+
+    <!-- CONFIGURATION -->
+    <h2>Configuration</h2>
+    <p>
+        Emails maintain a configuration that you can adjust or consult as you create, update and query for them.
+        <br/>
+        <br/>
+        The following table presents you the configuration properties.
+    </p>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>to</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                The email addresses of the recipients (comma-delimited)
+            </td>
+        </tr>
+        <tr>
+            <td>body</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                The body of the email.
+            </td>
+        </tr>
+        <tr>
+            <td>from</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                The email address of the sender.
+            </td>
+        </tr>
+        <tr>
+            <td>subject</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                The subject of the email.
+            </td>
+        </tr>
+        <tr>
+            <td>cc</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                The email addresses to be carbon-copied (CC) (comma-delimited)
+            </td>
+        </tr>
+        <tr>
+            <td>bcc</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                The email addresses to be blind carbon-copied (BCC) (comma-delimited)
+            </td>
+        </tr>
+        <tr>
+            <td>replyTo</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                The reply-to email address.
+            </td>
+        </tr>
+        <tr>
+            <td>sent</td>
+            <td>boolean</td>
+            <td></td>
+            <td></td>
+            <td>
+                Whether the email was sent.
+            </td>
+        </tr>
+        <tr>
+            <td>sentBy</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                Who sent the email.
+            </td>
+        </tr>
+        <tr>
+            <td>sentOn</td>
+            <td>timestamp</td>
+            <td></td>
+            <td></td>
+            <td>
+                When the email was sent.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <p>
+        In addition, the email service optionally allows you to dispatch emails to Domain Users or Domain Groups.
+        Domain Users have their own <code>email</code> fields which will determine the address to which the email is
+        sent.
+        <br/>
+        <br/>
+        If you send to a Domain Group, all direct members of the group will receive the email.
+    </p>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>toDomainId</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                If you wish to send this email to a specific domain principal, this points to the principal's domain.
+            </td>
+        </tr>
+        <tr>
+            <td>toPrincipalId</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                If you wish to send this email to a specific domain principal, this points to the principal.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <p>
+        Emails can also utilize the contents of a Repository Node to load its body.  This allows you to store
+        and collaborate upon email templates within a Branch.
+    </p>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>bodyRepositoryId</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                The <code>_doc</code> ID of the repository.
+            </td>
+        </tr>
+        <tr>
+            <td>bodyBranchId</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                The <code>_doc</code> ID of the branch.
+            </td>
+        </tr>
+        <tr>
+            <td>bodyNodeId</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                The <code>_doc</code> ID of the node.
+            </td>
+        </tr>
+        <tr>
+            <td>bodyAttachmentId</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                The name of the attachment (example: <code>default</code>)
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h2 id="create">Create an Email</h2>
+    <p>
+        When you create an email, it gets stored within Cloud CMS.  You can make adjustments to the email as you see
+        fit.  You can then send it at some point in the future.
+        <br/>
+        <br/>
+        Here is a simple example where we create a basic email:
+    </p>
+    <div gadget="codesnippet" snippetId="create1"></div>
+
+    <h2 id="update">Update a Email</h2>
+    <p>
+        You can update properties on an email:
+    </p>
+    <div gadget="codesnippet" snippetId="update1"></div>
+
+    <h2 id="delete">Delete an Email</h2>
+    <p>
+        You can delete emails just as you would any other object.  However, if an email has already been sent, deleting
+        it will not cause the email to be unsent (that much should be obvious).
+    </p>
+    <div gadget="codesnippet" snippetId="delete1"></div>
+
+    <h2 id="read">Read an Email</h2>
+    <p>
+        You can read an Email by its <code>_doc</code> ID field.
+    </p>
+    <div gadget="codesnippet" snippetId="read1"></div>
+
+    <h2 id="list">List Emails</h2>
+    <p>
+        You can retrieve a list of Emails for your application.
+        The following code hands back the full list.
+    </p>
+    <div gadget="codesnippet" snippetId="list1"></div>
+    <p>
+        You can then iterate over the list to pick at what you'd like.
+    </p>
+    <div gadget="codesnippet" snippetId="list2"></div>
+    <p>
+        Retrieving the full list is potentially an expensive operation, depending how many items you have.
+        The more your retrieve, the more data goes over the wire and so forth.  Thus, you might wish to
+        <i>paginate</i> your call and retrieve a subset of the total list at a time.
+        <br/>
+        <br/>
+        Here is an example that retrieves in pages of size 10.
+        It starts on the second page (by skipping to starting index 20).
+        It also sorts by the <code>title</code> field in a descending sequence.
+    </p>
+    <div gadget="codesnippet" snippetId="list3"></div>
+    <p>
+        You don't have to have all of the pagination parameters (<code>limit</code>, <code>skip</code> and <code>sorting</code>).
+        You might only want to include one or two.  It's up to you.
+    </p>
+
+    <h2 id="query">Query Emails</h2>
+    <p>
+        You can run custom queries against your Emails to find exactly what you're looking for.
+        Here is a query that looks for Emails which are disabled.
+    </p>
+    <div gadget="codesnippet" snippetId="query1"></div>
+    <p>
+        Here is that same query followed by an iteration over the result map.
+    </p>
+    <div gadget="codesnippet" snippetId="query2"></div>
+    <p>
+        Finally, you can mix queries with pagination to reduce data over the wire and speed up performance.
+        Here is that same query with some pagination thrown in.
+        We limit to pages of size 10 and sort by <code>title</code>.
+    </p>
+    <div gadget="codesnippet" snippetId="query3"></div>
+
+    <h2 id="send">Send an Email</h2>
+    <p>
+        If you've created an Email Provider and an Email, you can then send the email by identify the email provider.
+    </p>
+    <div gadget="codesnippet" snippetId="send1"></div>
 
 </script>

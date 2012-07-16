@@ -1,0 +1,205 @@
+<script id="pageTemplate" type="text/x-jquery-tmpl">
+
+    <h1>Email Provider</h1>
+
+    <table class="table table-bordered table-striped">
+        <tbody>
+        <tr>
+            <td>Type</td>
+            <td>Object</td>
+        </tr>
+        <tr>
+            <td>Supports</td>
+            <td>
+                <a href="#/api/authorities/${language}">Authorities</a>,
+                <a href="#/api/permissions/${language}">Permissions</a>,
+                <a href="#/api/transfer/${language}">Transfer</a>
+            </td>
+        </tr>
+    </table>
+
+    <p>
+        An Email Provider defines the connectivity to a mail server that you would like your application to interact with
+        as it sends and receives emails.  A mail server might be a mail server that you run on-premise or it might be a
+        cloud-hosted offering (such as through Google Mail, GoDaddy or Hotmail).
+        <br/>
+        <br/>
+        In this document, we'll assume Google Mail as a mail server and offer configuration samples for it.  You can tweak
+        these for your own mail server.  Or, if you need assistance, simply let us know and we can help you tweak and
+        configure for your environment.
+    </p>
+
+    <!-- CONFIGURATION -->
+    <h2>Configuration</h2>
+    <p>
+        Email Providers maintain a configuration that you can adjust or consult as you create, update and query for them.
+        <br/>
+        <br/>
+        The following table presents you the configuration properties.
+    </p>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>host</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                The host address of the email server.
+                <br/>
+                Example: <i>smtp.gmail.com</i>
+            </td>
+        </tr>
+        <tr>
+            <td>port</td>
+            <td>number</td>
+            <td></td>
+            <td></td>
+            <td>
+                The connection port on the email server.
+                <br/>
+                Example: <i>25</i>
+            </td>
+        </tr>
+        <tr>
+            <td>username</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                The username to use for authentication (if required).
+            </td>
+        </tr>
+        <tr>
+            <td>password</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                The password to use for authentication (if required).
+            </td>
+        </tr>
+        <tr>
+            <td>smtp_enabled</td>
+            <td>boolean</td>
+            <td></td>
+            <td></td>
+            <td>
+                Whether SMTP is enabled.
+            </td>
+        </tr>
+        <tr>
+            <td>smtp_requires_auth</td>
+            <td>boolean</td>
+            <td></td>
+            <td></td>
+            <td>
+                Whether the mail server requires authentication.
+            </td>
+        </tr>
+        <tr>
+            <td>smtp_is_secure</td>
+            <td>boolean</td>
+            <td></td>
+            <td></td>
+            <td>
+                Whether to connect to the mail server via secure socket.
+            </td>
+        </tr>
+        <tr>
+            <td>smtp_starttls_enabled</td>
+            <td>boolean</td>
+            <td></td>
+            <td></td>
+            <td>
+                Wheter START_TLS is enabled.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h2 id="create">Create an Email Provider</h2>
+    <p>
+        You can create as many email providers as you'd like.  You will need to reference these email providers when
+        you choose to send or receive email.
+        <br/>
+        <br/>
+        Here's a simple example where we create an email provider:
+    </p>
+    <div gadget="codesnippet" snippetId="create1"></div>
+    <p>
+        Here's a full example for Google Mail:
+    </p>
+    <div gadget="codesnippet" snippetId="create2"></div>
+
+    <h2 id="update">Update an Email Provider</h2>
+    <p>
+        To update, all you have to do is make changes to your Email Provider and fire away.
+    </p>
+    <div gadget="codesnippet" snippetId="update1"></div>
+
+    <h2 id="delete">Delete an Email Provider</h2>
+    <p>
+        It doesn't get much simpler than this:
+    </p>
+    <div gadget="codesnippet" snippetId="delete1"></div>
+
+    <h2 id="read">Read an Email Provider</h2>
+    <p>
+        You can read a Email Provider by its <code>_doc</code> ID field.
+    </p>
+    <div gadget="codesnippet" snippetId="read1"></div>
+
+    <h2 id="list">List Email Providers</h2>
+    <p>
+        You can retrieve a list of Email Providers for your platform quite easily.
+        The following code hands back the full list.
+    </p>
+    <div gadget="codesnippet" snippetId="list1"></div>
+    <p>
+        You can then iterate over the list to pick at what you'd like.
+    </p>
+    <div gadget="codesnippet" snippetId="list2"></div>
+    <p>
+        Retrieving the full list is potentially an expensive operation, depending how many items you have.
+        The more your retrieve, the more data goes over the wire and so forth.  Thus, you might wish to
+        <i>paginate</i> your call and retrieve a subset of the total list at a time.
+        <br/>
+        <br/>
+        Here is an example that retrieves in pages of size 10.
+        It starts on the second page (by skipping to starting index 20).
+        It also sorts by the <code>title</code> field in a descending sequence.
+    </p>
+    <div gadget="codesnippet" snippetId="list3"></div>
+    <p>
+        You don't have to have all of the pagination parameters (<code>limit</code>, <code>skip</code> and <code>sorting</code>).
+        You might only want to include one or two.  It's up to you.
+    </p>
+
+    <h2 id="query">Query Email Providers</h2>
+    <p>
+        You can run custom queries against your Email Providers to find exactly what you're looking for.
+        Here is a query that looks for Email Providers that point to the host <code>smtp.gmail.com</code>.
+    </p>
+    <div gadget="codesnippet" snippetId="query1"></div>
+    <p>
+        Here is that same query followed by an iteration over the result map.
+    </p>
+    <div gadget="codesnippet" snippetId="query2"></div>
+    <p>
+        Finally, you can mix queries with pagination to reduce data over the wire and speed up performance.
+        Here is that same query with some pagination thrown in.
+        We limit to pages of size 10 and sort by <code>title</code>.
+    </p>
+    <div gadget="codesnippet" snippetId="query3"></div>
+
+</script>

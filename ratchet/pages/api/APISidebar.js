@@ -73,14 +73,19 @@
                     "title" : "Application"
                 },
                 {
-                    "id" : "sidebar-registration",
-                    "topic" : "registration",
-                    "title" : "Registration"
-                },
-                {
                     "id" : "sidebar-email",
                     "topic" : "email",
                     "title" : "Email"
+                },
+                {
+                    "id" : "sidebar-emailprovider",
+                    "topic" : "emailprovider",
+                    "title" : "Email Provider"
+                },
+                {
+                    "id" : "sidebar-registration",
+                    "topic" : "registration",
+                    "title" : "Registration"
                 },
                 {
                     "id" : "sidebar-settings",
