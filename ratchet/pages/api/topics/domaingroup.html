@@ -1,7 +1,258 @@
 <script id="pageTemplate" type="text/x-jquery-tmpl">
+
     <h1>Domain Group</h1>
+
+    <table class="table table-bordered table-striped">
+        <tbody>
+        <tr>
+            <td>Type</td>
+            <td>Object</td>
+        </tr>
+        <tr>
+            <td>Supports</td>
+            <td>
+                <a href="#/api/authorities/${language}">Authorities</a>,
+                <a href="#/api/permissions/${language}">Permissions</a>,
+                <a href="#/api/transfer/${language}">Transfer</a>
+            </td>
+        </tr>
+    </table>
+
     <p>
-        Coming Soon...
+        A Domain Group is a principal that collects together zero or more Domain Principals into a common organizational
+        unit (such as a department or a team).  Domain Groups can collect together both users and other groups.  And since
+        groups may contain other groups, Domain Groups are primary components of the membership hierarchy.  They may
+        describe either branches or leaves of the hierarchy tree.
+        <br/>
+        <br/>
+        The Cloud CMS authority and permission systems utilize the membership hierarchy to determine the full set of
+        authorities that a user has been granted against an object or data store.  If a group is granted an authority,
+        then the members of that group inherit the grants.  This inheritance propagates down the chain until
+        all of the child nodes are affected.
     </p>
+
+
+    <!-- CONFIGURATION -->
+    <h2>Configuration</h2>
+    <p>
+        Domain Groups maintain a configuration that you can adjust or consult as you create, update and query for them.
+        <br/>
+        <br/>
+        The following table presents you the configuration properties.
+    </p>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>name</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td>
+                The name (i.e. the user id or account name) for the principal.  This can be any text that you
+                like.  However, it must be unique across all users in the domain.  For example, you cannot have two
+                users in the domain with the name "joe".
+            </td>
+        </tr>
+        <tr>
+            <td>type</td>
+            <td>text</td>
+            <td></td>
+            <td>Read-Only</td>
+            <td>
+                The type of principal - either <code>USER</code> or <code>GROUP</code>.
+                This value is auto-populated upon creation.
+            </td>
+        </tr>
+        <tr>
+            <td>authorities</td>
+            <td>array</td>
+            <td>[]</td>
+            <td></td>
+            <td>
+                An array of text describing the authorities that this user should be granted.  This is customizable
+                for your own use and describes server-scoped authorities.  Cloud CMS does not use this array for
+                any of its internal authority calculations against objects or data stores.
+
+                <br/>
+                <br/>
+
+                Cloud CMS makes this available for use with such frameworks as Spring Security or Ruby on Rails
+                where the list of authorities can be consulted to determine rights against specific controllers
+                or services at invocation time.
+            </td>
+        </tr>
+    </table>
+
+
+
+
+    <h2 id="create">Create a Domain Group</h2>
+    <p>
+        You create a Domain Group by passing in a configuration object that contains, at minimum, the
+        <code>name</code> of the group being created.  The <code>name</code> of the group must be unique across all
+        principals in the domain.  You cannot have two groups with the same <code>name</code> in the same domain.
+        Similarly, you cannot have a user and a group with the same <code>name</code> in the same domain.
+        <br/>
+        <br/>
+        Here is how you create a Domain Group:
+    </p>
+    <div gadget="codesnippet" snippetId="create1"></div>
+    <p>
+        You can provide additional properties and also custom properties at the point of creation.
+        Here is an example of you'd do that:
+    </p>
+    <div gadget="codesnippet" snippetId="create2"></div>
+
+
+
+
+    <h2 id="update">Update a Domain Group</h2>
+    <p>
+        To update, all you have to do is make changes to your Domain Group and fire away.
+    </p>
+    <div gadget="codesnippet" snippetId="update1"></div>
+    <p>
+        You can update any property you'd like from the domain group except for the <code>type</code>.  You cannot
+        switch a group into a user or vice-versa.  While both Domain Groups and Domain Users are Domain Principals,
+        they're not interchangeable.
+    </p>
+
+
+
+
+    <h2 id="delete">Delete a Domain Group</h2>
+    <p>
+        You can delete a Domain Group at any time provided that the group does not have any members.  An error
+        will be raised if you attempt to delete a group that has members.
+        <br/>
+        <br/>
+        Here is an example of group deletion:
+    </p>
+    <div gadget="codesnippet" snippetId="delete1"></div>
+
+
+
+    <h2 id="read">Read a Domain Group</h2>
+    <p>
+        You can read a Domain Group by its <code>_doc</code> ID field.
+    </p>
+    <div gadget="codesnippet" snippetId="read1"></div>
+
+
+
+
+    <h2 id="list">List Domain Groups</h2>
+    <p>
+        You can retrieve a list of Domain Groups for your domain quite easily.
+        The following code hands back the full list.
+    </p>
+    <div gadget="codesnippet" snippetId="list1"></div>
+    <p>
+        You can then iterate over the list to pick at what you'd like.
+    </p>
+    <div gadget="codesnippet" snippetId="list2"></div>
+    <p>
+        Retrieving the full list is potentially an expensive operation, depending how many items you have.
+        The more your retrieve, the more data goes over the wire and so forth.  Thus, you might wish to
+        <i>paginate</i> your call and retrieve a subset of the total list at a time.
+        <br/>
+        <br/>
+        Here is an example that retrieves in pages of size 10.
+        It starts on the second page (by skipping to starting index 20).
+        It also sorts by the <code>title</code> field in a descending sequence.
+    </p>
+    <div gadget="codesnippet" snippetId="list3"></div>
+    <p>
+        You don't have to have all of the pagination parameters (<code>limit</code>, <code>skip</code> and <code>sorting</code>).
+        You might only want to include one or two.  It's up to you.
+    </p>
+
+
+
+
+    <h2 id="query">Query Domain Groups</h2>
+    <p>
+        You can run custom queries against your Domain Groups to find exactly what you're looking for.
+        Here is a query that looks for Domain Users which are disabled.
+    </p>
+    <div gadget="codesnippet" snippetId="query1"></div>
+    <p>
+        Here is that same query followed by an iteration over the result map.
+    </p>
+    <div gadget="codesnippet" snippetId="query2"></div>
+    <p>
+        Finally, you can mix queries with pagination to reduce data over the wire and speed up performance.
+        Here is that same query with some pagination thrown in.
+        We limit to pages of size 10 and sort by <code>title</code>.
+    </p>
+    <div gadget="codesnippet" snippetId="query3"></div>
+
+
+
+
+    <h2 id="listmembers">List Members of a Group</h2>
+    <p>
+        You can retrieve a list of the members of a group:
+    </p>
+    <div gadget="codesnippet" snippetId="listmembers1"></div>
+    <p>
+        You can also elect to filter to retrieve only the members of type <code>USER</code> or <code>GROUP</code>.
+    </p>
+    <div gadget="codesnippet" snippetId="listmembers2"></div>
+    <p>
+        When you retrieve membership for a group, you can either retrieve direct membership (just those members
+        who are direct first-level members of the group) or you can retrieve indirect membership.  Indirect
+        memberships include principals who belong to intermediary groups which may belong to your group, at any
+        depth in the hierarchy.
+    </p>
+    <div gadget="codesnippet" snippetId="listmembers3"></div>
+    <p>
+        You can also take advantage of pagination on retrieval.  This reduces the payload of the requests and amount
+        of data over the wire.  Pagination serves to make your applications more efficient.
+    </p>
+    <div gadget="codesnippet" snippetId="listmembers4"></div>
+    <p>
+        You may wish to use the following convenience functions when working with users or groups.
+    </p>
+    <div gadget="codesnippet" snippetId="listmembers5"></div>
+    <p>
+        You can also list membership from the domain directly:
+    </p>
+    <div gadget="codesnippet" snippetId="listmembers6"></div>
+
+
+
+
+
+    <h2 id="addmember">Add Member to Group</h2>
+    <p>
+        You can add a member to a group:
+    </p>
+    <div gadget="codesnippet" snippetId="addmember1"></div>
+    <p>
+        You can also do this from the domain:
+    </p>
+    <div gadget="codesnippet" snippetId="addmember2"></div>
+
+    <h2 id="removemember">Remove Member from Group</h2>
+    <p>
+        Or you can remove a member from a group:
+    </p>
+    <div gadget="codesnippet" snippetId="removemember1"></div>
+    <p>
+        You can also do this from the domain:
+    </p>
+    <div gadget="codesnippet" snippetId="removemember2"></div>
+
+
 
 </script>

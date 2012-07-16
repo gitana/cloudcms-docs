@@ -1,0 +1,3 @@
+domain.queryUsers({
+    "position": "cf"
+});

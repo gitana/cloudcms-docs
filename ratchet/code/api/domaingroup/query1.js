@@ -1,0 +1,3 @@
+domain.queryGroups({
+    "league": "national"
+});
