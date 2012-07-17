@@ -1,0 +1,3 @@
+application.queryRegistrations({
+    "active": true
+});

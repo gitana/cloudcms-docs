@@ -124,6 +124,7 @@
 
                 $(ratchet.el).find('pre').each(function() {
                     if ($(this).html() && $('ol.linenums', $(this)).length == 0) {
+                        $(this).html($(this).html().trim());
                         $(this).html($(this).html().replace(/\\n/g, '\n'));
                     }
                 });

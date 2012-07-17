@@ -1,7 +1,529 @@
 <script id="pageTemplate" type="text/x-jquery-tmpl">
+
     <h1>Registration</h1>
+
+    <table class="table table-bordered table-striped">
+        <tbody>
+        <tr>
+            <td>Type</td>
+            <td>Object</td>
+        </tr>
+        <tr>
+            <td>Supports</td>
+            <td>
+                <a href="#/api/authorities/${language}">Authorities</a>,
+                <a href="#/api/permissions/${language}">Permissions</a>,
+                <a href="#/api/transfer/${language}">Transfer</a>
+            </td>
+        </tr>
+    </table>
+
     <p>
-        Coming Soon...
+        Cloud CMS provides simple email-based registration for users of your applications or your platform.  You can
+        use this registration flow to suit the needs of registrations for your mobile, web or touch-based applications
+        as well as clients who wish to sign up to be sub-tenants of your cloud-based platform.
+        <br/>
+        <br/>
+        The minimum registration flow looks like this:
+    </p>
+    <ol>
+        <li>
+            The application collects the user's email
+        </li>
+        <li>
+            The application creates an Registration object.  It stores the <code>emailProviderId</code> of the email
+            provider that the registration process will use to dispatch emails.  It also fills in the <code>email</code>
+            configurations that define the <code>confirmation</code> and <code>welcome</code> emails.
+        </li>
+        <li>
+            The application plugs in the user's details onto the Registration object.
+            It stores the <code>userName</code> and <code>userDomainId</code> to identify which domain
+            the final user should be created on.
+        </li>
+        <li>
+            The registration process sends a confirmation email to the end user.
+        </li>
+        <li>
+            The user receives the email and clicks on the link to confirm their identity and intention of registering.
+        </li>
+        <li>
+            The application collects any additional information and sets it onto the Registration object.
+        </li>
+        <li>
+            The registration process confirms the registration.  A user account is created on the target domain.
+            A welcome email is sent to the end user.
+        </li>
+    </ol>
+    <p>
+        The registration flow can also be used to register new sub-tenants for your platform.  To do so, you must
+        provide the <code>tenantRegistrarId</code> where the tenant should be created and also the
+        <code>tenantPlanKey</code> that identifies the plan the tenant should be given.  The plan must exist in the
+        same registrar as the newly created tenant.
+        <br/>
+        <br/>
+        If your plan requires integrated billing, the registrar must be configured to support integrated billing.
+        You then need to identify a payment method that the new tenant should use.  You can do this by explicitly
+        setting <code>paymentMethodId</code> or by passing in a payment method configuration upon confirmation.
+        In the latter case, a new payment method object will be validated and created by the billing provider
+        upon creation of the tenant.
     </p>
 
+    <!-- CONFIGURATION -->
+    <h2>Configuration</h2>
+    <p>
+        Emails maintain a configuration that you can adjust or consult as you create, update and query for them.
+        <br/>
+        <br/>
+        The following table presents you the configuration properties.
+    </p>
+    <h3>User Properties</h3>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Required</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>userEmail</td>
+            <td>text</td>
+            <td>*required</td>
+            <td></td>
+            <td></td>
+            <td>
+                The <code>email</code> address of the domain user to create.
+            </td>
+        </tr>
+        <tr>
+            <td>userName</td>
+            <td>text</td>
+            <td>*required</td>
+            <td></td>
+            <td></td>
+            <td>
+                The <code>name</code> of the domain user to create.
+            </td>
+        </tr>
+        <tr>
+            <td>userDomainId</td>
+            <td>text</td>
+            <td>*required</td>
+            <td></td>
+            <td></td>
+            <td>
+                The <code>id</code> of the domain where the user should be created.
+            </td>
+        </tr>
+        <tr>
+            <td>userProperties</td>
+            <td>object</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                An array of additional properties to apply to the user obejct when it is created.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3>Tenant Properties</h3>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Required</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>tenantTitle</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                The <code>title</code> of the tenant to be created.
+            </td>
+        </tr>
+        <tr>
+            <td>tenantDescription</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                The <code>description</code> of the tenant to be created.
+            </td>
+        </tr>
+        <tr>
+            <td>tenantPlanKey</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                The <code>planKey</code> of the plan to use for the new tenant subscription.
+            </td>
+        </tr>
+        <tr>
+            <td>tenantRegistrarId</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                The <code>id</code> of the registrar where the tenant should be created.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3>Email Properties</h3>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Required</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>emailProviderId</td>
+            <td>text</td>
+            <td>*required</td>
+            <td></td>
+            <td></td>
+            <td>
+                The <code>id</code> of the email provider to use for any email-related handling.
+            </td>
+        </tr>
+        <tr>
+            <td>emails</td>
+            <td>object</td>
+            <td>*required</td>
+            <td></td>
+            <td></td>
+            <td>
+                A collection of configuration objects that describe Emails that are to be sent by the registration
+                process.  These Email configuration objects are keyed by either:
+                <code>confirmation</code> or <code>welcome</code>.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3>Billing Properties</h3>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Required</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>paymentMethodId</td>
+            <td>text</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                The <code>id</code> of the payment method to use (if one already exists).
+            </td>
+        </tr>
+        <tr>
+            <td>discounts</td>
+            <td>array</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                An array of text containing the discount codes to apply to the created tenant's subscription
+                atop the specified plan.
+            </td>
+        </tr>
+        <tr>
+            <td>addons</td>
+            <td>array</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                An array of text containing the addon codes to apply to the created tenant's subscription
+                atop the specified plan.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3>Flow Control Properties</h3>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Required</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>confirmationSent</td>
+            <td>boolean</td>
+            <td></td>
+            <td></td>
+            <td>Read-Only</td>
+            <td>
+                Whether the confirmation email was sent.
+            </td>
+        </tr>
+        <tr>
+            <td>completed</td>
+            <td>boolean</td>
+            <td></td>
+            <td></td>
+            <td>Read-Only</td>
+            <td>
+                Whether the registration was completed.
+            </td>
+        </tr>
+        <tr>
+            <td>completedPrincipalId</td>
+            <td>boolean</td>
+            <td></td>
+            <td></td>
+            <td>Read-Only</td>
+            <td>
+                The id of the principal that was created as a result of the registration completing.
+            </td>
+        </tr>
+        <tr>
+            <td>completedTenantId</td>
+            <td>boolean</td>
+            <td></td>
+            <td></td>
+            <td>Read-Only</td>
+            <td>
+                The id of the tenant that was created as a result of the registration completing.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3>Other Properties</h3>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Required</th>
+            <th>Default</th>
+            <th nowrap>Read-Only</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>signupProperties</td>
+            <td>object</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                An array of additional properties.  These are not used by the registration process but will be stored
+                on the registration object as a remnant and may include additional data that the user provided
+                such as the size of their company, project type, etc.
+            </td>
+        </tr>
+        <tr>
+            <td>active</td>
+            <td>boolean</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                Whether this registration object is active.  Active mean that it describes a live user account.
+                If a user elects to cancel their registration, the registration object can either be deleted or it
+                can be marked inactive.  Inactive accounts remain in the system but are not utilized.  They allow the
+                user to register again.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    <h2 id="create">Create a Registration</h2>
+    <p>
+        You can create as many registrations as you'd like.
+        Here's an example:
+
+    <div gadget="codesnippet" snippetId="create1"></div>
+
+    <h2 id="update">Update a Registration</h2>
+    <p>
+        You can update properties on a registration:
+    </p>
+    <div gadget="codesnippet" snippetId="update1"></div>
+
+    <h2 id="delete">Delete a Registration</h2>
+    <p>
+        You can delete registrations just as you would any other object.  However, if a registration has already been
+        sent, deleting it will not cause any emails to be unsent (that much should be obvious).
+    </p>
+    <div gadget="codesnippet" snippetId="delete1"></div>
+    <p>
+        In addition, if an email is sitting in someone's email inbox with a link to complete the next step in a
+        registration flow, the URL may cease to work and the link may break.  Consider setting the registration as
+        inactive instead.
+    </p>
+    <div gadget="codesnippet" snippetId="inactive1"></div>
+
+    <h2 id="read">Read a Registration</h2>
+    <p>
+        You can read a Registration by its <code>_doc</code> ID field.
+    </p>
+    <div gadget="codesnippet" snippetId="read1"></div>
+
+    <h2 id="list">List Registrations</h2>
+    <p>
+        You can retrieve a list of Registrations for your application.
+        The following code hands back the full list.
+    </p>
+    <div gadget="codesnippet" snippetId="list1"></div>
+    <p>
+        You can then iterate over the list to pick at what you'd like.
+    </p>
+    <div gadget="codesnippet" snippetId="list2"></div>
+    <p>
+        Retrieving the full list is potentially an expensive operation, depending how many items you have.
+        The more your retrieve, the more data goes over the wire and so forth.  Thus, you might wish to
+        <i>paginate</i> your call and retrieve a subset of the total list at a time.
+        <br/>
+        <br/>
+        Here is an example that retrieves in pages of size 10.
+        It starts on the second page (by skipping to starting index 20).
+        It also sorts by the <code>title</code> field in a descending sequence.
+    </p>
+    <div gadget="codesnippet" snippetId="list3"></div>
+    <p>
+        You don't have to have all of the pagination parameters (<code>limit</code>, <code>skip</code> and <code>sorting</code>).
+        You might only want to include one or two.  It's up to you.
+    </p>
+
+    <h2 id="query">Query Registrations</h2>
+    <p>
+        You can run custom queries against your Registrations to find exactly what you're looking for.
+        Here is a query that looks for Registrations which are disabled.
+    </p>
+    <div gadget="codesnippet" snippetId="query1"></div>
+    <p>
+        Here is that same query followed by an iteration over the result map.
+    </p>
+    <div gadget="codesnippet" snippetId="query2"></div>
+    <p>
+        Finally, you can mix queries with pagination to reduce data over the wire and speed up performance.
+        Here is that same query with some pagination thrown in.
+        We limit to pages of size 10 and sort by <code>title</code>.
+    </p>
+    <div gadget="codesnippet" snippetId="query3"></div>
+
+    <h2 id="sendconfirmationemail">Send the Confirmation Email</h2>
+    <p>
+        The first step in the registration process is to send a Confirmation Email.
+    </p>
+    <div gadget="codesnippet" snippetId="sendconfirmationemail1"></div>
+
+    <h2 id="confirm">Confirm the Registration</h2>
+    <p>
+        Once the end user clicks the link in their email, they come back into your application.  You do what you
+        have to do, update the Registration object and then confirm the registration.  By confirming, you tell
+        Cloud CMS to proceed and create any user objects, tenant objects and required billing objects.
+        <br/>
+        <br/>
+        Once Cloud CMS finishes, it will send the welcome email to the user.
+    </p>
+    <div gadget="codesnippet" snippetId="confirm1"></div>
+
+    <h2 id="sendwelcomeemail">Send the Welcome Email</h2>
+    <p>
+        If you wish to send the welcome email again, you can do so at any time.
+    </p>
+    <div gadget="codesnippet" snippetId="sendwelcomeemail1"></div>
+
+
+
+
+
+    <h2 id="example1">Example: Tenant Creation with Payment Method</h2>
+    <p>
+        Here is a full example where we use a registration flow to register a new sub-tenant for our platform.
+        This flow will send all the appropriate emails and create a payment method for the user.
+    </p>
+    <h3>First Step - Kick off the Registration Process</h3>
+    <p>
+        Suppose our application has asked the user to provide their email, first name and last name.
+        We might collect those values from a form.
+        <br/>
+        <br/>
+        To kick off the registration process, we need to create a registration object as shown below.  The code
+        below provides a good sample of how you can do this.  It loads two templates by opening URL connections
+        to <code>confirmation.html</code> and <code>welcome.html</code>.
+    </p>
+    <div gadget="codesnippet" snippetId="example1-p1"></div>
+    <p>
+        The <code>confirmation.html</code> and <code>welcome.html</code> HTML files might be something like this:
+    </p>
+    <div gadget="codesnippet" snippetId="example1-p1" fileext="html"></div>
+    <p>
+        The templates are loaded and then the registration is created.  The user's first name and last name
+        are copied into the <code>userProperties</code> field.  Finally, the registration confirmation
+        emails are sent off.
+    </p>
+    <h3>Second Step - User Clicks on the Email Link</h3>
+    <p>
+        The user then receives the email and clicks on the link.  This takes them back into the web application.
+        You can then grab the <code>hash</code> request parameter argument and use it to retrieve the
+        registration object.
+    </p>
+    <div gadget="codesnippet" snippetId="example1-p2"></div>
+    <h3>Third Step - Collect Additional Info and Confirm Registration</h3>
+    <p>
+        And then you can present the user with a screen to collect any additional information you wish.
+        Fundamentally, we need to ask what <code>password</code> they would like.
+        <br/>
+        <br/>
+        In addition, let's assume that our plan requires billing and thus a payment method.
+        We therefore need to collect credit card information which, at a minimum, must include:
+    </p>
+    <ul>
+        <li><code>holderName</code> - the card holder name</li>
+        <li><code>number</code> - the card number</li>
+        <li><code>expirationMonth</code> - the two digit expiration month</li>
+        <li><code>expirationYear</code> - the four digit expiration year</li>
+    </ul>
+    <p>
+        Once they click "Submit", we can confirm the registration and create their account.
+        The code to do so might look like the following:
+    </p>
+    <div gadget="codesnippet" snippetId="example1-p3"></div>
 </script>
