@@ -1,0 +1,17 @@
+{
+    "thumb500": {
+        "mimetype": "image/png",
+        "width": 500,
+        "height": 500
+    },
+    "thumb300": {
+        "mimetype": "image/gif",
+        "width": 300,
+        "height": 300
+    },
+    "thumb150": {
+        "mimetype": "image/jpeg",
+        "width": 150,
+        "height": 150
+    }
+}

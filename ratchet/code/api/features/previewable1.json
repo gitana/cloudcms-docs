@@ -1,0 +1,17 @@
+{
+    "previews": {
+        "ipad": {
+            "mimetype": "image/png",
+            "width": 1600,
+            "height": -1,
+            "prefix": "ipad",
+            "maxFileSize": 200000
+        },
+        "iphone": {
+            "mimetype": "image/jpeg",
+            "width": 512,
+            "height": -1,
+            "prefix": "iphone"
+        }
+    }
+}

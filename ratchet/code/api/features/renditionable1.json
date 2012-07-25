@@ -1,0 +1,12 @@
+{
+    "renditions": {
+        "{renditionKey}": {
+            "engineId": "{id of the renditioning engine to use}",
+            "targetNodeId": "{targetNodeId}",
+            "targetAttachmentId": "{targetAttachmentId}",
+            "targetAttachmentMimeType": "{targetAttachmentMimeType}",
+        }
+
+        .. other properties ...
+    }
+}

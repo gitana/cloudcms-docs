@@ -1,0 +1,6 @@
+{
+    "myRenditionKey": {
+        "engineId": "script",
+        "scriptNodeId": "custom:script1"
+    }
+}

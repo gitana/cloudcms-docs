@@ -26,10 +26,19 @@
                 var fileext = el.params["fileext"] ? el.params["fileext"] : null;
                 var extension = Docs.APILanguages[language].extension;
 
-                var url = "ratchet/code/api/" + topic + "/" + snippetId + "." + extension;
-                if (fileext)
+                var url = "ratchet/code/api/" + topic + "/" + snippetId;
+                if (fileext && fileext.substring(0,1) == ".")
                 {
-                    url += "." + fileext;
+                    url += fileext;
+                }
+                else
+                {
+                    url += "." + extension;
+
+                    if (fileext)
+                    {
+                        url += "." + fileext;
+                    }
                 }
 
                 var render = function(html)

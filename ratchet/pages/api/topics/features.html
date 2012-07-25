@@ -387,23 +387,7 @@
                 <br/>
                 <br/>
                 Here is an example of two configured previews:
-                <pre>
-                    "previews": {
-                        "ipad": {
-                            "mimetype": "image/png",
-                            "width": 1600,
-                            "height": -1,
-                            "prefix": "ipad",
-                            "maxFileSize": 200000
-                        },
-                        "iphone": {
-                            "mimetype": "image/jpeg",
-                            "width": 512,
-                            "height": -1,
-                            "prefix": "iphone"
-                        }
-                    }
-                </pre>
+                <div gadget="codesnippet" snippetId="previewable1" fileext=".json"></div>
                 <p>
                     We defined a preview named "ipad" which generates PNG files with a width constrained to 1600 pixels.
                     The height can scale as it needs to to achieve this fit.  The max file size is 200,000 bytes.
@@ -563,40 +547,18 @@
                 <br/>
                 <br/>
                 In general, this takes on the structure:
-                <pre>
-                    "renditions": {
-                        "{renditionKey}": {
-                            "engineId": "{id of the renditioning engine to use}",
-                            "targetNodeId": "{targetNodeId}",
-                            "targetAttachmentId": "{targetAttachmentId}",
-                            "targetAttachmentMimeType": "{targetAttachmentMimeType}",
-
-                            .. other properties ...
-                        }
-                    }
-                </pre>
+                <div gadget="codesnippet" snippetId="renditionable1" fileext=".json"></div>
                 <p>
                     The exact properties that should be specified depend on the requirements of the renditioning engine.
                     Here is a more concrete example that executes a script to create the new node:
                 </p>
-                <pre>
-                    "myRenditionKey": {
-                        "engineId": "script",
-                        "scriptNodeId": "custom:script1"
-                    }
-                </pre>
+                <div gadget="codesnippet" snippetId="renditionable2" fileext=".json"></div>
                 <p>
                     When a node with this feature and configuration is created, the script with
                     QName <code>custom:script1</code> will execute.  The script must implement the
                     <code>renditionable</code> interface.  It might look like this:
                 </p>
-                <pre>
-                    function rendition(node) {
-                        return {
-                            "description": node.data.title + " is your " + node.data.relation
-                        };
-                    }
-                </pre>
+                <div gadget="codesnippet" snippetId="renditionable3" fileext=".js"></div>
                 <p>
                     Now whenever our original node is updated, the renditioned node will be kept in sync.  If the
                     original node is: <code>{"title": "Joe", "relation": "Uncle"}</code> then the renditioned node
@@ -747,23 +709,7 @@
                 <br/>
                 Here is an example configuration with three different thumbnails, each sized differently and each in
                 a different output format.
-                <pre>
-                    "thumb500": {
-                        "mimetype": "image/png",
-                        "width": 500,
-                        "height": 500
-                    },
-                    "thumb300": {
-                        "mimetype": "image/gif",
-                        "width": 300,
-                        "height": 300
-                    },
-                    "thumb150": {
-                        "mimetype": "image/jpeg",
-                        "width": 150,
-                        "height": 150
-                    }
-                </pre>
+                <div gadget="codesnippet" snippetId="thumbnailable1" fileext=".json"></div>
             </td>
         </tr>
         </tbody>
