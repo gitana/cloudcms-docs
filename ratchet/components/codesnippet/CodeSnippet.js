@@ -3,11 +3,6 @@
         {
             TEMPLATE : "components/codesnippet/codesnippet",
 
-            constructor: function(id, ratchet)
-            {
-                this.base(id, ratchet);
-            },
-
             setup: function()
             {
                 this.get("/api/{topic}/{language}", this.index);
@@ -17,8 +12,6 @@
             index: function(el)
             {
                 var self = this;
-
-                this.model(el);
 
                 var topic = el.tokens["topic"];
                 var language = el.tokens["language"];
@@ -51,6 +44,9 @@
                     }
 
                     self.renderTemplate(el, self.TEMPLATE, function(el) {
+
+                        self.prettifyCode(el);
+
                         el.swap();
                     });
                 };

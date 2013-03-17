@@ -1,0 +1,81 @@
+.gadget.list
+{
+
+}
+
+.gadget.list .buttonbar
+{
+
+}
+
+.gadget.list .buttonbar .button-container
+{
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.gadget.list .buttonbar DIV.pull-right DIV.dropdown:last-child UL.dropdown-menu {
+    right: 0;
+    left: auto;
+}
+
+TD.list-icon-column
+{
+    vertical-align: middle !important;
+    width: 70px;
+    text-align: center;
+}
+
+TD.list-icon-column DIV
+{
+    margin-left: 4px;
+}
+
+TD.list-icon-column IMG
+{
+    border: 0px;
+    border-radius: 3px;
+}
+
+TD.list-checkbox-column
+{
+    vertical-align: middle !important;
+    width: 10px;
+    text-align: center;
+}
+
+.list-checkbox-column input[type="checkbox"]
+{
+    margin: 0px;
+}
+
+.list-radio-column
+{
+    vertical-align: middle !important;
+    width: 10px;
+}
+.list-radio-column input[type="radio"]
+{
+    margin: 0px;
+}
+
+.list-row-info
+{
+    padding: 0px !important;
+    margin: 0px !important;
+}
+
+.list-row-info.title
+{
+    line-height: 32px;
+}
+
+.list-row-info A
+{
+    color: #4F94C9;
+}
+
+.list-row-info A:hover
+{
+    color: #4F94C9;
+}

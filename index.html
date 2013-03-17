@@ -11,10 +11,10 @@
 
     <link href="lib/thirdparty/bootstrap/js/google-code-prettify/prettify.css" rel="stylesheet">
     <link href="lib/thirdparty/bootstrap/css/bootstrap.css" rel="stylesheet">
-    <link href="css/docs.css" rel="stylesheet">
     <link href="lib/thirdparty/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+      <link href="css/docs.css" rel="stylesheet">
 
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+      <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -52,11 +52,12 @@
     <!--
     <script type="text/javascript" src="lib/ratchet/js/ratchet-1.0.0.min.js"></script>
     -->
-    <script type="text/javascript" src="lib/ratchet/js/ratchet-1.0.1-SNAPSHOT.js"></script>
-    <script type="text/javascript" src="lib/ratchet/js/plugins/jQueryTemplateEngine.min.js"></script>
+    <script type="text/javascript" src="lib/ratchet/ratchet.js"></script>
+    <script type="text/javascript" src="lib/ratchet/tmpl.js"></script>
 
     <!-- Application Code -->
     <script type="text/javascript" src="ratchet/Docs.js"></script>
+    <script type="text/javascript" src="ratchet/Languages.js"></script>
     <script type="text/javascript" src="ratchet/AbstractGadget.js"></script>
     <script type="text/javascript" src="ratchet/AbstractPageGadget.js"></script>
 
@@ -70,13 +71,10 @@
     <script type="text/javascript" src="ratchet/pages/home/HomeSidebar.js"></script>
 
     <!-- API pages -->
-    <script type="text/javascript" src="ratchet/pages/api/APILanguages.js"></script>
-    <script type="text/javascript" src="ratchet/pages/api/APISidebar.js"></script>
-    <script type="text/javascript" src="ratchet/pages/api/APICode.js"></script>
-    <script type="text/javascript" src="ratchet/pages/api/APIHome.js"></script>
-    <script type="text/javascript" src="ratchet/pages/api/APIDriverSpecific.js"></script>
     <script type="text/javascript" src="ratchet/pages/api/APIPage.js"></script>
-
+    <script type="text/javascript" src="ratchet/pages/api/APIDriverSpecific.js"></script>
+    <script type="text/javascript" src="ratchet/pages/api/APIHome.js"></script>
+    <script type="text/javascript" src="ratchet/pages/api/APISidebar.js"></script>
 
     <!-- work it -->
     <script type="text/javascript">
@@ -100,11 +98,13 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="#/"><span class="logo"></span>&nbsp;Cloud CMS Docs</a>
+          <a class="brand" href="#/"><span class="logo"></span>&nbsp;Cloud CMS Documentation</a>
           <div class="nav-collapse">
             <ul class="nav">
               <li class="active"><a href="#/">Home</a></li>
               <li class="active"><a href="#/api">API Reference</a></li>
+              <li class="active"><a href="http://www.cloudcms.org">Forums</a></li>
+              <li class="active"><a href="http://www.cloudcms.com">Web Site</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>

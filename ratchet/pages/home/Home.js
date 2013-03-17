@@ -9,15 +9,6 @@
 
         setup: function() {
             this.get("/", this.index);
-        },
-
-        setupSidebar: function(el)
-        {
-            var current = "sidebar-" + el.tokens["topic"];
-            if (el.tokens["section"]) {
-                current += "-" + el.tokens["section"];
-            }
-            this.sidebar(Docs.Sidebars.Home(this, current));
         }
 
     });

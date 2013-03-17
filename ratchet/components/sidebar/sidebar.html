@@ -1,22 +1,6 @@
 <script id="sidebarTemplate" type="text/x-jquery-tmpl">
 
 
-    <!--
-    {{if sidebar && sidebar.language && sidebar.languageList}}
-        <div class="btn-group">
-            <button class="btn btn-info">{{if sidebar && sidebar.language}}${sidebar.language.value}{{/if}}</button>
-            <button class="btn btn-info dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
-            <ul class="dropdown-menu">
-                {{if sidebar && sidebar.languageList}}
-                {{each(k, v) sidebar.languageList}}
-                <li><a href="#{{if sidebar.currentLink}}/${sidebar.currentLink}{{/if}}/${k}">${v.title}</a></li>
-                {{/each}}
-                {{/if}}
-            </ul>
-        </div>
-    {{/if}}
-    -->
-
     {{if sidebar && sidebar.items}}
     <ul class="nav nav-list">
         {{each(i, item) sidebar.items}}
