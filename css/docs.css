@@ -40,3 +40,9 @@ DIV.story
     font-style:italic;
     margin: 15px;
 }
+
+DIV.spacer
+{
+    margin-top:20px;
+    margin-bottom:20px;
+}

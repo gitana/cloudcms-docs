@@ -1,7 +1,85 @@
 <script id="pageTemplate" type="text/x-jquery-tmpl">
     <h1>Pagination</h1>
     <p>
-        Coming Soon...
+        Pagination allows you to control the result set that comes back from Cloud CMS for any operations that produce
+        a list of items.  It is called pagination because it gives you a way to organize your record set into pages
+        and then get those pages back, one at a time.
     </p>
+    <p>
+        Pagination gives you a way to adjust the result set before it is sent over the wire (and back to you)
+        so that you can have smaller "paged" payloads.  Pagination is useful because, most of the time, unless
+        the result set is very small, you're not going to be interested in dealing with all of the items at once.
+    </p>
+    <p>
+        For example, with pagination, you can do things like query for all of the users in a domain.  You might be
+        interested in presenting them on the screen.  Let's imagine there are 10,000 users.  Well, chances are you
+        probably don't want to show 10,000 users on the screen all at once.  Instead, maybe you'd like to only show
+        50 at a time.  Pagination lets you tell Cloud CMS to hand back 50 starting at index 0.  Or jump ahead to index
+        9017 and give back the next 50 (i.e. users 9017 through 9066).  That way, you're only getting 50 users at a
+        time.  However, you can get back a different 50 each time, as you web application user clicks forward and back.
+    </p>
+    <p>
+        Specifically, pagination lets you adjust two important properties:
+    </p>
+    <ul>
+        <li>
+            <b>skip</b> - how many records you'd like to skip ahead in the total result set before handing back.
+        </li>
+        <li>
+            <b>limit</b> - how many records in total you'd like to have sent over the wire.
+        </li>
+    </ul>
+    <h2>Sorting</h2>
+    <p>
+        Pagination also lets you define how the record set should be sorted before it is handed back.  The sorting
+        is taken into account during query or lookup time so that the actual cursor into the underlying database is
+        used to optimize performance.
+    </p>
+    <p>
+        You can sort on zero or more fields.  For each field, you can choose to sort in ascending (1) or descending (-1)
+        order.  You specify this by passing a JSON object that defines this for any and all fields.
+    </p>
+    <p>
+        For example, the following could be used to sort users first by their name and second by a nested custom
+        property:
+    </p>
+    <div class="spacer">
+        <code>{ "name": 1, "company.name": -1 }</code>
+    </div>
+    <h2>REST API</h2>
+    <p>
+        For methods in the REST API that produce lists of items, you can pass pagination information via request
+        parameters.
+    </p>
+    <p>
+        For example, the following would hand back a list of 10 principals from a domain starting at index 5 in the
+        result set.  There may 1,000 users overall, but you'd only get back 10 (numbers 5 through 14).
+    </p>
+    <div class="spacer">
+    <code >http://api.cloudcms.com/domains/domainId/principals?skip=5&limit=10</code>
+    </div>
+    <p>
+        We can also pass sorting information along:
+    </p>
+    <div class="spacer">
+    <code>http://api.cloudcms.com/domains/domainId/principals?skip=5&limit=10&sort={"name":1,"company.name":-1}</code>
+    </div>
+    <h2>Driver methods</h2>
+    <p>
+        You can also pass pagination information via driver methods.  Most drivers support pagination as an optional
+        argument into methods that produce lists of objects.
+    </p>
+    <p>
+        Here we retrieve the same list of 10 users from a domain starting from index 5.
+    </p>
+    <div gadget="codesnippet" snippetId="pagination1"></div>
+    <p>
+        Here we retrieve the same list but we sort by <code>name</code> and <code>company.name</code>:
+    </p>
+    <div gadget="codesnippet" snippetId="pagination2"></div>
+    <p>
+        We can also perform custom queries and paginate the results:
+    </p>
+    <div gadget="codesnippet" snippetId="pagination3"></div>
 
 </script>
