@@ -5,7 +5,10 @@
 
             setup: function()
             {
+                this.get("/api/{topic}", this.index);
+                this.get("/api/{topic}/", this.index);
                 this.get("/api/{topic}/{language}", this.index);
+                this.get("/api/{topic}/{language}/", this.index);
                 this.get("/api/{topic}/{language}/{section}", this.index);
             },
 
@@ -15,6 +18,10 @@
 
                 var topic = el.tokens["topic"];
                 var language = el.tokens["language"];
+                if (!language)
+                {
+                    language = "javascript";
+                }
                 var snippetId = el.params["snippetid"] ? el.params["snippetid"] : el.params["snippetId"];
                 var fileext = el.params["fileext"] ? el.params["fileext"] : null;
                 var extension = Docs.APILanguages[language].extension;

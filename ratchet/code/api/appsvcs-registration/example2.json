@@ -1,0 +1,18 @@
+{
+    "userEmail": "joe@joe.com",
+    "userName": "joe",
+    "userProperties": { // optional
+        "firstName": "Joe",
+        "lastName": "Smith"
+    },
+    "emails": {
+        "confirmation": {
+            "body": "<a href='http://website.com/registration.html?hash=${hash}'>Click me</a>",
+            "from": "webmaster@website.com"
+        },
+        "welcome": {
+            "body": "Welcome to the web site!  You have successfully registered.",
+            "from": "webmaster@website.com"
+        }
+    }
+}

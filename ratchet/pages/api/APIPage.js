@@ -8,13 +8,22 @@
 
             setup: function()
             {
+                this.get("/api/{topic}", this.index);
+                this.get("/api/{topic}/", this.index);
                 this.get("/api/{topic}/{language}", this.index);
+                this.get("/api/{topic}/{language}/", this.index);
                 this.get("/api/{topic}/{language}/{section}", this.index);
             },
 
             index: function(el)
             {
-                el.model["language"] = el.tokens["language"];
+                var language = el.tokens["language"];
+                if (!language)
+                {
+                    language = "javascript";
+                }
+
+                el.model["language"] = language;
 
                 this.base(el);
             },

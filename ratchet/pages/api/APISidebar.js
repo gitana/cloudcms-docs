@@ -344,7 +344,28 @@
                         "id" : "sidebar-pagination",
                         "topic" : "pagination",
                         "title" : "Pagination"
+                    },
+
+
+
+
+
+                    {
+                        "id" : "header-appsvcs",
+                        "title" : "Application Services",
+                        "header" : true
+                    },
+                    {
+                        "id" : "sidebar-appsvcs-overview",
+                        "topic" : "appsvcs-overview",
+                        "title" : "Overview"
+                    },
+                    {
+                        "id" : "sidebar-appsvcs-registration",
+                        "topic" : "appsvcs-registration",
+                        "title" : "Registration"
                     }
+
 
 
                 ]

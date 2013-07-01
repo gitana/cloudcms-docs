@@ -1,0 +1,8 @@
+{
+    "public": {
+        "userDomainId": "primary", // either "primary" or a domain ID
+        "emailProviderId": "{Email Provider GUID}",
+        "tenantRegistrarId": "{Registrar GUID}",
+        "tenantRunAsPrincipalId": "{Principal GUID}" // usually in the format "{domainId}/{principalId}"
+    }
+}

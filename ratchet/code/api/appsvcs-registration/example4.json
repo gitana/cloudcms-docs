@@ -1,0 +1,9 @@
+{
+    "password": "", // required password
+    "paymentMethodObject": { // optional
+        "holderName": "",
+        "number": "",
+        "expirationYear": "",
+        "expirationMonth": ""
+    }
+}

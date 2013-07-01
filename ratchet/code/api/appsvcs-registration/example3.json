@@ -1,0 +1,31 @@
+{
+    "userEmail": "",
+    "userName": "",
+    "userProperties": {
+        // optional custom properties
+    },
+    "tenantTitle": "", // optional
+    "tenantDescription": "", // optional
+    "tenantPlanKey": "", // optional
+    "tenantProperties": {
+        // optional custom properties
+    },
+    "signupProperties": {
+        // optional custom properties
+    },
+    "emails": {
+        "confirmation": {
+            // required confirmation email definition
+        },
+        "welcome": {
+            // required welcome email definition
+        }
+    },
+    "paymentMethodId": "", // optional
+    "discounts": {
+        // optional discounts to include
+    },
+    "addons": {
+        // optional addons to include
+    }
+}

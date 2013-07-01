@@ -1,0 +1,146 @@
+<script id="pageTemplate" type="text/x-jquery-tmpl">
+    <h1>User Registration</h1>
+    <p>
+        One of the more frequent flows that an application must achieve is that of registering a user.  Cloud CMS
+        already provides <a href="#/api/registration/javascript">registration support</a>.  The application service
+        convenience method shown below make it a little easier to register users for your web application by letting
+        you predefine:
+    </p>
+    <ul>
+        <li>The <a href="#/api/domain/javascript">Domain</a> where new users will be created.</li>
+        <li>The <a href="#/api/emailprovider/javascript">Email Provider</a> to be used to send emails to new users.</li>
+        <li>The <a href="#/api/registrar/javascript">Registrar</a> where new tenants will be created (optional).</a></li>
+        <li>The <a href="#/api/domainuser/javascript">Domain Principal</a> to run as (or run as system user).</a></li>
+    </ul>
+    <h2>Configure your Application Instance</h2>
+    <p>
+        To utilize the convenience flow for user registrations, you first need to have an
+        <a href="#/api/application/javascript">Application</a> data store instantiated that will be used to store
+        data for your mobile/web application.  You can instantiate this through the Cloud CMS console or you can do
+        so programmatically.  Once you've done so, you will need to configure the application instance to have the
+        following properties:
+    </p>
+    <ul>
+        <li><code>public.userDomainId</code> - The ID of one of your platform's domains that should be used to store the new, registered users.
+        <li><code>public.emailProviderId</code> - The ID of one of your platform's email providers that should be used to send emails.
+        <li><code>public.tenantRegistrarId</code> - (optional) The ID of one of your platform's registrars that should be used to store new tenants.
+        <li><code>public.runAsPrincipalId</code> - (optional) The ID (or domain qualified ID) of the principal on one of your platform's domains that should be used to execute the registration process.</li>
+    </ul>
+    <h2>Sample configuration</h2>
+    The following JSON can be appended into your Application JSON (which you can edit within the Cloud CMS console).  Or you can
+    edit your application and enter these values via a form.
+    <div gadget="codesnippet" snippetId="example1" fileext=".json"></div>
+    <h2>Registration Flow</h2>
+    <p>
+        The registration flow works like this:
+    </p>
+    <ol>
+        <li>A web site user fills out a form on your web site.  They click submit.</li>
+        <li>Your application code calls Cloud CMS to create a registration object.</li>
+        <li>Your application code calls Cloud CMS to send the confirmation email.</li>
+        <li>Your web site informs the user that an email was sent and that they should click the link contained in the email to verify their email address and continue the registration process.</li>
+        <li>The user checks their email and clicks the link.  The user's browser is taken to a registration page on your web site. This page receives a "hash" request parameter which is the registration ID.</li>
+        <li>The web site user fills in any additional information they need to supply.  They click submit.</li>
+        <li>Your application code calls Cloud CMS to update the registration object (if needed).</li>
+        <li>Your application code calls Cloud CMS to confirm the registration and passes along the any password and payment information.</li>
+        <li>Cloud CMS creates a new user and optionally creates a new tenant complete and billing confirmation for the new user.</li>
+    </ol>
+    <h2>
+        API Methods
+    </h2>
+    <p>
+        Below we cover step-by-step how to use the API methods to complete a registration flow.  For technical details on using the API,
+        please see:
+        <br/>
+        <a href="http://api.cloudcms.com/docs#!/public">Public Application Services API</a>
+    </p>
+    <h3>Create and Update a Registration</h3>
+    <p>
+        The method calls to create and update a registration are perhaps the most intensive in that they allow you to specify
+        quite a lot of fields.  The two methods you want to use are:
+        <br/>
+        <br/>
+        <code>POST /pub/applications/{applicationId}/registrations/create</code>
+        <br/>
+        <code>POST /pub/applications/{applicationId}/registrations/{registrationId}/update</code>
+        <br/>
+        <br/>
+        In both cases, you need to specify the ID of your Application instance in the path to the method.  For the case of
+        an existing registration, you also need to provide the ID of your existing registration instance.
+        <br/>
+        <br/>
+        The body of your POST should contain the JSON of the properties to be applied.  For a simple user registration,
+        you can do something like this:
+    </p>
+    <div gadget="codesnippet" snippetId="example2" fileext=".json"></div>
+    <p>
+        Here is an example of using some straightforward jQuery to create a registration:
+    </p>
+    <div gadget="codesnippet" snippetId="create1" fileext=".js"></div>
+    <p>
+        And here's how you might do an update:
+    </p>
+    <div gadget="codesnippet" snippetId="update1" fileext=".js"></div>
+    <p>
+        And here is a list of everything that can be passed in when defining a registration:
+    </p>
+    <div gadget="codesnippet" snippetId="example3" fileext=".json"></div>
+    <p>
+        When you create a registration, you'll get back a JSON object containing the newly created registration.
+        Within it, you will find the <code>_doc</code> field which is the Registration ID you'll need to pass in
+        to do any updates.
+    </p>
+    <p>
+        For more details on how the registration objects work, see <a href="#/api/registration/javascript">Registration Objects</a>.
+    </p>
+    <h3>Send the Confirmation Email</h3>
+    <p>
+        To send the confirmation email, you can simply do an empty POST to:
+        <br/>
+        <br/>
+        <code>POST /pub/applications/{applicationId}/registrations/{registrationId}/send/confirmation</code>
+        <br/>
+        <br/>
+        The confirmation email will be sent and it will contain the body and properties as defined in the <code>emails</code>
+        block within your registration object.  For more details on how to define emails, see
+        <a href="#/api/email/javascript">Email objects</a>.
+        <br/>
+        <br/>
+        Once the email is sent, the end user will receive an email with a link that they can follow to continue the
+        registration process.  This link must connect to your web site at which point they are given a form to complete to collect
+        any additional data needed.  Specifically, you should at this point collect their password.
+    </p>
+    <p>
+        Here is an example of using some straightforward jQuery to send the confirmation email:
+    </p>
+    <div gadget="codesnippet" snippetId="sendconfirmation1" fileext=".js"></div>
+    <h3>Complete the Registration</h3>
+    <p>
+        To complete the registration, you simply need to call over to Cloud CMS and confirm along with the following
+        details:
+    </p>
+    <ul>
+        <li>The account password that the user has selected</li>
+        <li>An optional payment method object (defining their credit card number, holder name and expiration date)</li>
+    </ul>
+    <p>
+        The POST payload should contain these properties.  Here is the full set of properties that can be passed in:
+    </p>
+    <div gadget="codesnippet" snippetId="example4" fileext=".json"></div>
+    <p>
+        Here is an example of using some straightforward jQuery to confirm the registration:
+    </p>
+    <div gadget="codesnippet" snippetId="confirm1" fileext=".js"></div>
+
+    <p>
+        When this method completes, the user will be created in the domain specified on the Application instance
+        configuration.
+        <br/>
+        <br/>
+        If the registration definition includes a tenant, a tenant will be created within the target
+        Registrar. If the tenant plan requires billing and the confirmation step does not pass billing information (or
+        passes invalid billing information), the registration will fail.  Be sure to check the <code>error</code> code
+        of the response to ensure that your tenant was set up.
+    </p>
+
+</script>
