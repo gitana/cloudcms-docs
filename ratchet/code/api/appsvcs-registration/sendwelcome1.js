@@ -9,7 +9,7 @@ $.ajax({
     "method": "POST",
     "type": "json",
     "processData": false,
-    "url": "/pub/applications/" + applicationId + "/registrations/" + hash + "/confirm",
+    "url": "/pub/applications/" + applicationId + "/registrations/" + hash + "/send/welcome",
     "data": {
         "password": "password1"
     }

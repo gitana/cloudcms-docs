@@ -102,13 +102,20 @@
         <br/>
         <br/>
         The confirmation email will be sent and it will contain the body and properties as defined in the <code>emails</code>
-        block within your registration object.  For more details on how to define emails, see
-        <a href="#/api/email/javascript">Email objects</a>.
+        templates block within your registration object.  For more details on how to use these registration variables,
+        see Registration <a href="#/api/registration">Email Templates</a>.
         <br/>
         <br/>
         Once the email is sent, the end user will receive an email with a link that they can follow to continue the
-        registration process.  This link must connect to your web site at which point they are given a form to complete to collect
-        any additional data needed.  Specifically, you should at this point collect their password.
+        registration process.  This link must connect to your web site and the link should also pass along a request
+        parameter (or a hash link) that contains the <code>${hash}</code> for the registration.  This hash is generated
+        by the registration flow and will only be made available to the email recipient.  When the end user clicks on
+        the link, the hash is passed over to your web site.
+        <br/>
+        <br/>
+        Your web site can then either confirm them straight away or present a form for the collection of additional
+        information.  Specifically, you should at this point collect their password (or auto-assign a password,
+        depending on the flow that you intend to have).
     </p>
     <p>
         Here is an example of using some straightforward jQuery to send the confirmation email:
@@ -131,7 +138,6 @@
         Here is an example of using some straightforward jQuery to confirm the registration:
     </p>
     <div gadget="codesnippet" snippetId="confirm1" fileext=".js"></div>
-
     <p>
         When this method completes, the user will be created in the domain specified on the Application instance
         configuration.
@@ -142,5 +148,23 @@
         passes invalid billing information), the registration will fail.  Be sure to check the <code>error</code> code
         of the response to ensure that your tenant was set up.
     </p>
+    <h3>Send the welcome email</h3>
+    <p>
+        Once the registration has been completed, you can have the registration send off the welcome email to inform
+        the end user that they've been registered for an account.  The welcome email is optional.  It's not something
+        that you have to include, but if you'd like, it's there for you to use.
+        <br/>
+        <br/>
+        You can fire off a POST call to trigger the email send.  All you need to do is pass in the hash code for the
+        registration (which was received by the by incoming link from the email):
+        <br/>
+        <br/>
+        <code>POST /pub/applications/{applicationId}/registrations/send/confirmation?hash={hash}</code>
+    </p>
+    <p>
+        Here is an example of using some straightforward jQuery to send the welcome email:
+    </p>
+    <div gadget="codesnippet" snippetId="sendwelcome1" fileext=".js"></div>
+
 
 </script>

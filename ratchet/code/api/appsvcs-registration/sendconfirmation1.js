@@ -1,7 +1,7 @@
 // the application
 var applicationId = "GUID1";
 
-// the registration
+// the registration id
 var registrationId = "GUID2";
 
 // send the registration confirmation email

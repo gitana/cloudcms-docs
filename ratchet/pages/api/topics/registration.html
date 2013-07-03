@@ -526,4 +526,29 @@
         The code to do so might look like the following:
     </p>
     <div gadget="codesnippet" snippetId="example1-p3"></div>
+
+    <h2 id="email-templates">Email Templates</h2>
+    <p>
+        As shown above, you can define your own <code>confirmation</code> and <code>welcome</code> emails using
+        templates that take advantage of model variables.  The model will consist of some of the fields from your
+        registration object so that you can utilize these fields in your email responses.
+        <br/>
+        <br/>
+        Specifically, the following email model variables are available:
+    </p>
+    <ul>
+        <li><b>id</b> - the ID of the registration object</li>
+        <li><b>_doc</b> - the ID of the registration object</li>
+        <li><b>hash</b> - the generated registration hash (this should be used to pass back to your web app)</li>
+        <li><b>title</b> - the optional title of your registration object</li>
+        <li><b>description</b> - the optional description of your registration object</li>
+        <li><b>userName</b> - the name of the user principal</li>
+        <li><b>userEmail</b> - the email of the user principal</li>
+        <li><b>userProperties</b> - the optional collection of additional user properties</li>
+        <li><b>signupProperties</b> - the optional collection of additional signup properties</li>
+        <li><b>tenantTitle</b> - the optional tenant title</li>
+        <li><b>tenantDescription</b> - the optional tenant description</li>
+        <li><b>tenantPlanKey</b> - the optional tenant plan key</li>
+    </ul>
+
 </script>

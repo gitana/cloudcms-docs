@@ -14,7 +14,7 @@ application.createRegistration({
     "emailProviderId": emailProvider.getId(),
     "emails": {
         "confirmation": {
-            "body": "Please confirm!",
+            "body": "<a href='http://myserver.com?hash=${hash}'>Click me to confirm your email address</a>",
             "from": "buildtest@gitanasoftware.com"
         },
         "welcome": {
