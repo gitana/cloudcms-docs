@@ -166,5 +166,26 @@
     </p>
     <div gadget="codesnippet" snippetId="sendwelcome1" fileext=".js"></div>
 
+    <h3>Specifying the password and/or payment method ahead of time</h3>
+    <p>
+        You can also specify the user's password and/or their payment method ahead of time, before the first verification
+        email is sent..  In some registration flows, you may wish to collect this information up front and have it be
+        utilized later, once the end user clicks on the email link and is brought back to the web site.
+    </p>
+    <p>
+        To specify this ahead of time, you can plug in values for the  <code>password</code>
+        and/or the <code>paymentMethod</code> fields on the <code>signupProperties</code> object.
+    </p>
+    <p>
+        Here's an example of creating the registration with the <code>password</code> and <code>paymentMethod</code>
+        supplied before the email is sent.
+    </p>
+    <div gadget="codesnippet" snippetId="create2" fileext=".js"></div>
+    <p>
+        To confirm, you can simply call the confirm method without any data payload.  If you do supply either the
+        <code>password</code> or the <code>paymentMethod</code> in the payload, it will override the values provided
+        during registration creation.
+    </p>
+    <div gadget="codesnippet" snippetId="confirm2" fileext=".js"></div>
 
 </script>
