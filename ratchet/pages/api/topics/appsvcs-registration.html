@@ -1,5 +1,5 @@
 <script id="pageTemplate" type="text/x-jquery-tmpl">
-    <h1>User Registration</h1>
+    <h1>User Registration Flow</h1>
     <p>
         One of the more frequent flows that an application must achieve is that of registering a user.  Cloud CMS
         already provides <a href="#/api/registration/javascript">registration support</a>.  The application service
@@ -39,7 +39,7 @@
         <li>Your application code calls Cloud CMS to create a registration object.</li>
         <li>Your application code calls Cloud CMS to send the confirmation email.</li>
         <li>Your web site informs the user that an email was sent and that they should click the link contained in the email to verify their email address and continue the registration process.</li>
-        <li>The user checks their email and clicks the link.  The user's browser is taken to a registration page on your web site. This page receives a "hash" request parameter which is the registration ID.</li>
+        <li>The user checks their email and clicks the link.  The user's browser is taken to a registration page on your web site. This page receives a "hash" request parameter which is used to complete the registration process (below).</li>
         <li>The web site user fills in any additional information they need to supply.  They click submit.</li>
         <li>Your application code calls Cloud CMS to update the registration object (if needed).</li>
         <li>Your application code calls Cloud CMS to confirm the registration and passes along the any password and payment information.</li>

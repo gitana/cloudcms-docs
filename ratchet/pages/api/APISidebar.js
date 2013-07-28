@@ -363,11 +363,18 @@
                     {
                         "id" : "sidebar-appsvcs-registration",
                         "topic" : "appsvcs-registration",
-                        "title" : "Registration"
+                        "title" : "User Registration Flow"
+                    },
+                    {
+                        "id" : "sidebar-appsvcs-forgotusername",
+                        "topic" : "appsvcs-forgotusername",
+                        "title" : "Forgot Username Flow"
+                    },
+                    {
+                        "id" : "sidebar-appsvcs-resetpassword",
+                        "topic" : "appsvcs-resetpassword",
+                        "title" : "Reset User Password Flow"
                     }
-
-
-
                 ]
             };
 

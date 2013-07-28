@@ -1,0 +1,7 @@
+{
+    "principal": "joe@joe.com",
+    "email": {
+        "body": "<a href='http://website.com/password-reset.html?hash=${hash}'>Click me to reset your password</a>",
+        "from": "webmaster@website.com"
+    }
+}

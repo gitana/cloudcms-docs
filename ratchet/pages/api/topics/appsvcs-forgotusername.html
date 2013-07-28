@@ -1,0 +1,115 @@
+<script id="pageTemplate" type="text/x-jquery-tmpl">
+    <h1>Forgot Username Flow</h1>
+    <p>
+        Registered users for your application may forget their username and lose the ability to log in to your app.
+        Cloud CMS provides a "forgot username" flow that you can use to provide a way for end users to securely
+        retrieve their username using their registered email address.
+    </p>
+    <p>
+        On this page, we cover a public convenience method that applications can use to easily provide
+        this functionality without having to through the most robust Cloud CMS object-level APIs.  If you're interested
+        in learning about the object-level APIs, take a look at:
+    </p>
+    <ul>
+        <li>The <a href="#/api/domain/javascript">Domain</a> where new users will be created.</li>
+        <li>The <a href="#/api/emailprovider/javascript">Email Provider</a> to be used to send emails to new users.</li>
+    </ul>
+    <p>
+        Let's now walk through the steps of using this convenience method.
+    </p>
+    <h2>Configure your Application Instance</h2>
+    <p>
+        To utilize the "forgot username" convenience flow, you first need to have an
+        <a href="#/api/application/javascript">Application</a> data store instantiated that will be used to store
+        data for your mobile/web application.  You can instantiate this through the Cloud CMS console or you can do
+        so programmatically.  Once you've done so, you will need to configure the application instance to have the
+        following properties:
+    </p>
+    <ul>
+        <li><code>public.userDomainId</code> - The ID of one of your platform's domains that should be used to store the new, registered users.
+        <li><code>public.emailProviderId</code> - The ID of one of your platform's email providers that should be used to send emails.
+    </ul>
+    <h2>Sample configuration</h2>
+    The following JSON can be appended into your Application JSON (which you can edit within the Cloud CMS console).  Or you can
+    edit your application and enter these values via a form.
+    <div gadget="codesnippet" snippetId="example1" fileext=".json"></div>
+    <h2>The Forgot Username Flow</h2>
+    <p>
+        The "forgot username" flow works like this:
+    </p>
+    <ol>
+        <li>The web user tries to log in and realizes they don't know their username.  They click a link that you provide to help them resolve this (usually something akin to "Forgot your username?  Click here!").</li>
+        <li>The web user fills out a brief form where they provide their email address.  They click submit.</li>
+        <li>Your application code calls Cloud CMS to create a "forgot username" request.</li>
+        <li>Your application code calls Cloud CMS to send the email for the "forgot username" request.</li>
+        <li>Your web site asks the user to check their email.</li>
+        <li>The user checks their email.  The email contains a link back to a special page on your web site..</li>
+    </ol>
+    <h2>
+        API Methods
+    </h2>
+    <p>
+        Below we cover step-by-step how to use the API methods to complete a "forgot username" flow.
+        For technical details on using the public application services API, please see:
+        <br/>
+        <a href="http://api.cloudcms.com/docs#!/public">Public Application Services API</a>
+    </p>
+    <h3>Create a Forgot Username Request</h3>
+    <p>
+        To create a forgot username request, you need to make a call to Cloud CMS:
+        <br/>
+        <br/>
+        <code>POST /pub/applications/{applicationId}/requests/forgotusername</code>
+        <br/>
+        <br/>
+        You need to specify the ID of your Application instance in the path to the method.
+        <br/>
+        <br/>
+        The body of your POST should contain two fields that contain the username and email definition.  These are contained
+        in the <code>principal</code> and <code>email</code> fields, respectively. Like this:
+    </p>
+    <div gadget="codesnippet" snippetId="example2" fileext=".json"></div>
+    <p>
+        Here is an example of using some straightforward jQuery to create the request:
+    </p>
+    <div gadget="codesnippet" snippetId="create1" fileext=".js"></div>
+    <p>
+        And here is a list of everything that can be passed in when defining the request:
+    </p>
+    <div gadget="codesnippet" snippetId="example3" fileext=".json"></div>
+    <p>
+        When you create a forgot username request, you'll get back a JSON object containing the newly created
+        forgot username ID (<code>_doc</code>).  You will need to pass this ID to the next call in order to send the
+        forgot username request email to the end user.
+    </p>
+    <p>
+        As part of creating the request, you need to provide an email definition that describes the email that is being
+        sent out.  In defining the email body, you have access to a model which provides variables that you may choose
+        to use within your template.  In particular, the <code>user</code> variable is available which provides all
+        properties about the user including their user name (provided as <code>user.name</code>).
+        <br/>
+        <br/>
+        For more details on email definitions, see <a href="#/api/email/javascript">Email Objects</a>.
+    </p>
+    <h3>Send the Forgot Username Email</h3>
+    <p>
+        To send the forgot username email, you can simply do an empty POST to:
+        <br/>
+        <br/>
+        <code>POST /pub/applications/{applicationId}/requests/forgotusername/{forgotUsernameId}/send</code>
+        <br/>
+        <br/>
+        The forgot username email will be sent and it will contain the body and properties as defined in the <code>email</code>
+        templates block within your request configuration.
+        <br/>
+        <br/>
+        Once the email is sent, the end user will receive an email that is formatted according to your template.  Your
+        template can use the <code>user</code> model variable to provide the <code>user.name</code> username to the
+        end user.  You may also wish to provide a link back to your application.
+    </p>
+    <p>
+        Here is an example of using some straightforward jQuery to send the email:
+    </p>
+    <div gadget="codesnippet" snippetId="send1" fileext=".js"></div>
+
+</script>

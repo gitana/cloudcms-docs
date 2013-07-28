@@ -1,0 +1,6 @@
+{
+    "principal": "", // either the email, id or username of a principal
+    "email": {
+        // email properties (see email request API)
+    }
+}
