@@ -3,8 +3,8 @@ var applicationId = "GUID1";
 
 // create the registration
 $.ajax({
-    "method": "POST",
-    "type": "json",
+    "type": "POST",
+    "dataType": "json",
     "processData": false,
     "url": "/pub/applications/" + applicationId + "/registrations/create",
     "data": {

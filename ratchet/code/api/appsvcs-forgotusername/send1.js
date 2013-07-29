@@ -6,8 +6,8 @@ var requestId = "GUID2";
 
 // send the forgot username email
 $.ajax({
-    "method": "POST",
-    "type": "json",
+    "type": "POST",
+    "dataType": "json",
     "processData": false,
     "url": "/pub/applications/" + applicationId + "/requests/forgotusername/" + requestId + "/send"
 });

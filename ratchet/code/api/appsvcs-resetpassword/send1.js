@@ -6,8 +6,8 @@ var resetPasswordId = "GUID2";
 
 // send the registration confirmation email
 $.ajax({
-    "method": "POST",
-    "type": "json",
+    "type": "POST",
+    "dataType": "json",
     "processData": false,
     "url": "/pub/applications/" + applicationId + "/requests/resetpassword/" + resetPasswordId + "/send"
 });

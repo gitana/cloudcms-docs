@@ -3,8 +3,8 @@ var applicationId = "GUID1";
 
 // create the forgot username request
 $.ajax({
-    "method": "POST",
-    "type": "json",
+    "type": "POST",
+    "dataType": "json",
     "processData": false,
     "url": "/pub/applications/" + applicationId + "/requests/forgotusername/create",
     "data": {

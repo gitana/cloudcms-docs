@@ -3,8 +3,8 @@ var applicationId = "GUID1";
 
 // create the reset password request
 $.ajax({
-    "method": "POST",
-    "type": "json",
+    "type": "POST",
+    "dataType": "json",
     "processData": false,
     "url": "/pub/applications/" + applicationId + "/requests/resetpassword/create",
     "data": {
