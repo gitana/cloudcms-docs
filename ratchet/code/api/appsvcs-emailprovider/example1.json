@@ -1,0 +1,6 @@
+{
+    "public": {
+        "userDomainId": "primary", // either "primary" or a domain ID
+        "emailProviderId": "{Email Provider GUID}"
+    }
+}

@@ -374,6 +374,11 @@
                         "id" : "sidebar-appsvcs-resetpassword",
                         "topic" : "appsvcs-resetpassword",
                         "title" : "Reset User Password Flow"
+                    },
+                    {
+                        "id" : "sidebar-appsvcs-emailprovider",
+                        "topic" : "appsvcs-emailprovider",
+                        "title" : "Email Provider"
                     }
                 ]
             };

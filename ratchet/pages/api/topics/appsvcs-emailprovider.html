@@ -1,0 +1,108 @@
+<script id="pageTemplate" type="text/x-jquery-tmpl">
+    <h1>Email Provider</h1>
+    <p>
+        The public application services often need to send emails as part of their respective flows.  To do this, a
+        public email provider must be configured for the application.  This is email provider that the public services
+        will use when dispatching emails as part of a public flow.
+    </p>
+    <p>
+        On this page, we cover a few convenience methods that are available to test your email provider as well as
+        send emails straight away.  This page assumes that you are already familiar with email providers.  If you'd
+        like to read more about email providers, please read up on
+        <a href="#/api/emailprovider/javascript">Email Providers</a>.
+    </p>
+    <p>
+        To work with these methods, you first need to have an
+        <a href="#/api/application/javascript">Application</a> data store instantiated that will be used to store
+        data for your mobile/web application.  You can instantiate this through the Cloud CMS console or you can do
+        so programmatically.  Once you've done so, you will need to configure the application instance to have the
+        following property:
+    </p>
+    <ul>
+        <li><code>public.emailProviderId</code> - The ID of one of your platform's email providers that should be used to send emails.
+    </ul>
+    <h2>Sample configuration</h2>
+    The following JSON can be appended into your Application JSON (which you can edit within the Cloud CMS console).  Or you can
+    edit your application and enter these values via a form.
+    <div gadget="codesnippet" snippetId="example1" fileext=".json"></div>
+    <h2>
+        API Methods
+    </h2>
+    <p>
+        Below we cover step-by-step how to use the API methods to complete a "forgot username" flow.
+        For technical details on using the public application services API, please see the
+        <a href="http://api.cloudcms.com/docs#!/public">Public Application Services API</a>.
+    </p>
+    <h3>Test your Email Provider</h3>
+    <p>
+        Once you've created your email provider and configured it with connectivity information to your email server, you will
+        want to test to ensure that it is properly set up.  Cloud CMS can perform a test connection to your email server and
+        send a test email.  If you receive this email, then you know your email provider is working.
+    </p>
+    <p>
+        To test your email provider, you make a call to Cloud CMS:
+        <br/>
+        <br/>
+        <code>POST /pub/applications/{applicationId}/emailprovider/test?from={from}&to={to}</code>
+        <br/>
+        <br/>
+        You need to specify the ID of your Application instance (<code>applicationId</code>) in the path to the method.
+        You also need to provide the email address that the email will come (<code>from</code>)
+        as well as specify the recipient that the email will be sent (<code>to</code>).
+    </p>
+    <p>
+        Here is an example that uses jQuery:
+    </p>
+    <div gadget="codesnippet" snippetId="test1" fileext=".js"></div>
+    <p>
+        If the email provider is configured correctly, the recipient will receive a test email.  If there is some kind
+        of problem, you will receive back an error code with some JSON messages that should help you to figure things out.
+    </p>
+    <p>
+        If you don't get an error and you also don't get an email, then you should check with your email server administrator.
+        This often means that the connectivity to the email server is fine but that something on the email server end prevented
+        the email from being sent.  For example, the email server administrator may have rules configured within their server
+        that quarantined your email (based on a non-trusted IP, spam filter, or a scan of the contents of your email).
+    </p>
+    <p>
+        Finally, you should check your own "spam" or "junk" folders within your email client to ensure that the email
+        wasn't received and then moved based on a filter.  If this is the case, you should work with your email server
+        administrator to determine how their spam rules work and optimize your email accordingly.
+    </p>
+    <h3>Send an Email</h3>
+    <p>
+        At times, you will want to send an ad-hoc email that isn't part of a flow.  The Cloud CMS public application
+        services let you send either a pre-saved email or create a new email and send it all at once.
+    </p>
+    <p>
+        To first create an email, you should follow the instructions provided on our section on
+        <a href="#/api/email/javascript">Working with Emails</a>.  Emails are saved objects.  You can create them, edit them,
+        permission them and collaborate on their authorship.
+    </p>
+    <p>
+        Once you have an email, you can send it like this:
+        <br/>
+        <br/>
+        <code>POST /pub/applications/{applicationId}/emailprovider/send?id={emailId}</code>
+        <br/>
+        <br/>
+        The email will be sent using the public email provider.
+    </p>
+    <p>
+        If you want to create and send an email all at once, you can do so by posting the JSON payload for the email
+        definition like this:
+    </p>
+    <p>
+        <code>POST /pub/applications/{applicationId}/emailprovider/send</code>
+        <br/>
+        <br/>
+        The email will be created and then sent right away using the public email provider.
+    </p>
+    <p>
+        Here is an example of using some straightforward jQuery to create and send an email:
+    </p>
+    <div gadget="codesnippet" snippetId="send1" fileext=".js"></div>
+    <p>
+        In either case, be sure to test your email provider ahead of time to ensure that you have it properly configured.
+    </p>
+</script>
