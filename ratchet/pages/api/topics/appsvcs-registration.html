@@ -121,6 +121,22 @@
         Here is an example of using some straightforward jQuery to send the confirmation email:
     </p>
     <div gadget="codesnippet" snippetId="sendconfirmation1" fileext=".js"></div>
+    <h3>Retrieving and Testing the Registration Validity</h3>
+    <p>
+        When the end user receives the email, they should have a link in it that takes them back into your web site.
+        Coming back in, you should pick off the <code>hash</code> from either the URL hash (client-side) or a request
+        parameter (server-side).  Either way, the hash is a unique, unguessable key that provides a one-time
+        registration confirmation to your web app.  It validates that the end user received the email, that they're
+        real and that they have the intention of registering.
+    </p>
+    <p>
+        The first thing you should do is use the hash to verify that the registration is real, that it hasn't
+        expired and that it hasn't already been completed.
+    </p>
+    <p>
+        You can do this by making a simple AJAX call like this:
+    </p>
+    <div gadget="codesnippet" snippetId="testvalidity1" fileext=".js"></div>
     <h3>Complete the Registration</h3>
     <p>
         To complete the registration, you simply need to call over to Cloud CMS and confirm along with the following
