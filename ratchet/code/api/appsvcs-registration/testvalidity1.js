@@ -6,7 +6,7 @@ var hash = "HASH";
 
 // confirm the registration (and send welcome email)
 $.ajax({
-    "type": "GET",
+    "type": "POST",
     "dataType": "json",
     "processData": false,
     "url": "/pub/applications/" + applicationId + "/registrations/" + hash + "/testvalidity",
